@@ -9,7 +9,8 @@ const inter = Inter({
   display: 'swap',
 });
 
-const APP_URL = process.env.APP_URL || 'https://noorscholar.com';
+// تم تصحيح الدومين - هذا كان سبب عدم ظهورك بكوكل
+const APP_URL = 'https://noor-scholar-uvk.vercel.app';
 
 export const metadata: Metadata = {
   metadataBase: new URL(APP_URL),
@@ -33,6 +34,10 @@ export const metadata: Metadata = {
   authors: [{ name: 'Noor Scholar Team' }],
   creator: 'Noor Scholar',
   publisher: 'Noor Scholar',
+  // هذا يحل مشكلة التحقق اللي فشلت بالصورة الثانية
+  verification: {
+    google: '9d9c055753b5d0e',
+  },
   robots: {
     index: true,
     follow: true,
