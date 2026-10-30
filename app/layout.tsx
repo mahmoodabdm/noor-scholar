@@ -3,13 +3,14 @@ import { Inter } from 'next/font/google';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import './globals.css';
+import Script from 'next/script';
 
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
 });
 
-const APP_URL = 'https://noor-scholar-uvk.vercel.app';
+const APP_URL = 'https://noor-scholar.vercel.app';
 
 export const metadata: Metadata = {
   metadataBase: new URL(APP_URL),
@@ -22,56 +23,44 @@ export const metadata: Metadata = {
   verification: {
     google: 'ETPfVPigvC2gkq5AC_ny9R9Shc4Zq2LMgoGQKQt1UN4',
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: { index: true, follow: true },
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: APP_URL,
     siteName: 'Noor Scholar',
     title: 'Noor Scholar - Free Academic Search Engine | 250M+ Papers',
-    description:
-      'Search 250M+ academic papers, scientific articles, and citations with Noor Scholar. The modern, fast Google Scholar alternative.',
+    description: 'Search 250M+ academic papers with Noor Scholar.',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Noor Scholar - Free Academic Search Engine | 250M+ Papers',
-    description:
-      'Search 250M+ academic papers, scientific articles, and citations with Noor Scholar.',
+    description: 'Search 250M+ academic papers with Noor Scholar.',
   },
-  alternates: {
-    canonical: APP_URL,
-  },
+  alternates: { canonical: APP_URL },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const softwareSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: 'Noor Scholar',
-    applicationCategory: 'EducationalApplication',
-    operatingSystem: 'All',
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'USD',
-    },
-    description:
-      'Free academic search engine indexing over 250 million research papers.',
-  };
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" dir="ltr">
       <head>
         <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3673154819131367"
+          crossOrigin="anonymous"
+        ></script>
+        <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'SoftwareApplication',
+              name: 'Noor Scholar',
+              applicationCategory: 'EducationalApplication',
+              operatingSystem: 'All',
+              offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+            }),
+          }}
         />
       </head>
       <body className={`${inter.className} min-h-screen flex flex-col bg-white text-slate-900`}>
