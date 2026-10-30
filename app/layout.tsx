@@ -15,8 +15,7 @@ export const metadata: Metadata = {
     template: '%s | Noor Scholar',
   },
   description: 'Explore 250M+ research papers with Noor Scholar, the leading free Google Scholar alternative. Search literature, generate citations & summarize findings.',
-  verification: {
-    google: 'ETPfVPigvC2gkq5AC_ny9R9Shc4Zq2LMgoGQKQt1UN4',
+ verification: { google: 'ETPfVPigvC2gkq5AC_ny9R9Shc4Zq2LMgoGQKQt1UN4' }
   },
   robots: { index: true, follow: true },
   openGraph: {
