@@ -1,14 +1,6 @@
-import { MetadataRoute } from 'next';
-
-export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.APP_URL || 'https://noorscholar.com';
-
+export default function robots() {
   return {
-    rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: ['/api/'],
-    },
-    sitemap: `${baseUrl}/sitemap.xml`,
-  };
+    rules: { userAgent: '*', allow: '/' },
+    sitemap: 'https://noor-scholar-uvk.vercel.app/sitemap.xml',
+  }
 }
