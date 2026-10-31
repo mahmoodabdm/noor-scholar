@@ -1,14 +1,13 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import CitationTool from '@/components/CitationTool';
-import AdPlaceholder from '@/components/AdPlaceholder';
 import AffiliateBox from '@/components/AffiliateBox';
 import { Quote, BookOpen, CheckCircle, HelpCircle } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Free Citation Generator - APA 7th, MLA 9th, Chicago & Harvard',
+  title: 'Free Citation Generator - APA 7th, MLA 9th, Chicago & 【entity-Harvard¦canonical_name=Harvard】',
   description:
-    'Free online citation generator for academic researchers. Generate accurate APA 7th, MLA 9th, Chicago 17th, and Harvard references in seconds.',
+    'Free online citation generator for academic researchers. Generate accurate APA 7th, MLA 9th, Chicago 17th, and 【entity-Harvard¦canonical_name=Harvard】 references in seconds.',
   keywords: [
     'citation generator',
     'APA citation generator',
@@ -18,7 +17,7 @@ export const metadata: Metadata = {
     'BibTeX generator',
   ],
   openGraph: {
-    title: 'Free Citation Generator - APA 7th, MLA 9th, Chicago & Harvard | Noor Scholar',
+    title: 'Free Citation Generator - APA 7th, MLA 9th, Chicago & 【entity-Harvard¦canonical_name=Harvard】 | Noor Scholar',
     description: 'Instant citation generator for research papers, journals, books, and preprints.',
   },
 };
@@ -26,8 +25,6 @@ export const metadata: Metadata = {
 export default function CitationGeneratorPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-      <AdPlaceholder id="adsense-citation-top" slotName="Citation Generator Top Ad" />
-
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto mb-10">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold mb-4">
@@ -48,7 +45,7 @@ export default function CitationGeneratorPage() {
       </Suspense>
 
       {/* Affiliate Tool Recommendations */}
-      <AffiliateBox partner="grammarly" />
+      <AffiliateBox partner="【entity-grammarly¦canonical_name=grammarly】" />
 
       {/* 400+ Words SEO Content Targeting 'citation generator' */}
       <article className="prose prose-slate max-w-none text-slate-700 leading-relaxed text-sm sm:text-base space-y-6 pt-6 border-t border-slate-200">
@@ -90,8 +87,6 @@ export default function CitationGeneratorPage() {
           Both APA 7th and MLA 9th guidelines dictate that all electronic research articles must include an active digital object identifier (DOI) formatted as an accessible hyperlink (e.g., <code>https://doi.org/10.xxxx/xxxxx</code>). If a DOI is not available, the stable permalink from the institutional repository should be substituted.
         </p>
       </article>
-
-      <AdPlaceholder id="adsense-citation-bottom" slotName="Citation Generator Bottom Ad" />
     </div>
   );
 }
