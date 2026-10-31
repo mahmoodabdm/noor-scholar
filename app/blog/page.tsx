@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { BookOpen, Calendar, Clock, ArrowRight, User, Sparkles } from 'lucide-react';
-import AdPlaceholder from '@/components/AdPlaceholder';
 import AffiliateBox from '@/components/AffiliateBox';
 
 export const metadata: Metadata = {
@@ -31,7 +30,7 @@ export default function BlogIndexPage() {
       category: 'Search Engines',
       readTime: '8 min read',
       date: 'October 20, 2026',
-      author: 'Dr. Tariq Al-Mansoor',
+      author: 'Editorial Team',
       highlight: true,
     },
     {
@@ -42,15 +41,13 @@ export default function BlogIndexPage() {
       category: 'Citations & Style',
       readTime: '6 min read',
       date: 'October 15, 2026',
-      author: 'Elena Rostova, Ph.D.',
+      author: 'Editorial Team',
       highlight: false,
     },
   ];
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <AdPlaceholder id="adsense-blog-top" slotName="Blog Header Leaderboard Ad" />
-
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto mb-16">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold mb-4">
@@ -119,7 +116,6 @@ export default function BlogIndexPage() {
       </div>
 
       <AffiliateBox partner="all" />
-      <AdPlaceholder id="adsense-blog-bottom" slotName="Blog Bottom Ad" />
     </div>
   );
 }
