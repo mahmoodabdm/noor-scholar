@@ -1,72 +1,91 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import AdSenseLoader from '@/components/AdSenseLoader';
 import './globals.css';
-import Script from 'next/script';
 
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-});
+const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' });
 
-const APP_URL = 'https://noor-scholar.vercel.app';
+const APP_URL = 'https://noor-scholar.vercel.app'; // CHANGE THIS to your custom domain when you buy it
 
 export const metadata: Metadata = {
   metadataBase: new URL(APP_URL),
   title: {
-    default: 'Noor Scholar - Free Academic Search Engine | 250M+ Papers',
+    default: 'Noor Scholar – Free Academic Search Engine 250M+ Papers',
     template: '%s | Noor Scholar',
   },
   description:
-    'Explore 250M+ research papers with Noor Scholar, the leading free Google Scholar alternative. Search literature, generate citations & summarize findings.',
-  verification: {
-    google: 'ETPfVPigvC2gkq5AC_ny9R9Shc4Zq2LMgoGQKQt1UN4',
+    'Search 250M+ research papers for free. Find open-access literature, generate APA/MLA citations, and explore citation metrics. The best free Google Scholar alternative.',
+  verification: { 
+    google: 'ETPfVPigvC2gkq5AC_ny9R9Shc4Zq2LMgoGQKQt1UN4' 
   },
-  robots: { index: true, follow: true },
-  openGraph: {
-    type: 'website',
+  alternates: {
+    canonical: './',
+  },
+  openGraph: { 
+    type: 'website', 
+    siteName: 'Noor Scholar', 
     locale: 'en_US',
     url: APP_URL,
-    siteName: 'Noor Scholar',
-    title: 'Noor Scholar - Free Academic Search Engine | 250M+ Papers',
-    description: 'Search 250M+ academic papers with Noor Scholar.',
+    images: [
+      {
+        url: '/og-image.png', // CREATE this image 1200x630
+        width: 1200,
+        height: 630,
+        alt: 'Noor Scholar - Free Academic Search Engine',
+      },
+    ],
   },
-  twitter: {
+  twitter: { 
     card: 'summary_large_image',
-    title: 'Noor Scholar - Free Academic Search Engine | 250M+ Papers',
-    description: 'Search 250M+ academic papers with Noor Scholar.',
+    images: ['/og-image.png'],
   },
-  alternates: { canonical: APP_URL },
+  robots: {
+    index: true,
+    follow: true,
+  }
+};
+
+export const viewport: Viewport = { themeColor: '#ffffff', width: 'device-width', initialScale: 1 };
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { 
+      '@type': 'WebSite', 
+      name: 'Noor Scholar', 
+      url: APP_URL,
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: `${APP_URL}/search?q={search_term_string}`,
+        'query-input': 'required name=search_term_string',
+      }
+    },
+    { 
+      '@type': 'Organization', 
+      name: 'Noor Scholar', 
+      url: APP_URL,
+      logo: `${APP_URL}/logo.png`,
+    },
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" dir="ltr">
-      <head>
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3673154819131367"
-          crossOrigin="anonymous"
-        ></script>
+    <html lang="en" className={inter.variable}>
+      <body className={`min-h-screen flex flex-col bg-white text-slate-900 antialiased`}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'SoftwareApplication',
-              name: 'Noor Scholar',
-              applicationCategory: 'EducationalApplication',
-              operatingSystem: 'All',
-              offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-            }),
+            __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
           }}
         />
-      </head>
-      <body className={`${inter.className} min-h-screen flex flex-col bg-white text-slate-900`}>
         <Navbar />
-        <div className="flex-1 flex flex-col">{children}</div>
+        <main className="flex-1 flex flex-col">{children}</main>
         <Footer />
+        {/* Load AdSense lazy to avoid CLS */}
+        <AdSenseLoader />
       </body>
     </html>
   );
