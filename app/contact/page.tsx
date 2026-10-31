@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import ContactForm from '@/components/ContactForm';
 import { Mail, Clock, MapPin, Headphones, MessageSquare, ShieldCheck } from 'lucide-react';
-import AdPlaceholder from '@/components/AdPlaceholder';
 
 export const metadata: Metadata = {
   title: 'Contact Us - 24/7 Researcher Support',
@@ -19,8 +18,6 @@ export default function ContactPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-      <AdPlaceholder id="adsense-contact-top" slotName="Contact Page Leaderboard Ad" />
-
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto mb-14">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold mb-4">
@@ -99,6 +96,9 @@ export default function ContactPage() {
           <ContactForm />
         </div>
       </div>
+    </div>
+  );
+}
     </div>
   );
 }
