@@ -179,6 +179,3 @@ export default function HowToCiteApaPage() {
     </article>
   );
 }
-    </article>
-  );
-}
