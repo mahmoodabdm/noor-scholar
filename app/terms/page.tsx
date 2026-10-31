@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { Scale, FileCheck, AlertTriangle, BookCheck, ShieldAlert, Mail } from 'lucide-react';
-import AdPlaceholder from '@/components/AdPlaceholder';
 
 export const metadata: Metadata = {
   title: 'Terms of Service',
@@ -19,8 +18,6 @@ export default function TermsPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-      <AdPlaceholder id="adsense-terms-top" slotName="Terms of Service Header Ad" />
-
       {/* Header */}
       <div className="border-b border-slate-200 pb-8 mb-10">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold mb-4">
@@ -77,19 +74,19 @@ export default function TermsPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-xl font-bold text-slate-900">5. Subscription & LemonSqueezy Billing</h2>
+          <h2 className="text-xl font-bold text-slate-900">5. Subscription & Billing</h2>
           <p>
-            While our core search engine and basic research tools are free ($0 forever), advanced Pro and Lab plans are billed through our merchant of record, LemonSqueezy.
+            While our core search engine and basic research tools are free ($0 forever), advanced Pro and Lab plans are coming soon.
           </p>
           <ul className="list-disc pl-5 space-y-2">
             <li>
-              <strong>Billing Cycle:</strong> Subscriptions are billed on a recurring monthly or annual basis as selected during checkout.
+              <strong>Billing Cycle:</strong> When launched, subscriptions will be billed on a recurring monthly or annual basis as selected during checkout.
             </li>
             <li>
-              <strong>Cancellations:</strong> You may cancel your subscription at any time via your LemonSqueezy billing portal. Cancellation takes effect at the end of the current billing cycle.
+              <strong>Cancellations:</strong> You will be able to cancel your subscription at any time via your billing portal. Cancellation takes effect at the end of the current billing cycle.
             </li>
             <li>
-              <strong>Refunds:</strong> We offer a 14-day money-back guarantee for first-time Pro subscriptions. To request a refund, email <strong>{CONTACT_EMAIL}</strong>.
+              <strong>Refunds:</strong> We will offer a 14-day money-back guarantee for first-time Pro subscriptions. To request a refund, email <strong>{CONTACT_EMAIL}</strong>.
             </li>
           </ul>
         </section>
