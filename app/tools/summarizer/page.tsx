@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { Sparkles, FileText, CheckCircle, Copy, Check, RefreshCw, Layers } from 'lucide-react';
-import AdPlaceholder from '@/components/AdPlaceholder';
 import AffiliateBox from '@/components/AffiliateBox';
 
 export default function SummarizerPage() {
@@ -53,8 +52,6 @@ export default function SummarizerPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-      <AdPlaceholder id="adsense-summarizer-top" slotName="Paper Summarizer Top Ad" />
-
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto mb-10">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 text-indigo-700 text-xs font-semibold mb-4">
@@ -205,8 +202,6 @@ export default function SummarizerPage() {
           <li><strong>Facilitates Annotated Bibliographies:</strong> Generates ready-to-paste summaries for your Zotero or Mendeley research library.</li>
         </ul>
       </article>
-
-      <AdPlaceholder id="adsense-summarizer-bottom" slotName="Summarizer Bottom Ad" />
     </div>
   );
 }
