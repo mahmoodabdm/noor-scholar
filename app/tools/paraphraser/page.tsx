@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { RefreshCw, Copy, Check, Sparkles, Sliders, CheckCircle } from 'lucide-react';
-import AdPlaceholder from '@/components/AdPlaceholder';
 import AffiliateBox from '@/components/AffiliateBox';
 
 export default function ParaphraserPage() {
@@ -50,8 +49,6 @@ export default function ParaphraserPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-      <AdPlaceholder id="adsense-paraphraser-top" slotName="Academic Paraphraser Top Ad" />
-
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto mb-10">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold mb-4">
@@ -125,7 +122,7 @@ export default function ParaphraserPage() {
                 </button>
               )}
             </div>
-            <div className="w-full h-[180px] p-4 text-sm bg-emerald-50/40 border border-emerald-200 rounded-2xl text-slate-800 leading-relaxed overflow-y-auto">
+            <div className="w-full h- p-4 text-sm bg-emerald-50/40 border border-emerald-200 rounded-2xl text-slate-800 leading-relaxed overflow-y-auto">
               {loading ? (
                 <div className="h-full flex items-center justify-center text-slate-400 gap-2">
                   <RefreshCw className="w-4 h-4 animate-spin text-emerald-600" />
@@ -173,8 +170,6 @@ export default function ParaphraserPage() {
           Always remember that paraphrasing an idea still requires attributing intellectual precedence with an appropriate citation (e.g., <em>Johnson et al., 2024</em>). Restating a researcher&apos;s experimental findings in your own words without a citation remains plagiarism under university ethics codes. Use our free citation generator alongside this tool to guarantee full academic compliance.
         </p>
       </article>
-
-      <AdPlaceholder id="adsense-paraphraser-bottom" slotName="Paraphraser Bottom Ad" />
     </div>
   );
 }
