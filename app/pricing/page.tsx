@@ -1,29 +1,32 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Check, Zap, HelpCircle, Shield, Award, Users, Star } from 'lucide-react';
-import AdPlaceholder from '@/components/AdPlaceholder';
 
 export const metadata: Metadata = {
-  title: 'Pricing Plans - Free $0, Pro $19/mo, Team $49/mo | Noor Scholar',
+  title: 'Pricing Plans - Free $0, Pro Coming Soon | Noor Scholar',
   description:
-    'Choose the right plan for your academic research. Free $0 for all students, Pro $19/mo with AI summaries, and Team $49/mo with LemonSqueezy checkout.',
+    'Choose the right plan for your academic research. Free $0 for all students, Pro and Team coming soon.',
   keywords: [
     'Noor Scholar pricing',
     'academic search pricing',
-    'research paper summarizer pro',
-    'LemonSqueezy checkout',
+    'research paper summarizer',
     'university lab license',
   ],
   openGraph: {
-    title: 'Pricing Plans - Free $0, Pro $19/mo, Team $49/mo | Noor Scholar',
-    description: 'Explore Noor Scholar plans with transparent pricing and instant LemonSqueezy checkout.',
+    title: 'Pricing Plans - Free $0, Pro Coming Soon | Noor Scholar',
+    description: 'Explore Noor Scholar plans with transparent pricing.',
   },
 };
 
-export default function PricingPage() {
-  const LEMON_PRO_URL = 'https://noorscholar.lemonsqueezy.com/checkout/buy/scholar-pro';
-  const LEMON_TEAM_URL = 'https://noorscholar.lemonsqueezy.com/checkout/buy/scholar-team';
+function ComingSoonBadge() {
+  return (
+    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-100 text-amber-800 text- font-bold rounded-full uppercase tracking-wider border border-amber-200">
+      Coming Soon
+    </span>
+  );
+}
 
+export default function PricingPage() {
   const plans = [
     {
       name: 'Scholar Free',
@@ -34,7 +37,7 @@ export default function PricingPage() {
       highlight: false,
       btnText: 'Start Searching Free',
       btnHref: '/',
-      isExternal: false,
+      comingSoon: false,
       features: [
         'Search across 250M+ scholarly papers',
         'Instant APA 7th, MLA 9th, Chicago citations',
@@ -50,9 +53,9 @@ export default function PricingPage() {
       desc: 'Power tools for PhD candidates, researchers, and professors who need to synthesize literature quickly.',
       badge: 'Most Popular',
       highlight: true,
-      btnText: 'Upgrade with LemonSqueezy ($19)',
-      btnHref: LEMON_PRO_URL,
-      isExternal: true,
+      btnText: 'Coming Soon - $19/mo',
+      btnHref: '#',
+      comingSoon: true,
       features: [
         'Everything in Scholar Free',
         'Unlimited AI Research Paper Summaries',
@@ -70,9 +73,9 @@ export default function PricingPage() {
       desc: 'For university departments, research laboratories, and co-author teams collaborating on grants.',
       badge: 'Collaboration',
       highlight: false,
-      btnText: 'Get Team License ($49)',
-      btnHref: LEMON_TEAM_URL,
-      isExternal: true,
+      btnText: 'Coming Soon - $49/mo',
+      btnHref: '#',
+      comingSoon: true,
       features: [
         'Up to 10 user seats included',
         'Shared lab reference libraries & reading lists',
@@ -86,8 +89,6 @@ export default function PricingPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <AdPlaceholder id="adsense-pricing-top" slotName="Pricing Header Leaderboard Ad" />
-
       {/* Hero */}
       <div className="text-center max-w-3xl mx-auto mb-16">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold mb-4">
@@ -98,7 +99,7 @@ export default function PricingPage() {
           Invest in Your Academic Productivity
         </h1>
         <p className="text-lg text-slate-600 leading-relaxed">
-          No hidden fees. Free tier forever. Upgrade to Pro via LemonSqueezy anytime with a 14-day money-back guarantee.
+          No hidden fees. Free tier forever. Pro plans coming soon with 14-day money-back guarantee.
         </p>
       </div>
 
@@ -115,7 +116,7 @@ export default function PricingPage() {
           >
             <div>
               {p.highlight && (
-                <div className="inline-block px-3 py-1 bg-blue-600 text-white text-[11px] font-bold rounded-full uppercase tracking-wider mb-4">
+                <div className="inline-block px-3 py-1 bg-blue-600 text-white text- font-bold rounded-full uppercase tracking-wider mb-4">
                   {p.badge}
                 </div>
               )}
@@ -125,7 +126,9 @@ export default function PricingPage() {
                 </div>
               )}
 
-              <h2 className="text-2xl font-black text-slate-900">{p.name}</h2>
+              <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 flex-wrap">
+                {p.name} {p.comingSoon && <ComingSoonBadge />}
+              </h2>
               <div className="flex items-baseline gap-1 my-4">
                 <span className="text-5xl font-black text-slate-900">{p.price}</span>
                 <span className="text-sm font-medium text-slate-500">/ {p.period}</span>
@@ -148,20 +151,13 @@ export default function PricingPage() {
             </div>
 
             <div>
-              {p.isExternal ? (
-                <a
-                  href={p.btnHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`w-full py-3.5 px-4 rounded-xl text-center font-bold text-sm transition-all shadow-xs flex items-center justify-center gap-2 ${
-                    p.highlight
-                      ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-200 shadow-md'
-                      : 'bg-slate-900 hover:bg-slate-800 text-white'
-                  }`}
+              {p.comingSoon ? (
+                <button
+                  disabled
+                  className="w-full py-3.5 px-4 rounded-xl text-center font-bold text-sm bg-slate-100 text-slate-400 cursor-not-allowed flex items-center justify-center gap-2 border border-slate-200"
                 >
-                  <Zap className="w-4 h-4 fill-current" />
                   <span>{p.btnText}</span>
-                </a>
+                </button>
               ) : (
                 <Link
                   href={p.btnHref}
@@ -170,8 +166,8 @@ export default function PricingPage() {
                   {p.btnText}
                 </Link>
               )}
-              <div className="text-[11px] text-center text-slate-400 mt-2.5">
-                {p.price === '$0' ? 'No credit card needed' : 'Processed securely via LemonSqueezy'}
+              <div className="text- text-center text-slate-400 mt-2.5">
+                {p.comingSoon ? 'Launching soon - join waitlist' : 'No credit card needed'}
               </div>
             </div>
           </div>
@@ -189,8 +185,8 @@ export default function PricingPage() {
               <tr>
                 <th className="p-4">Feature</th>
                 <th className="p-4 text-center">Scholar Free ($0)</th>
-                <th className="p-4 text-center bg-blue-50/50 text-blue-900">Scholar Pro ($19/mo)</th>
-                <th className="p-4 text-center">Lab Team ($49/mo)</th>
+                <th className="p-4 text-center bg-blue-50/50 text-blue-900">Scholar Pro (Coming Soon)</th>
+                <th className="p-4 text-center">Lab Team (Coming Soon)</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-slate-600">
