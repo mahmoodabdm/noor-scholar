@@ -14,17 +14,29 @@ export const metadata: Metadata = {
     default: 'Noor Scholar – Free Academic Search Engine 250M+ Papers',
     template: '%s | Noor Scholar',
   },
-  description: 'Search 250M+ research papers for free. Find open-access literature, generate APA/MLA citations.',
+  description: 'Search 250M+ scholarly works from OpenAlex for free. Free academic search engine with open-access links and citation generator.',
   verification: { google: 'ETPfVPigvC2gkq5AC_ny9R9Shc4Zq2LMgoGQKQt1UN4' },
-  alternates: { canonical: './' },
+  alternates: { canonical: '/' },
   openGraph: { 
     type: 'website', 
     siteName: 'Noor Scholar', 
     locale: 'en_US',
     url: APP_URL,
-    images: [{ url: '/og-image.png', width: 1200, height: 630 }],
+    title: 'Noor Scholar – Free Academic Search Engine',
+    description: 'Search 250M+ scholarly works from OpenAlex for free.',
+    images: [{ 
+      url: `${APP_URL}/og-image.png`, 
+      width: 1200, 
+      height: 630,
+      alt: 'Noor Scholar - Free Academic Search Engine'
+    }],
   },
-  twitter: { card: 'summary_large_image', images: ['/og-image.png'] },
+  twitter: { 
+    card: 'summary_large_image', 
+    title: 'Noor Scholar – Free Academic Search Engine',
+    description: 'Search 250M+ scholarly works from OpenAlex for free.',
+    images: [`${APP_URL}/og-image.png`] 
+  },
 };
 
 export const viewport: Viewport = { themeColor: '#ffffff' };
@@ -32,8 +44,8 @@ export const viewport: Viewport = { themeColor: '#ffffff' };
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
-    { '@type': 'WebSite', name: 'Noor Scholar', url: APP_URL },
-    { '@type': 'Organization', name: 'Noor Scholar', url: APP_URL },
+    { '@type': 'WebSite', name: 'Noor Scholar', url: APP_URL, potentialAction: { '@type': 'SearchAction', target: `${APP_URL}/search?q={search_term_string}`, 'query-input': 'required name=search_term_string' } },
+    { '@type': 'Organization', name: 'Noor Scholar', url: APP_URL, logo: { '@type': 'ImageObject', url: `${APP_URL}/og-image.png` } },
   ],
 };
 
