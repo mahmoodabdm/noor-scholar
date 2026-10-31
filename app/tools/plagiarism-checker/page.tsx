@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { ShieldCheck, CheckCircle, ExternalLink } from 'lucide-react';
 import AffiliateBox from '@/components/AffiliateBox';
 
@@ -7,17 +6,6 @@ export const metadata: Metadata = {
   title: 'Free Academic Plagiarism Checker Guide & Similarity Tools',
   description:
     'Detect similarity, avoid accidental plagiarism, and protect your academic manuscript before submission to peer-reviewed journals.',
-  keywords: [
-    'plagiarism checker',
-    'academic plagiarism checker',
-    'Turnitin alternative',
-    'research paper similarity score',
-    'iThenticate check',
-  ],
-  openGraph: {
-    title: 'Free Academic Plagiarism Checker Guide | Noor Scholar',
-    description: 'Ensure 100% academic originality and citation compliance before peer-review submission.',
-  },
 };
 
 export default function PlagiarismCheckerPage() {
@@ -73,29 +61,21 @@ export default function PlagiarismCheckerPage() {
         </p>
       </div>
 
-      {/* Recommended Checker Comparison Cards */}
       <div className="space-y-6 mb-16">
         <div className="flex items-center justify-between pb-3 border-b border-slate-200">
           <h2 className="text-xl font-bold text-slate-900">Top Verified Academic Plagiarism Scanners</h2>
           <span className="text-xs text-slate-500">2026 Academic Benchmark</span>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {tools.map((t, i) => (
-            <div
-              key={i}
-              className={`p-6 rounded-2xl border ${t.color} flex flex-col justify-between bg-white shadow-2xs hover:shadow-md transition-all`}
-            >
+            <div key={i} className={`p-6 rounded-2xl border ${t.color} flex flex-col justify-between bg-white shadow-sm hover:shadow-md transition-all`}>
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text- font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">
-                    {t.badge}
-                  </span>
+                  <span className="text- font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">{t.badge}</span>
                   <span className="text-xs font-bold text-amber-500">{t.rating}</span>
                 </div>
                 <h3 className="font-bold text-slate-900 text-base mb-1">{t.name}</h3>
                 <p className="text-xs text-slate-500 mb-4">{t.bestFor}</p>
-
                 <ul className="space-y-2 mb-6 border-t border-slate-100 pt-3">
                   {t.features.map((f, fi) => (
                     <li key={fi} className="text-xs text-slate-700 flex items-start gap-2">
@@ -105,13 +85,7 @@ export default function PlagiarismCheckerPage() {
                   ))}
                 </ul>
               </div>
-
-              <a
-                href={t.url}
-                target="_blank"
-                rel="noopener noreferrer sponsored"
-                className={`w-full py-2.5 rounded-xl font-bold text-xs text-center flex items-center justify-center gap-1.5 shadow-2xs transition-colors ${t.btnColor}`}
-              >
+              <a href={t.url} target="_blank" rel="noopener noreferrer sponsored" className={`w-full py-2.5 rounded-xl font-bold text-xs text-center flex items-center justify-center gap-1.5 ${t.btnColor}`}>
                 <span>{t.cta}</span>
                 <ExternalLink className="w-3.5 h-3.5" />
               </a>
@@ -122,37 +96,15 @@ export default function PlagiarismCheckerPage() {
 
       <AffiliateBox partner="all" />
 
-      {/* In-depth educational guide */}
       <article className="prose prose-slate max-w-none text-slate-700 leading-relaxed text-sm sm:text-base space-y-6 pt-6 border-t border-slate-200">
-        <h2 className="text-2xl font-bold text-slate-900">
-          What Is an Acceptable Similarity Percentage in Academic Publishing?
-        </h2>
-        <p>
-          A common misconception among graduate students is that a similarity score of 0% is required. In reality, academic papers naturally include standardized methodology descriptions, chemical compound formulas, formal legal statutes, and bibliographic citations that trigger algorithmic match indicators.
-        </p>
-        <p>
-          Most major publishers (including Elsevier, IEEE, Springer Nature, and Wiley) utilize <strong>Crossref Similarity Check (powered by iThenticate)</strong> during editorial triage:
-        </p>
+        <h2 className="text-2xl font-bold text-slate-900">What Is an Acceptable Similarity Percentage in Academic Publishing?</h2>
+        <p>A common misconception among graduate students is that a similarity score of 0% is required. In reality, academic papers naturally include standardized methodology descriptions, chemical compound formulas, formal legal statutes, and bibliographic citations that trigger algorithmic match indicators.</p>
         <ul className="list-disc pl-5 space-y-2">
-          <li>
-            <strong>Under 15% Overall Similarity:</strong> Generally considered safe, assuming no single source accounts for more than 2-3% of matching text and all direct quotes are properly enclosed in quotation marks with exact page numbers.
-          </li>
-          <li>
-            <strong>15% to 25% Similarity:</strong> Requires editorial inspection. Frequently occurs in review articles or methodology sections with heavy standardized protocols.
-          </li>
-          <li>
-            <strong>Above 25% Similarity:</strong> Triggers immediate desk-rejection or formal inquiry by the editor-in-chief for potential duplicate publishing or uncredited text lifting.
-          </li>
+          <li><strong>Under 15% Overall Similarity:</strong> Generally considered safe.</li>
+          <li><strong>15% to 25% Similarity:</strong> Requires editorial inspection.</li>
+          <li><strong>Above 25% Similarity:</strong> Triggers immediate desk-rejection.</li>
         </ul>
-
-        <h3 className="text-xl font-bold text-slate-900">Beware of &ldquo;Self-Plagiarism&rdquo; (Text Recycling)</h3>
-        <p>
-          Publishing identical paragraphs from your prior conference proceedings or master&apos;s thesis in a new journal manuscript without explicit cross-citation constitutes self-plagiarism. While the ideas are your own, publisher copyright transfer agreements typically prohibit republishing copyrighted prose. Always disclose previous workshop or preprint appearances in your cover letter.
-        </p>
       </article>
-    </div>
-  );
-}
     </div>
   );
 }
