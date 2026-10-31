@@ -1,47 +1,55 @@
-import Link from 'next/link';
+import { Analytics } from '@vercel/analytics/react'; // <-- ضيف هذا
+import type { Metadata, Viewport } from 'next';
+import { Inter } from 'next/font/google';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import './globals.css';
 
-type Partner = '【entity-grammarly¦canonical_name=Grammarly】' | 'quillbot' | 'all';
+const inter = Inter({ subsets: ['latin'], display: 'swap' });
+const APP_URL = 'https://noor-scholar.vercel.app';
+const OG_IMAGE = `${APP_URL}/og-image.jpg`;
 
-const LINKS: Record<Partner, { label: string; href: string; desc: string }> = {
-  【entity-grammarly¦canonical_name=Grammarly】: {
-    label: '【entity-Grammarly¦canonical_name=Grammarly】',
-    href: 'https://www.grammarly.com', // بدلها برابط الأفلييت مالك
-    desc: 'Writing assistant for grammar, clarity and plagiarism detection in some plans.',
+export const metadata: Metadata = {
+  metadataBase: new URL(APP_URL),
+  title: { default: 'Noor Scholar - Free Academic Search Engine', template: '%s | Noor Scholar' },
+  description: 'Search 250M+ research papers for free. Find open-access literature, generate APA/MLA citations.',
+  verification: { google: 'ETPfVPigvC2gkq5AC_ny9R9Shc4Zq2LMgoGQKQt1UN4' },
+  openGraph: {
+    type: 'website',
+    siteName: 'Noor Scholar',
+    locale: 'en_US',
+    title: 'Noor Scholar - Free Academic Search Engine',
+    description: 'Search 250M+ scholarly works from OpenAlex for free.',
+    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: 'Noor Scholar' }],
   },
-  quillbot: {
-    label: 'QuillBot',
-    href: 'https://quillbot.com', // بدلها برابط الأفلييت مالك
-    desc: 'Paraphrasing and grammar tools with plagiarism checker.',
-  },
-  all: {
-    label: 'Writing Tools',
-    href: 'https://www.grammarly.com',
-    desc: 'Tools to improve academic writing.',
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Noor Scholar - Free Academic Search Engine',
+    description: 'Search 250M+ scholarly works from OpenAlex for free.',
+    images: [OG_IMAGE],
   },
 };
 
-export default function AffiliateBox({ partner = 'all' }: { partner?: Partner }) {
-  const item = LINKS[partner];
+export const viewport: Viewport = { themeColor: '#ffffff' };
 
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'WebSite', name: 'Noor Scholar', url: APP_URL, potentialAction: { '@type': 'SearchAction', target: `${APP_URL}/search?q={search_term_string}`, 'query-input': 'required name=search_term_string' } },
+    { '@type': 'Organization', name: 'Noor Scholar', url: APP_URL, logo: { '@type': 'ImageObject', url: OG_IMAGE } },
+  ],
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="my-8 p-4 bg-slate-50 border border-slate-200 rounded-xl">
-      <p className="text-xs text-slate-500 mb-2">
-        Disclosure: We may earn a commission if you sign up through this link.
-      </p>
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <p className="text-sm font-bold text-slate-900">{item.label}</p>
-          <p className="text-xs text-slate-600 mt-1">{item.desc}</p>
-        </div>
-        <a
-          href={item.href}
-          target="_blank"
-          rel="sponsored noopener noreferrer"
-          className="shrink-0 px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-lg"
-        >
-          Visit {item.label}
-        </a>
-      </div>
-    </div>
+    <html lang="en">
+      <body className={`${inter.className} min-h-screen flex flex-col bg-white text-slate-900`}>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
+        <Navbar />
+        <main className="flex-1 flex flex-col">{children}</main>
+        <Footer />
+        <Analytics /> {/* <-- ضيف هذا */}
+      </body>
+    </html>
   );
 }
