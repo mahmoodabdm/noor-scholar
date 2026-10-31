@@ -6,6 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://noor-scholar-uvk.vercel.app/sitemap.xml',
+    sitemap: 'https://noor-scholar.vercel.app/sitemap.xml',
+    host: 'https://noor-scholar.vercel.app',
   };
 }
