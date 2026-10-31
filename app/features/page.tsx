@@ -14,7 +14,6 @@ import {
   Database,
   Share2,
 } from 'lucide-react';
-import AdPlaceholder from '@/components/AdPlaceholder';
 
 export const metadata: Metadata = {
   title: 'Features - 250M+ Papers, Citations, DOI Access & AI Tools',
@@ -60,7 +59,7 @@ export default function FeaturesPage() {
     },
     {
       title: 'Direct DOI & Open Access Full-Text Resolver',
-      badge: 'Paywall Bypass',
+      badge: 'Open Access',
       icon: <FileText className="w-6 h-6 text-emerald-600" />,
       desc: 'Stop getting stranded on publisher paywalls. Noor Scholar detects official DOIs and points directly to open-access versions and legal repository mirrors.',
       points: [
@@ -106,8 +105,6 @@ export default function FeaturesPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <AdPlaceholder id="adsense-features-top" slotName="Features Header Leaderboard Ad" />
-
       {/* Hero */}
       <div className="text-center max-w-3xl mx-auto mb-20">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold mb-4">
@@ -134,7 +131,7 @@ export default function FeaturesPage() {
                 <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center border border-slate-100">
                   {f.icon}
                 </div>
-                <span className="text-[11px] font-bold px-3 py-1 bg-slate-100 text-slate-700 rounded-full uppercase tracking-wider">
+                <span className="text- font-bold px-3 py-1 bg-slate-100 text-slate-700 rounded-full uppercase tracking-wider">
                   {f.badge}
                 </span>
               </div>
