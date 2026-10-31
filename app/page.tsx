@@ -1,4 +1,3 @@
-
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import {
@@ -25,6 +24,20 @@ export const metadata: Metadata = {
     locale: 'en_US',
     title: 'Noor Scholar – Free Academic Search Engine',
     description: 'Search 250M+ scholarly works from OpenAlex for free.',
+    images: [
+      {
+        url: 'https://noor-scholar.vercel.app/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Noor Scholar - free academic search engine',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Noor Scholar – Free Academic Search Engine',
+    description: 'Search 250M+ scholarly works from OpenAlex for free.',
+    images: ['https://noor-scholar.vercel.app/og-image.jpg'],
   },
 };
 
@@ -72,7 +85,7 @@ const faqSchema = {
 
 function ComingSoonBadge() {
   return (
-    <span className="ml-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-[10px] font-bold uppercase tracking-wide align-middle">
+    <span className="ml-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text- font-bold uppercase tracking-wide align-middle">
       <Clock className="w-3 h-3" />
       Coming soon
     </span>
@@ -143,7 +156,7 @@ export default function HomePage() {
             <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-1">To Search &amp; Cite</div>
           </div>
         </div>
-        <p className="mt-3 text-[11px] text-slate-400">Figures reflect the OpenAlex catalog and may change over time.</p>
+        <p className="mt-3 text- text-slate-400">Figures reflect the OpenAlex catalog and may change over time.</p>
       </section>
 
       {/* Features */}
