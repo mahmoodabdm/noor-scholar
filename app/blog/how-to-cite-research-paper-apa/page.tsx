@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Calendar, Clock, User, Quote, CheckCircle2, ArrowRight, BookOpen } from 'lucide-react';
-import AdPlaceholder from '@/components/AdPlaceholder';
 import AffiliateBox from '@/components/AffiliateBox';
 
 export const metadata: Metadata = {
@@ -24,8 +23,6 @@ export const metadata: Metadata = {
 export default function HowToCiteApaPage() {
   return (
     <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-      <AdPlaceholder id="adsense-article2-top" slotName="Article APA Citation Top Ad" />
-
       {/* Header */}
       <header className="mb-12 border-b border-slate-200 pb-8">
         <div className="flex items-center gap-2 text-xs font-bold text-indigo-600 uppercase tracking-widest mb-3">
@@ -45,11 +42,11 @@ export default function HowToCiteApaPage() {
         <div className="flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500 pt-4 border-t border-slate-100">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold">
-              ER
+              NS
             </div>
             <div>
-              <div className="font-bold text-slate-900">Elena Rostova, Ph.D.</div>
-              <div className="text-slate-400">Postdoctoral Fellow & Academic Writing Instructor</div>
+              <div className="font-bold text-slate-900">Editorial Team</div>
+              <div className="text-slate-400">Noor Scholar Research Team</div>
             </div>
           </div>
 
@@ -179,8 +176,9 @@ export default function HowToCiteApaPage() {
           </ul>
         </section>
       </div>
-
-      <AdPlaceholder id="adsense-article2-bottom" slotName="Article APA Citation Bottom Ad" />
+    </article>
+  );
+}
     </article>
   );
 }
