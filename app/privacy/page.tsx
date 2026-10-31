@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { Shield, Lock, Eye, CheckCircle, FileText, Mail, AlertCircle } from 'lucide-react';
-import AdPlaceholder from '@/components/AdPlaceholder';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy (GDPR & CCPA Compliant)',
@@ -25,9 +24,6 @@ export default function PrivacyPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-      {/* Ad Placement */}
-      <AdPlaceholder id="adsense-privacy-top" slotName="Privacy Policy Leaderboard Ad" />
-
       {/* Header */}
       <div className="border-b border-slate-200 pb-8 mb-10">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold mb-4">
