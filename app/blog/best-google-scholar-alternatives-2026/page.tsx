@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Calendar, Clock, User, CheckCircle2, ArrowRight, Share2, Quote, BookOpen } from 'lucide-react';
-import AdPlaceholder from '@/components/AdPlaceholder';
 import AffiliateBox from '@/components/AffiliateBox';
 
 export const metadata: Metadata = {
@@ -25,8 +24,6 @@ export const metadata: Metadata = {
 export default function BestGoogleScholarAlternativesPage() {
   return (
     <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-      <AdPlaceholder id="adsense-article1-top" slotName="Article Header Ad" />
-
       {/* Article Header */}
       <header className="mb-12 border-b border-slate-200 pb-8">
         <div className="flex items-center gap-2 text-xs font-bold text-blue-600 uppercase tracking-widest mb-3">
@@ -49,8 +46,8 @@ export default function BestGoogleScholarAlternativesPage() {
               TM
             </div>
             <div>
-              <div className="font-bold text-slate-900">Dr. Tariq Al-Mansoor</div>
-              <div className="text-slate-400">Senior Research Fellow in Information Systems</div>
+              <div className="font-bold text-slate-900">Editorial Team</div>
+              <div className="text-slate-400">Noor Scholar Research Team</div>
             </div>
           </div>
 
@@ -206,8 +203,6 @@ export default function BestGoogleScholarAlternativesPage() {
           </div>
         </section>
       </div>
-
-      <AdPlaceholder id="adsense-article1-bottom" slotName="Article Bottom Ad" />
     </article>
   );
 }
