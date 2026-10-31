@@ -45,7 +45,7 @@ export default function CitationGeneratorPage() {
       </Suspense>
 
       {/* Affiliate Tool Recommendations */}
-      <AffiliateBox partner="【entity-grammarly¦canonical_name=grammarly】" />
+            <AffiliateBox partner="grammarly" />
 
       {/* 400+ Words SEO Content Targeting 'citation generator' */}
       <article className="prose prose-slate max-w-none text-slate-700 leading-relaxed text-sm sm:text-base space-y-6 pt-6 border-t border-slate-200">
