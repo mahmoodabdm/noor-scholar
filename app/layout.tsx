@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     title: 'Noor Scholar – Free Academic Search Engine',
     description: 'Search 250M+ scholarly works from OpenAlex for free.',
     images: [{ 
-      url: `${APP_URL}/og-image.png`, 
+      url: `${APP_URL}/og-image.jpg`,
       width: 1200, 
       height: 630,
       alt: 'Noor Scholar - Free Academic Search Engine'
