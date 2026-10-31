@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ShieldCheck, AlertTriangle, CheckCircle, ExternalLink, Sparkles, FileText, Lock } from 'lucide-react';
-import AdPlaceholder from '@/components/AdPlaceholder';
+import { ShieldCheck, CheckCircle, ExternalLink } from 'lucide-react';
 import AffiliateBox from '@/components/AffiliateBox';
 
 export const metadata: Metadata = {
@@ -24,13 +23,13 @@ export const metadata: Metadata = {
 export default function PlagiarismCheckerPage() {
   const tools = [
     {
-      name: 'Grammarly Plagiarism & Originality Checker',
+      name: '【entity-Grammarly¦canonical_name=Grammarly】 Plagiarism & Originality Checker',
       rating: '4.9/5',
       bestFor: 'Proactive draft checking & instant APA citation suggestions',
       features: ['Checks against ProQuest database & 16B web pages', 'Flags missing quotes', 'Integrated writing assistant'],
       url: 'https://grammarly.com',
       badge: 'Editor Choice',
-      cta: 'Check Paper on Grammarly',
+      cta: 'Check Paper on 【entity-Grammarly¦canonical_name=Grammarly】',
       color: 'border-emerald-200 bg-emerald-50/50',
       btnColor: 'bg-emerald-600 hover:bg-emerald-700 text-white',
     },
@@ -60,8 +59,6 @@ export default function PlagiarismCheckerPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-      <AdPlaceholder id="adsense-plagiarism-top" slotName="Plagiarism Checker Top Ad" />
-
       {/* Hero */}
       <div className="text-center max-w-3xl mx-auto mb-14">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-50 text-rose-700 text-xs font-semibold mb-4">
@@ -91,7 +88,7 @@ export default function PlagiarismCheckerPage() {
             >
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">
+                  <span className="text- font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">
                     {t.badge}
                   </span>
                   <span className="text-xs font-bold text-amber-500">{t.rating}</span>
@@ -153,8 +150,9 @@ export default function PlagiarismCheckerPage() {
           Publishing identical paragraphs from your prior conference proceedings or master&apos;s thesis in a new journal manuscript without explicit cross-citation constitutes self-plagiarism. While the ideas are your own, publisher copyright transfer agreements typically prohibit republishing copyrighted prose. Always disclose previous workshop or preprint appearances in your cover letter.
         </p>
       </article>
-
-      <AdPlaceholder id="adsense-plagiarism-bottom" slotName="Plagiarism Checker Bottom Ad" />
+    </div>
+  );
+}
     </div>
   );
 }
