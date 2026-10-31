@@ -7,35 +7,29 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
 
 const APP_URL = 'https://noor-scholar.vercel.app';
+const OG_IMAGE = `${APP_URL}/og-image.jpg`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(APP_URL),
   title: {
-    default: 'Noor Scholar – Free Academic Search Engine 250M+ Papers',
+    default: 'Noor Scholar - Free Academic Search Engine',
     template: '%s | Noor Scholar',
   },
-  description: 'Search 250M+ scholarly works from OpenAlex for free. Free academic search engine with open-access links and citation generator.',
+  description: 'Search 250M+ research papers for free. Find open-access literature, generate APA/MLA citations.',
   verification: { google: 'ETPfVPigvC2gkq5AC_ny9R9Shc4Zq2LMgoGQKQt1UN4' },
-  alternates: { canonical: '/' },
-  openGraph: { 
-    type: 'website', 
-    siteName: 'Noor Scholar', 
+  openGraph: {
+    type: 'website',
+    siteName: 'Noor Scholar',
     locale: 'en_US',
-    url: APP_URL,
-    title: 'Noor Scholar – Free Academic Search Engine',
+    title: 'Noor Scholar - Free Academic Search Engine',
     description: 'Search 250M+ scholarly works from OpenAlex for free.',
-    images: [{ 
-      url: `${APP_URL}/og-image.jpg`,
-      width: 1200, 
-      height: 630,
-      alt: 'Noor Scholar - Free Academic Search Engine'
-    }],
+    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: 'Noor Scholar - free academic search engine' }],
   },
-  twitter: { 
-    card: 'summary_large_image', 
-    title: 'Noor Scholar – Free Academic Search Engine',
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Noor Scholar - Free Academic Search Engine',
     description: 'Search 250M+ scholarly works from OpenAlex for free.',
-    images: [`${APP_URL}/og-image.png`] 
+    images: [OG_IMAGE],
   },
 };
 
@@ -45,7 +39,7 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
     { '@type': 'WebSite', name: 'Noor Scholar', url: APP_URL, potentialAction: { '@type': 'SearchAction', target: `${APP_URL}/search?q={search_term_string}`, 'query-input': 'required name=search_term_string' } },
-    { '@type': 'Organization', name: 'Noor Scholar', url: APP_URL, logo: { '@type': 'ImageObject', url: `${APP_URL}/og-image.png` } },
+    { '@type': 'Organization', name: 'Noor Scholar', url: APP_URL, logo: { '@type': 'ImageObject', url: OG_IMAGE } },
   ],
 };
 
