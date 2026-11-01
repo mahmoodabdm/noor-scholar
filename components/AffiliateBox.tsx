@@ -30,11 +30,10 @@ export default function AffiliateBox({ partner = 'all', className = '' }: Affili
 
   return (
     <div className={`my-8 p-5 bg-white rounded-2xl border border-slate-200 ${className}`}>
-      {/* FTC Disclosure - MUST stay before first affiliate link */}
       <div className="flex items-start gap-2 mb-4 p-3 bg-amber-50 border border-amber-200 rounded-xl">
         <Sparkles className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
         <p className="text-xs text-amber-900 leading-relaxed">
-          <strong>Disclosure:</strong> Some links on this page are affiliate links. If you sign up or buy through them, we may earn a commission at no extra cost to you. Features and pricing change, so check each vendor's site for current details.
+          <strong>Disclosure:</strong> Some links on this page are affiliate links. If you sign up or buy through them, we may earn a commission at no extra cost to you. Features and pricing change, so check each vendor site for current details.
         </p>
       </div>
 
