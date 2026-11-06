@@ -12,6 +12,8 @@ import {
   Check,
   Clock,
   ChevronDown,
+  Search,
+  BookOpen,
 } from 'lucide-react';
 import SearchBox from '@/components/SearchBox';
 
@@ -22,8 +24,8 @@ export const metadata: Metadata = {
     url: '/',
     siteName: 'Noor Scholar',
     locale: 'en_US',
-    title: 'Noor Scholar – Free Academic Search Engine',
-    description: 'Search 250M+ scholarly works from OpenAlex for free.',
+    title: 'Noor Scholar â€“ Free Academic Search Engine',
+    description: 'Search 250M+ scholarly works for free and generate APA, MLA, and Chicago citations in seconds.',
     images: [
       {
         url: 'https://noor-scholar.vercel.app/og-image.jpg',
@@ -35,8 +37,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Noor Scholar – Free Academic Search Engine',
-    description: 'Search 250M+ scholarly works from OpenAlex for free.',
+    title: 'Noor Scholar â€“ Free Academic Search Engine',
+    description: 'Search 250M+ scholarly works for free and generate APA, MLA, and Chicago citations in seconds.',
     images: ['https://noor-scholar.vercel.app/og-image.jpg'],
   },
 };
@@ -61,11 +63,11 @@ const FAQS = [
   },
   {
     q: 'Is Noor Scholar free to use?',
-    a: 'Yes. Searching and the citation generator are free, and no registration is required. We display ads to help cover running costs. Paid plans are planned but not available yet.',
+    a: 'Yes. Searching and the citation generator are free, and no registration is required. There are no ads. Optional paid plans are planned but are not available yet.',
   },
   {
     q: 'How many research papers are indexed in Noor Scholar?',
-    a: 'Search results come from OpenAlex, which currently lists more than 250 million scholarly works. Coverage and metadata quality vary by field and publisher, and the catalog is updated on OpenAlex’s own schedule.',
+    a: 'Search results come from OpenAlex, which currently lists more than 250 million scholarly works. Coverage and metadata quality vary by field and publisher, and the catalog is updated on OpenAlexâ€™s own schedule.',
   },
   {
     q: 'Can I download full-text PDFs directly?',
@@ -85,7 +87,7 @@ const faqSchema = {
 
 function ComingSoonBadge() {
   return (
-    <span className="ml-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text- font-bold uppercase tracking-wide align-middle">
+    <span className="ml-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-[10px] font-bold uppercase tracking-wide align-middle">
       <Clock className="w-3 h-3" />
       Coming soon
     </span>
@@ -109,7 +111,7 @@ export default function HomePage() {
       >
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold mb-6">
           <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-          <span>Powered by OpenAlex open scholarly data</span>
+          <span>Free to search. No account needed.</span>
         </div>
 
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 leading-tight mb-4">
@@ -122,6 +124,13 @@ export default function HomePage() {
         </p>
 
         <SearchBox variant="hero" />
+
+        <p className="mt-4 mb-6 text-sm text-slate-500">
+          Start free. No account, no credit card.{' '}
+          <Link href="/tools/citation-generator" className="text-blue-600 font-medium hover:underline">
+            Or generate a citation
+          </Link>
+        </p>
 
         {/* Trending topics: crawlable links */}
         <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
@@ -156,7 +165,63 @@ export default function HomePage() {
             <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-1">To Search &amp; Cite</div>
           </div>
         </div>
-        <p className="mt-3 text- text-slate-400">Figures reflect the OpenAlex catalog and may change over time.</p>
+        <p className="mt-3 text-xs text-slate-400">Figures are approximate and may change over time.</p>
+      </section>
+
+      {/* Citation styles strip (true statements only) */}
+      <section aria-label="Supported citation styles" className="border-t border-slate-200 bg-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-sm">
+          <span className="text-slate-500">Cite in the styles your professors ask for:</span>
+          <ul className="flex flex-wrap items-center justify-center gap-2 font-semibold text-slate-700">
+            {['APA 7th', 'MLA 9th', 'Chicago'].map((style) => (
+              <li key={style} className="px-3 py-1 rounded-full bg-slate-100 border border-slate-200">
+                {style}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section className="py-20 bg-white border-t border-slate-200">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <h2 className="text-3xl font-extrabold text-slate-900 mb-3">How it works</h2>
+            <p className="text-slate-600">From a search to a finished reference list in three steps.</p>
+          </div>
+          <ol className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <li className="p-6 rounded-2xl border border-slate-200 bg-white">
+              <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4">
+                <Search className="w-5 h-5" />
+              </div>
+              <h3 className="font-bold text-slate-900 mb-1">1. Search</h3>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                Find papers by topic, title, or author. See citation counts, DOIs, and open-access links.
+              </p>
+            </li>
+            <li className="p-6 rounded-2xl border border-dashed border-slate-300 bg-slate-50">
+              <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center mb-4">
+                <Sparkles className="w-5 h-5" />
+              </div>
+              <h3 className="font-bold text-slate-900 mb-1">
+                2. Summarize with AI
+                <ComingSoonBadge />
+              </h3>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                Get the research question, method, and key findings at a glance, plus a chat that answers from the paper itself.
+              </p>
+            </li>
+            <li className="p-6 rounded-2xl border border-slate-200 bg-white">
+              <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-4">
+                <Quote className="w-5 h-5" />
+              </div>
+              <h3 className="font-bold text-slate-900 mb-1">3. Cite</h3>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                Click Cite on any result to generate APA, MLA, or Chicago. Check it against your style guide before you submit.
+              </p>
+            </li>
+          </ol>
+        </div>
       </section>
 
       {/* Features */}
@@ -177,9 +242,9 @@ export default function HomePage() {
               <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-5">
                 <Globe2 className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2">250M+ Works via OpenAlex</h3>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">250M+ Scholarly Works</h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Search articles, conference papers, preprints, and more across medicine, computer science, physics, economics, and the humanities, using the open OpenAlex catalog.
+                Search articles, conference papers, preprints, and more across medicine, computer science, physics, economics, and the humanities.
               </p>
             </div>
 
@@ -236,7 +301,7 @@ export default function HomePage() {
                 <Link href="/privacy" className="text-blue-600 underline hover:text-blue-800">
                   Privacy Policy
                 </Link>{' '}
-                for what data is collected and how advertising cookies are used.
+                for what data is collected and how it is used.
               </p>
             </div>
           </div>
@@ -323,6 +388,42 @@ export default function HomePage() {
                 Not available yet
               </span>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Blog preview */}
+      <section className="py-20 bg-white border-t border-slate-200">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-end justify-between gap-4 mb-8">
+            <h2 className="text-3xl font-extrabold text-slate-900">From the blog</h2>
+            <Link href="/blog" className="text-sm font-semibold text-blue-600 hover:underline">
+              All articles
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[
+              {
+                href: '/blog/how-to-cite-research-paper-apa',
+                title: 'How to cite a research paper in APA 7th',
+                blurb: 'Formats and examples for journal articles, books, and web sources.',
+              },
+              {
+                href: '/blog/best-google-scholar-alternatives-2026',
+                title: 'Best Google Scholar alternatives in 2026',
+                blurb: 'How todayâ€™s academic search tools compare, and when to use each.',
+              },
+            ].map((post) => (
+              <Link
+                key={post.href}
+                href={post.href}
+                className="p-6 rounded-2xl border border-slate-200 bg-white hover:border-blue-300 hover:shadow-md transition-all"
+              >
+                <BookOpen className="w-5 h-5 text-blue-600 mb-3" />
+                <h3 className="font-bold text-slate-900 mb-1">{post.title}</h3>
+                <p className="text-sm text-slate-600">{post.blurb}</p>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
