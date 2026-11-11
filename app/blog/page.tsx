@@ -1,121 +1,73 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { BookOpen, Calendar, Clock, ArrowRight, User, Sparkles } from 'lucide-react';
-import AffiliateBox from '@/components/AffiliateBox';
+import { Clock, Calendar, User, ArrowLeft } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Academic Research Blog & Literature Discovery Guides',
+  title: 'How to Write a Literature Review in 2026 (Step-by-Step Guide)',
   description:
-    'Actionable guides on academic search engines, literature review strategies, APA/MLA citations, and Google Scholar alternatives for modern researchers.',
-  keywords: [
-    'academic research blog',
-    'Google Scholar alternatives 2026',
-    'how to cite research paper APA',
-    'literature review guide',
-    'PhD research tips',
-  ],
-  openGraph: {
-    title: 'Academic Research Blog | Noor Scholar',
-    description: 'Practical guides and reviews for researchers, graduate students, and university faculties.',
-  },
+    'Learn how to write a literature review step-by-step in 2026. From finding sources to structuring, synthesizing, and citing correctly, with examples for thesis and research papers.',
 };
 
-export default function BlogIndexPage() {
-  const articles = [
-    {
-      slug: 'best-google-scholar-alternatives-2026',
-      title: '10 Best Google Scholar Alternatives in 2026 (Free & Open Access)',
-      excerpt:
-        'Explore the top 10 academic search engines competing with Google Scholar in 2026, comparing catalog size, citation graphs, AI summarization, and open-access full text.',
-      category: 'Search Engines',
-      readTime: '8 min read',
-      date: 'October 20, 2026',
-      author: 'Editorial Team',
-      highlight: true,
-    },
-    {
-      slug: 'how-to-cite-research-paper-apa',
-      title: 'How to Cite a Research Paper in APA 7th Edition (2026 Complete Guide)',
-      excerpt:
-        'Master APA 7th edition citation rules for journal articles, preprints, conference papers, and online databases with real-world examples and DOI formatting.',
-      category: 'Citations & Style',
-      readTime: '6 min read',
-      date: 'October 15, 2026',
-      author: 'Editorial Team',
-      highlight: false,
-    },
-  ];
-
+export default function LiteratureReviewPage() {
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      {/* Header */}
-      <div className="text-center max-w-3xl mx-auto mb-16">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold mb-4">
-          <BookOpen className="w-4 h-4" />
-          <span>Research Insights & Tutorials</span>
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <Link href="/blog" className="inline-flex items-center gap-1.5 text-sm font-bold text-blue-600 mb-8">
+        <ArrowLeft className="w-4 h-4" /> Back to Blog
+      </Link>
+      <span className="font-bold px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs">Academic Writing</span>
+      <h1 className="text-4xl font-black text-slate-900 tracking-tight mt-4 mb-4 leading-tight">
+        How to Write a Literature Review in 2026 (Step-by-Step Guide for Students)
+      </h1>
+      <div className="flex items-center gap-4 text-sm text-slate-500 mb-10">
+        <span className="flex items-center gap-1"><User className="w-4 h-4" /> Editorial Team</span>
+        <span className="flex items-center gap-1"><Calendar className="w-4 h-4" /> November 11, 2026</span>
+        <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> 9 min read</span>
+      </div>
+      <div className="prose prose-slate max-w-none text-slate-700 leading-relaxed space-y-6 text-[17px]">
+        <p>A literature review is not a summary of everything you read. It is the story of what researchers already know about your topic, where they disagree, and where there is still a gap for your research to fill.</p>
+        <p>In 2026, with over 5 million new papers published every year, no one expects you to read everything. Examiners expect you to show that you can search smartly, select the right studies, and synthesize them into a clear argument.</p>
+        <h2 className="text-2xl font-bold text-slate-900 pt-4">What Is a Literature Review?</h2>
+        <p>A literature review is a critical evaluation of existing scholarly sources related to your research question. Its purpose is to show what is already known, identify patterns and contradictions, find the research gap, and justify why your research is needed.</p>
+        <p>A weak literature review lists papers one by one: Smith said X. Jones said Y. A strong literature review groups papers by theme, compares their findings, and builds an argument.</p>
+        <h2 className="text-2xl font-bold text-slate-900 pt-4">Step 1: Define a Narrow Research Question</h2>
+        <p>Do not start with a broad topic like artificial intelligence in education. Narrow it down: How does AI-based feedback affect writing accuracy among undergraduate students? A narrow question makes searching, selecting, and writing 10x easier.</p>
+        <h2 className="text-2xl font-bold text-slate-900 pt-4">Step 2: Search for Sources Strategically</h2>
+        <p>Use Noor Scholar, Google Scholar, PubMed, and Semantic Scholar. Use the cited by feature: find one excellent review paper from 2024 or 2025, then check all papers that cited it. This is the fastest way to find the most current research. Aim for 30-50 sources for a thesis chapter, and 15-25 for a course assignment.</p>
+        <h2 className="text-2xl font-bold text-slate-900 pt-4">Step 3: Organize Your Sources Before You Write</h2>
+        <p>Create a simple table with Author, Research Question, Method, Key Finding, and Limitation. After you fill this table, patterns will appear on their own. You will see that most studies focused on undergraduates and ignored postgraduates. That gap is your research opportunity.</p>
+        <h2 className="text-2xl font-bold text-slate-900 pt-4">Step 4: Structure Your Literature Review</h2>
+        <p>Do not organize by author. Organize by theme:</p>
+        <ul className="list-disc pl-6 space-y-2">
+          <li><b>Introduction:</b> State your question, why it matters, and how you searched.</li>
+          <li><b>Theme 1:</b> The main debate in the field.</li>
+          <li><b>Theme 2:</b> The methods previous studies used.</li>
+          <li><b>Theme 3:</b> What is missing - the gap.</li>
+          <li><b>Conclusion:</b> Summarize and state how your research fills the gap.</li>
+        </ul>
+        <h2 className="text-2xl font-bold text-slate-900 pt-4">Step 5: Write With Synthesis, Not Summary</h2>
+        <p>Do not write: Smith found X. Jones found Y. Write like this: While Smith (2024) found that AI feedback improved accuracy by 22%, Jones (2023) argues that this improvement disappears without teacher guidance. This disagreement suggests effectiveness depends on human support, a factor not tested in postgraduate settings.</p>
+        <h2 className="text-2xl font-bold text-slate-900 pt-4">Step 6: Cite Correctly and Avoid Plagiarism</h2>
+        <p>Every claim that is not your own idea must be cited. Paraphrase in your own words, do not just change 2-3 words. Use APA 7th edition for social sciences unless your university says otherwise. Use our free <Link href="/tools/citation-generator" className="text-blue-600 font-bold">Citation Generator</Link> to format APA and MLA correctly.</p>
+        <h2 className="text-2xl font-bold text-slate-900 pt-4">Common Mistakes to Avoid</h2>
+        <ul className="list-disc pl-6 space-y-2">
+          <li>Listing papers instead of themes - the #1 mistake.</li>
+          <li>Using old sources only - include at least 70% from the last 5 years.</li>
+          <li>No critical evaluation - say if the method was strong or weak.</li>
+          <li>No research gap - if you do not identify a gap, your review has no purpose.</li>
+        </ul>
+        <h2 className="text-2xl font-bold text-slate-900 pt-4">FAQ</h2>
+        <p><b>Can I use AI to write my literature review?</b><br/>You can use AI to summarize papers and find themes, but you must write the final analysis yourself. Use AI as an assistant, not as an author.</p>
+        <p><b>How many sources do I need?</b><br/>For a Bachelor thesis, 30-40 sources are enough. For a Master thesis, aim for 50-70. For a PhD, 100+ is normal.</p>
+        <p><b>What is the difference between a literature review and a systematic review?</b><br/>A literature review is narrative and thematic. A systematic review follows a strict protocol (PRISMA) with clear inclusion criteria.</p>
+        <div className="bg-blue-50 p-6 rounded-2xl mt-8">
+          <h3 className="font-bold text-slate-900 mb-2">Need help with your research?</h3>
+          <p className="text-sm mb-4">Try our free academic tools to summarize, paraphrase, and cite your sources correctly.</p>
+          <div className="flex flex-wrap gap-3">
+            <Link href="/tools/summarizer" className="bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-bold">Try Summarizer</Link>
+            <Link href="/tools/paraphraser" className="bg-white border px-4 py-2 rounded-full text-sm font-bold">Try Paraphraser</Link>
+          </div>
         </div>
-        <h1 className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight mb-4">
-          The Noor Scholar Research Blog
-        </h1>
-        <p className="text-lg text-slate-600 leading-relaxed">
-          Comprehensive guides on scholarly literature search, bibliographic citation standards, and academic research tools.
-        </p>
       </div>
-
-      {/* Articles Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-        {articles.map((art) => (
-          <article
-            key={art.slug}
-            className={`p-8 rounded-3xl border transition-all flex flex-col justify-between bg-white ${
-              art.highlight
-                ? 'border-blue-300 shadow-md hover:shadow-xl'
-                : 'border-slate-200 hover:border-slate-300 shadow-xs'
-            }`}
-          >
-            <div>
-              <div className="flex items-center justify-between text-xs mb-4">
-                <span className="font-bold px-3 py-1 bg-blue-50 text-blue-700 rounded-full">
-                  {art.category}
-                </span>
-                <div className="flex items-center gap-3 text-slate-400">
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-3.5 h-3.5" /> {art.readTime}
-                  </span>
-                  <span>{art.date}</span>
-                </div>
-              </div>
-
-              <h2 className="text-2xl font-bold text-slate-900 hover:text-blue-600 transition-colors leading-snug mb-3">
-                <Link href={`/blog/${art.slug}`}>{art.title}</Link>
-              </h2>
-
-              <p className="text-sm text-slate-600 leading-relaxed mb-6">
-                {art.excerpt}
-              </p>
-            </div>
-
-            <div className="pt-6 border-t border-slate-100 flex items-center justify-between">
-              <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
-                <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
-                  <User className="w-3.5 h-3.5" />
-                </div>
-                <span>{art.author}</span>
-              </div>
-
-              <Link
-                href={`/blog/${art.slug}`}
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700 hover:translate-x-0.5 transition-all"
-              >
-                <span>Read Full Guide</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </article>
-        ))}
-      </div>
-
-      <AffiliateBox partner="all" />
     </div>
   );
 }
