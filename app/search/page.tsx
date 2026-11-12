@@ -8,10 +8,11 @@ export const metadata: Metadata = { robots: { index: false, follow: true } };
 export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: { q?: string; page?: string };
+  searchParams: Promise<{ q?: string; page?: string }>;
 }) {
-  const q = (searchParams.q ?? '').trim().slice(0, 200);
-  const page = Math.max(Number(searchParams.page) || 1, 1);
+  const params = await searchParams;
+  const q = (params.q ?? '').trim().slice(0, 200);
+  const page = Math.max(Number(params.page) || 1, 1);
 
   if (!q) {
     return (
@@ -24,9 +25,12 @@ export default async function SearchPage({
 
   let data: any = null;
   let failed = false;
+  let errorMsg = '';
   try {
     data = await searchWorks(q, page);
-  } catch {
+  } catch (e: any) {
+    console.error("SEARCH FAILED:", e);
+    errorMsg = e?.message || 'Unknown error';
     failed = true;
   }
 
@@ -39,7 +43,7 @@ export default async function SearchPage({
 
       <h1 className="mt-6 text-sm text-slate-500">
         {failed
-          ? 'Search is unavailable right now. Please try again.'
+          ? `Search is unavailable right now. Error: ${errorMsg} - Please try again.`
           : `${total.toLocaleString()} results for “${q}”`}
       </h1>
 
