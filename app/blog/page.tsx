@@ -28,7 +28,7 @@ const posts = [
     image: '/blog/plagiarism-hero.jpg',
   },
   {
-    slug: 'how-to-write-literature-review',
+    slug: 'how-to-write-a-literature-review',
     title: 'How to Write a Literature Review in 2026',
     excerpt: 'Step-by-step guide to writing a strong literature review, with structure, examples, and common mistakes to avoid.',
     date: 'November 10, 2026',
@@ -46,9 +46,9 @@ const posts = [
     image: '/blog/plagiarism-hero.jpg',
   },
   {
-    slug: 'google-scholar-alternatives',
+    slug: 'best-google-scholar-alternatives-2026',
     title: '10 Best Google Scholar Alternatives in 2026',
-    excerpt: 'Discover the best free alternatives to Google Scholar for finding academic papers.',
+    excerpt: 'Discover the best free alternatives to Google Scholar for finding academic papers, including OpenAlex and Semantic Scholar.',
     date: 'November 1, 2026',
     readTime: '8 min read',
     category: 'Research Tools',
