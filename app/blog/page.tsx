@@ -19,13 +19,13 @@ const posts = [
     image: '/blog/plagiarism-hero.jpg',
   },
   {
-    slug: 'mla-vs-apa-vs-【entity-chicago¦canonical_name=Chicago】',
-    title: 'MLA vs APA vs 【entity-Chicago¦canonical_name=Chicago】: Which Citation Style Should You Use? (2026 Guide)',
-    excerpt: 'Confused between MLA, APA, and 【entity-Chicago¦canonical_name=Chicago】? This complete guide compares formatting, citations, and when to use each style.',
+    slug: 'mla-vs-apa-vs-chicago',
+    title: 'MLA vs APA vs Chicago: Which Citation Style Should You Use? (2026 Guide)',
+    excerpt: 'Confused between MLA, APA, and Chicago? This complete guide compares formatting, citations, and when to use each style.',
     date: 'November 13, 2026',
     readTime: '8 min read',
     category: 'Citations & Style',
-    image: '/blog/mla-vs-apa.jpg',
+    image: '/blog/plagiarism-hero.jpg',
   },
   {
     slug: 'how-to-write-literature-review',
@@ -34,7 +34,7 @@ const posts = [
     date: 'November 10, 2026',
     readTime: '9 min read',
     category: 'Academic Writing',
-    image: '/blog/literature-review.jpg',
+    image: '/blog/plagiarism-hero.jpg',
   },
   {
     slug: 'how-to-cite-research-paper-apa',
@@ -43,16 +43,16 @@ const posts = [
     date: 'November 5, 2026',
     readTime: '7 min read',
     category: 'Citations & Style',
-    image: '/blog/apa-citation.jpg',
+    image: '/blog/plagiarism-hero.jpg',
   },
   {
     slug: 'google-scholar-alternatives',
     title: '10 Best Google Scholar Alternatives in 2026',
-    excerpt: 'Discover the best free alternatives to Google Scholar for finding academic papers, including OpenAlex and Semantic Scholar.',
+    excerpt: 'Discover the best free alternatives to Google Scholar for finding academic papers.',
     date: 'November 1, 2026',
     readTime: '8 min read',
     category: 'Research Tools',
-    image: '/blog/scholar-alternatives.jpg',
+    image: '/blog/plagiarism-hero.jpg',
   },
 ];
 
