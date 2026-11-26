@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { BookOpen, Mail, Shield, Award, CheckCircle2, Heart } from 'lucide-react';
+import { BookOpen, Mail, Database, Clock } from 'lucide-react';
 
 export default function Footer() {
   const CONTACT_EMAIL = 'abdmazn55@gmail.com';
@@ -15,7 +15,7 @@ export default function Footer() {
               <Mail className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-xs text-slate-400 font-medium">Need Academic Support or Custom Institution API?</p>
+              <p className="text-xs text-slate-400 font-medium">Questions or feedback?</p>
               <a
                 href={`mailto:${CONTACT_EMAIL}`}
                 className="text-sm font-semibold text-white hover:text-blue-400 transition-colors"
@@ -26,16 +26,16 @@ export default function Footer() {
           </div>
           <div className="flex items-center gap-6 text-xs text-slate-400">
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 24/7 Global Researcher Response
+              <Clock className="w-4 h-4 text-emerald-400" /> Email replies in 2-3 days
             </span>
             <span className="flex items-center gap-1.5">
-              <Shield className="w-4 h-4 text-blue-400" /> OpenAlex Indexed (250M+ Papers)
+              <Database className="w-4 h-4 text-blue-400" /> Data from OpenAlex
             </span>
           </div>
         </div>
       </div>
 
-      {/* Main 15 Pages Navigation Links Grid */}
+      {/* Navigation Links Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand Col */}
@@ -49,10 +49,12 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-sm text-slate-400 max-w-sm leading-relaxed">
-              Noor Scholar is the next-generation open academic search engine indexing over 250 million research papers, scientific articles, and datasets with citation graphs and free research workflow tools.
+              An independent project by one founder, built on OpenAlex. Search scholarly works
+              and generate APA, MLA, and Chicago citations for free. Not affiliated with
+              OpenAlex or Google Scholar.
             </p>
             <div className="pt-2 text-xs text-slate-400">
-              Direct Contact & Partnerships:{' '}
+              Contact:{' '}
               <a
                 href={`mailto:${CONTACT_EMAIL}`}
                 className="text-blue-400 underline hover:text-blue-300 font-medium"
@@ -65,72 +67,72 @@ export default function Footer() {
           {/* Core Platform */}
           <div className="space-y-3">
             <h3 className="text-xs font-bold text-white uppercase tracking-wider">
-              Platform & Features
+              Site
             </h3>
             <ul className="space-y-2 text-sm text-slate-400">
               <li>
                 <Link href="/" className="hover:text-white transition-colors">
-                  1. Academic Search (Home)
+                  Academic Search
                 </Link>
               </li>
               <li>
                 <Link href="/features" className="hover:text-white transition-colors">
-                  2. All Features & Architecture
+                  Features
                 </Link>
               </li>
               <li>
                 <Link href="/pricing" className="hover:text-white transition-colors">
-                  3. Pricing & LemonSqueezy Pro
+                  Pricing
                 </Link>
               </li>
               <li>
                 <Link href="/about" className="hover:text-white transition-colors">
-                  4. About Our Mission
+                  About
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="hover:text-white transition-colors">
-                  5. Contact & Support
+                  Contact
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Free Research Tools (5 tools) */}
+          {/* Tools */}
           <div className="space-y-3">
             <h3 className="text-xs font-bold text-white uppercase tracking-wider">
-              Free Research Tools
+              Tools
             </h3>
             <ul className="space-y-2 text-sm text-slate-400">
               <li>
                 <Link href="/tools/citation-generator" className="hover:text-white transition-colors">
-                  6. Citation Generator (APA/MLA)
+                  Citation Generator
                 </Link>
               </li>
               <li>
                 <Link href="/tools/summarizer" className="hover:text-white transition-colors">
-                  7. Research Paper Summarizer
+                  Paper Summarizer
                 </Link>
               </li>
               <li>
                 <Link href="/tools/paraphraser" className="hover:text-white transition-colors">
-                  8. Academic Paraphraser
+                  Academic Paraphraser
                 </Link>
               </li>
               <li>
                 <Link href="/tools/plagiarism-checker" className="hover:text-white transition-colors">
-                  9. Plagiarism Checker
+                  Plagiarism Checker
                 </Link>
               </li>
               <li>
                 <Link href="/tools/translator" className="hover:text-white transition-colors">
-                  10. Academic Translator
+                  Academic Translator
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Blog & Legal (5 pages) */}
+          {/* Blog & Legal */}
           <div className="space-y-3">
             <h3 className="text-xs font-bold text-white uppercase tracking-wider">
               Guides & Legal
@@ -138,27 +140,27 @@ export default function Footer() {
             <ul className="space-y-2 text-sm text-slate-400">
               <li>
                 <Link href="/blog" className="hover:text-white transition-colors">
-                  11. Academic Blog Index
+                  Blog
                 </Link>
               </li>
               <li>
                 <Link href="/blog/best-google-scholar-alternatives-2026" className="hover:text-white transition-colors">
-                  12. 10 Best Google Scholar Alt
+                  Google Scholar Alternatives
                 </Link>
               </li>
               <li>
                 <Link href="/blog/how-to-cite-research-paper-apa" className="hover:text-white transition-colors">
-                  13. How to Cite in APA 7th
+                  How to Cite in APA 7th
                 </Link>
               </li>
               <li>
                 <Link href="/privacy" className="hover:text-white transition-colors">
-                  14. Privacy Policy (GDPR/CCPA)
+                  Privacy Policy
                 </Link>
               </li>
               <li>
                 <Link href="/terms" className="hover:text-white transition-colors">
-                  15. Terms of Service
+                  Terms of Service
                 </Link>
               </li>
             </ul>
@@ -167,7 +169,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-10 mt-10 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
-          <p>© 2026 Noor Scholar. All rights reserved. Powered by OpenAlex Open Science Index.</p>
+          <p>© 2026 Noor Scholar. Scholarly data from OpenAlex.</p>
           <div className="flex items-center gap-6">
             <Link href="/privacy" className="hover:text-slate-300">
               Privacy Policy
