@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import SearchBox from '@/components/SearchBox';
+import SaveButton from '@/components/SaveButton';
 import { searchWorks, stripTags, shortId, getAuthorNames } from '@/lib/openalex';
 
 export const metadata: Metadata = { robots: { index: false, follow: true } };
@@ -89,16 +90,28 @@ export default async function SearchPage({
                   </span>
                 )}
                 {w.doi && (
-                  <span className="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-md font-mono text-">
+                  <span className="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-md font-mono">
                     DOI: {w.doi.replace('https://doi.org/', '')}
                   </span>
                 )}
-                <Link
-                  href={`/tools/citation-generator?id=${encodeURIComponent(shortId(w.id))}`}
-                  className="ml-auto px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-md font-medium"
-                >
-                  Cite
-                </Link>
+                <div className="ml-auto flex items-center gap-2">
+                  <SaveButton
+                    paper={{
+                      id: shortId(w.id),
+                      title,
+                      authors: shown || 'Unknown author',
+                      year: w.publication_year ?? 'Year n/a',
+                      doi: w.doi,
+                      url: link,
+                    }}
+                  />
+                  <Link
+                    href={`/tools/citation-generator?id=${encodeURIComponent(shortId(w.id))}`}
+                    className="px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-md font-medium"
+                  >
+                    Cite
+                  </Link>
+                </div>
               </div>
             </article>
           );
