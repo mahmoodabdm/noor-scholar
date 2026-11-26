@@ -26,7 +26,7 @@ export default function Footer() {
           </div>
           <div className="flex items-center gap-6 text-xs text-slate-400">
             <span className="flex items-center gap-1.5">
-              <Clock className="w-4 h-4 text-emerald-400" /> Email replies in 2-3 days
+              <Clock className="w-4 h-4 text-emerald-400" /> Response within 2-3 days
             </span>
             <span className="flex items-center gap-1.5">
               <Database className="w-4 h-4 text-blue-400" /> Data from OpenAlex
@@ -49,7 +49,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-sm text-slate-400 max-w-sm leading-relaxed">
-              An independent project by one founder, built on OpenAlex. Search scholarly works
+              Independent project built on OpenAlex. Search scholarly works
               and generate APA, MLA, and Chicago citations for free. Not affiliated with
               OpenAlex or Google Scholar.
             </p>
@@ -81,8 +81,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/pricing" className="hover:text-white transition-colors">
-                  Pricing
+                <Link href="/my-library" className="hover:text-white transition-colors">
+                  My Library
                 </Link>
               </li>
               <li>
@@ -114,21 +114,6 @@ export default function Footer() {
                   Paper Summarizer
                 </Link>
               </li>
-              <li>
-                <Link href="/tools/paraphraser" className="hover:text-white transition-colors">
-                  Academic Paraphraser
-                </Link>
-              </li>
-              <li>
-                <Link href="/tools/plagiarism-checker" className="hover:text-white transition-colors">
-                  Plagiarism Checker
-                </Link>
-              </li>
-              <li>
-                <Link href="/tools/translator" className="hover:text-white transition-colors">
-                  Academic Translator
-                </Link>
-              </li>
             </ul>
           </div>
 
@@ -144,13 +129,13 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/blog/best-google-scholar-alternatives-2026" className="hover:text-white transition-colors">
-                  Google Scholar Alternatives
+                <Link href="/blog/how-to-cite-research-paper-apa" className="hover:text-white transition-colors">
+                  How to Cite in APA 7th
                 </Link>
               </li>
               <li>
-                <Link href="/blog/how-to-cite-research-paper-apa" className="hover:text-white transition-colors">
-                  How to Cite in APA 7th
+                <Link href="/blog/how-to-avoid-plagiarism" className="hover:text-white transition-colors">
+                  How to Avoid Plagiarism
                 </Link>
               </li>
               <li>
