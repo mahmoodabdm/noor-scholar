@@ -256,7 +256,8 @@ function parseLookup(raw: string): LookupInput | { error: string } {
 }
 
 function normalizeTitle(value: string): string {
-  return value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "");
+  return value.toLowerCase().replace(/[^a-z0-9]+/gi, "");
+}
 }
 
 async function getJson(url: string, signal: AbortSignal): Promise<unknown> {
