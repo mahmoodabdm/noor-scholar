@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     title: 'Noor Scholar – Free Academic Search Engine',
     description:
-      'Search 250M+ scholarly works for free and generate APA, MLA, and Chicago citations in seconds.',
+      'Search 250M+ scholarly works for free and generate APA, MLA, and 【entity-Chicago¦canonical_name=Chicago】 citations in seconds.',
     images: [
       {
         url: 'https://noor-scholar.vercel.app/og-image.jpg',
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Noor Scholar – Free Academic Search Engine',
     description:
-      'Search 250M+ scholarly works for free and generate APA, MLA, and Chicago citations in seconds.',
+      'Search 250M+ scholarly works for free and generate APA, MLA, and 【entity-Chicago¦canonical_name=Chicago】 citations in seconds.',
     images: ['https://noor-scholar.vercel.app/og-image.jpg'],
   },
 };
@@ -294,6 +294,19 @@ export default function HomePage() {
                   Privacy Policy
                 </Link>{' '}
                 for what data is collected and how it is used.
+              </p>
+            </div>
+
+            <div className="p-8 bg-white rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md transition-all">
+              <div className="w-12 h-12 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center mb-5">
+                <BookOpen className="w-6 h-6" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">My Library</h3>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                Save papers you find and come back to them later. No account needed, saved in your browser.{' '}
+                <Link href="/my-library" className="text-blue-600 font-medium hover:underline">
+                  View my library →
+                </Link>
               </p>
             </div>
           </div>
