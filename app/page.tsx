@@ -9,8 +9,6 @@ import {
   Globe2,
   FileText,
   Layers,
-  Check,
-  Clock,
   ChevronDown,
   Search,
   BookOpen,
@@ -25,7 +23,8 @@ export const metadata: Metadata = {
     siteName: 'Noor Scholar',
     locale: 'en_US',
     title: 'Noor Scholar – Free Academic Search Engine',
-    description: 'Search 250M+ scholarly works for free and generate APA, MLA, and 【entity-Chicago¦canonical_name=Chicago】 citations in seconds.',
+    description:
+      'Search 250M+ scholarly works for free and generate APA, MLA, and Chicago citations in seconds.',
     images: [
       {
         url: 'https://noor-scholar.vercel.app/og-image.jpg',
@@ -38,7 +37,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Noor Scholar – Free Academic Search Engine',
-    description: 'Search 250M+ scholarly works for free and generate APA, MLA, and 【entity-Chicago¦canonical_name=Chicago】 citations in seconds.',
+    description:
+      'Search 250M+ scholarly works for free and generate APA, MLA, and Chicago citations in seconds.',
     images: ['https://noor-scholar.vercel.app/og-image.jpg'],
   },
 };
@@ -63,7 +63,7 @@ const FAQS = [
   },
   {
     q: 'Is Noor Scholar free to use?',
-    a: 'Yes. Searching and the citation generator are free, and no registration is required. There are no ads. Optional paid plans are planned but are not available yet.',
+    a: 'Yes. Searching, saving papers to your library, and generating citations are completely free, with no account or registration required.',
   },
   {
     q: 'How many research papers are indexed in Noor Scholar?',
@@ -84,15 +84,6 @@ const faqSchema = {
     acceptedAnswer: { '@type': 'Answer', text: faq.a },
   })),
 };
-
-function ComingSoonBadge() {
-  return (
-    <span className="ml-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text- font-bold uppercase tracking-wide align-middle">
-      <Clock className="w-3 h-3" />
-      Coming soon
-    </span>
-  );
-}
 
 export default function HomePage() {
   return (
@@ -126,7 +117,7 @@ export default function HomePage() {
         <SearchBox variant="hero" />
 
         <p className="mt-4 mb-6 text-sm text-slate-500">
-          Start free. No account, no credit card.{' '}
+          Free to use, no account required.{' '}
           <Link href="/tools/citation-generator" className="text-blue-600 font-medium hover:underline">
             Or generate a citation
           </Link>
@@ -309,87 +300,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Pricing preview */}
-      <section className="py-20 bg-white border-t border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-xs font-bold text-blue-600 uppercase tracking-widest">Pricing</span>
-            <h2 className="text-3xl font-extrabold text-slate-900 mt-2 mb-3">
-              Free Today. Paid Plans Coming Later.
-            </h2>
-            <p className="text-slate-600 text-sm">
-              Search and citations are free. Paid plans are planned but not yet available, and the features below are not live.{' '}
-              <Link href="/contact" className="text-blue-600 underline hover:text-blue-800">
-                Contact us
-              </Link>{' '}
-              for updates.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <div className="p-8 bg-white rounded-2xl border-2 border-blue-600 flex flex-col justify-between shadow-md">
-              <div>
-                <div className="text-sm font-bold text-blue-600 uppercase">Scholar Free</div>
-                <div className="text-4xl font-black text-slate-900 my-4">
-                  $0 <span className="text-sm font-normal text-slate-500">/ available now</span>
-                </div>
-                <p className="text-xs text-slate-600 mb-6">Literature search and citations for students and researchers.</p>
-                <ul className="space-y-3 text-xs text-slate-700 mb-8">
-                  <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600 shrink-0" /> Search across 250M+ works</li>
-                  <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600 shrink-0" /> APA, MLA &amp; Chicago generator</li>
-                  <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-600 shrink-0" /> DOI &amp; open-access links</li>
-                </ul>
-              </div>
-              <a
-                href="#search"
-                className="w-full py-3 text-center text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-colors"
-              >
-                Start Searching
-              </a>
-            </div>
-
-            <div className="p-8 bg-slate-50 rounded-2xl border border-dashed border-slate-300 flex flex-col justify-between">
-              <div>
-                <div className="text-sm font-bold text-slate-500 uppercase">Scholar Pro</div>
-                <div className="text-sm font-bold text-amber-700 my-4">Coming soon</div>
-                <p className="text-xs text-slate-600 mb-6">Planned for active researchers and PhD candidates.</p>
-                <ul className="space-y-3 text-xs text-slate-500 mb-8">
-                  <li className="flex items-center gap-2"><Clock className="w-4 h-4 text-slate-400 shrink-0" /> Everything in Free</li>
-                  <li className="flex items-center gap-2"><Clock className="w-4 h-4 text-slate-400 shrink-0" /> AI paper summaries (planned)</li>
-                  <li className="flex items-center gap-2"><Clock className="w-4 h-4 text-slate-400 shrink-0" /> Academic paraphraser (planned)</li>
-                  <li className="flex items-center gap-2"><Clock className="w-4 h-4 text-slate-400 shrink-0" /> Bulk BibTeX export (planned)</li>
-                </ul>
-              </div>
-              <span
-                aria-disabled="true"
-                className="w-full py-3 text-center text-xs font-bold text-slate-400 bg-slate-200 rounded-xl cursor-not-allowed"
-              >
-                Not available yet
-              </span>
-            </div>
-
-            <div className="p-8 bg-slate-50 rounded-2xl border border-dashed border-slate-300 flex flex-col justify-between">
-              <div>
-                <div className="text-sm font-bold text-slate-500 uppercase">Lab / Institution</div>
-                <div className="text-sm font-bold text-amber-700 my-4">Coming soon</div>
-                <p className="text-xs text-slate-600 mb-6">Planned for research groups and institutions.</p>
-                <ul className="space-y-3 text-xs text-slate-500 mb-8">
-                  <li className="flex items-center gap-2"><Clock className="w-4 h-4 text-slate-400 shrink-0" /> Team seats (planned)</li>
-                  <li className="flex items-center gap-2"><Clock className="w-4 h-4 text-slate-400 shrink-0" /> Shared reading lists (planned)</li>
-                  <li className="flex items-center gap-2"><Clock className="w-4 h-4 text-slate-400 shrink-0" /> API access (planned)</li>
-                </ul>
-              </div>
-              <span
-                aria-disabled="true"
-                className="w-full py-3 text-center text-xs font-bold text-slate-400 bg-slate-200 rounded-xl cursor-not-allowed"
-              >
-                Not available yet
-              </span>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Blog preview */}
       <section className="py-20 bg-white border-t border-slate-200">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -407,9 +317,9 @@ export default function HomePage() {
                 blurb: 'Formats and examples for journal articles, books, and web sources.',
               },
               {
-                href: '/blog/best-google-scholar-alternatives-2026',
-                title: 'Best Google Scholar alternatives in 2026',
-                blurb: 'How today’s academic search tools compare, and when to use each.',
+                href: '/blog/how-to-avoid-plagiarism',
+                title: 'How to avoid plagiarism in academic writing',
+                blurb: 'Practical paraphrasing, quoting, and source-tracking rules for students.',
               },
             ].map((post) => (
               <Link
