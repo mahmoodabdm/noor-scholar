@@ -1,165 +1,139 @@
-import type { Metadata } from 'next';
-import Link from 'next/link';
-import { BookOpen, Users, Target, ShieldCheck, ArrowRight, Mail, Globe, Database, Sparkles } from 'lucide-react';
+import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: 'About Us - Why We Built a Modern Google Scholar Alternative',
+  title: "About Noor Scholar: An Independent Project Built on OpenAlex",
   description:
-    'Discover the story behind Noor Scholar. Learn how our mission to open 250M+ academic research papers empowers researchers, students, and institutions.',
-  keywords: [
-    'about Noor Scholar',
-    'Google Scholar alternative',
-    'open science mission',
-    'academic research search engine',
-    'OpenAlex indexing',
-  ],
+    "Noor Scholar is an independent project by one founder, built on OpenAlex. Learn what it does, what it does not do, and how to contact us.",
   openGraph: {
-    title: 'About Us - Why We Built a Modern Google Scholar Alternative | Noor Scholar',
-    description: 'Learn how Noor Scholar indexes 250M+ scientific papers with open citations and modern researcher tools.',
+    title: "About Noor Scholar | Independent Project Built on OpenAlex",
+    description:
+      "An independent project by one founder, built on OpenAlex. What it does, what it does not do, and how to reach us.",
+    type: "website",
+    siteName: "Noor Scholar",
+    locale: "en_US",
+    images: [
+      {
+        url: "https://noor-scholar.vercel.app/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Noor Scholar",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Noor Scholar | Independent Project Built on OpenAlex",
+    description:
+      "An independent project by one founder, built on OpenAlex. What it does, what it does not do, and how to reach us.",
+    images: ["https://noor-scholar.vercel.app/og-image.jpg"],
   },
 };
 
 export default function AboutPage() {
-  const CONTACT_EMAIL = 'abdmazn55@gmail.com';
-
-  const milestones = [
-    { value: '250M+', label: 'Indexed Scientific Papers' },
-    { value: '90M+', label: 'Global Authors Cataloged' },
-    { value: '100K+', label: 'Research Institutions & Universities' },
-    { value: '100%', label: 'Commitment to Open Science' },
-  ];
-
-  const teamMembers = [
-    {
-      name: 'Academic Data Architecture',
-      role: 'Literature Indexing & Bibliometrics',
-      desc: 'Specialists in graph databases, OpenAlex metadata ingestion, and distributed scholarly search.',
-    },
-    {
-      name: 'Researcher Workflow Experience',
-      role: 'Citation Tools & AI Summarization',
-      desc: 'Dedicated to designing distraction-free, high-speed tools that save researchers hours every week.',
-    },
-    {
-      name: 'Scholarly Integrity & Ethics',
-      role: 'Peer-Review Verification',
-      desc: 'Ensuring that our indexing surfaces legitimate peer-reviewed journals, verified preprints, and open repositories.',
-    },
-  ];
-
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      {/* Hero */}
-      <div className="text-center max-w-3xl mx-auto mb-16">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold mb-4">
-          <BookOpen className="w-4 h-4" />
-          <span>Our Vision & Mission</span>
-        </div>
-        <h1 className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight mb-4">
-          Democratizing Global Research for Every Scholar
-        </h1>
-        <p className="text-lg text-slate-600 leading-relaxed">
-          Noor Scholar was founded with a singular purpose: to break academic literature out of walled gardens and provide a transparent, lightning-fast alternative to legacy academic search engines.
+    <main className="mx-auto max-w-3xl px-4 py-16 sm:py-20">
+      {/* Intro */}
+      <p className="text-sm font-semibold uppercase tracking-wide text-blue-600">
+        About
+      </p>
+      <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+        An independent search tool built on OpenAlex
+      </h1>
+      <p className="mt-4 text-lg leading-relaxed text-gray-600">
+        Noor Scholar lets you search scholarly works and copy a formatted
+        citation without creating an account.
+      </p>
+
+      {/* Who runs this */}
+      <section className="mt-10 rounded-xl border border-blue-100 bg-blue-50 p-6">
+        <h2 className="text-lg font-semibold text-gray-900">Who runs this</h2>
+        <p className="mt-2 leading-relaxed text-gray-700">
+          Independent project by one founder, built on OpenAlex. Contact by
+          email, reply in 2-3 days.
         </p>
-      </div>
-
-      {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-8 bg-slate-50 border border-slate-200 rounded-3xl mb-16 text-center">
-        {milestones.map((m, i) => (
-          <div key={i}>
-            <div className="text-3xl sm:text-4xl font-black text-blue-600">{m.value}</div>
-            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-1">{m.label}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* Why we built an alternative to Google Scholar */}
-      <section className="mb-20 space-y-6">
-        <div className="p-8 md:p-10 rounded-3xl bg-gradient-to-br from-blue-50/70 via-white to-slate-50 border border-blue-100">
-          <span className="text-xs font-bold text-blue-600 uppercase tracking-widest">The Problem with Legacy Search</span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2 mb-4">
-            Why Google Scholar Needs a Modern Alternative
-          </h2>
-          <div className="space-y-4 text-slate-700 leading-relaxed text-base">
-            <p>
-              Google Scholar launched in 2004 and revolutionized how students find papers. But over the last two decades, it has remained largely static: closed algorithms, lack of transparent citation graphs, frequent indexing of predatory journals, and an interface that lacks modern researcher tools like automated citation builders or structured research synthesis.
-            </p>
-            <p>
-              Meanwhile, commercial databases like Elsevier Scopus and Web of Science charge universities tens of thousands of dollars annually, excluding independent researchers, students in developing nations, and public policy makers.
-            </p>
-            <p>
-              <strong>Noor Scholar</strong> bridges this gap by marrying the sheer magnitude of <strong>OpenAlex</strong> (the world&apos;s foremost open bibliographical catalog) with a modern, fast, minimalist search interface.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Core Principles */}
-      <section className="mb-20">
-        <h2 className="text-2xl font-bold text-slate-900 text-center mb-10">Our 3 Core Commitments</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="p-6 rounded-2xl border border-slate-200 bg-white">
-            <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4">
-              <Globe className="w-6 h-6" />
-            </div>
-            <h3 className="font-bold text-slate-900 text-lg mb-2">100% Open Access First</h3>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              We prioritize legal open-access versions of research papers, institutional preprints, and direct DOIs so you never hit an unexpected paywall.
-            </p>
-          </div>
-
-          <div className="p-6 rounded-2xl border border-slate-200 bg-white">
-            <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-4">
-              <Database className="w-6 h-6" />
-            </div>
-            <h3 className="font-bold text-slate-900 text-lg mb-2">Transparent Data & Citations</h3>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              No black-box ranking algorithms. We catalog citation networks openly, attributing authors, affiliations, and funding organizations truthfully.
-            </p>
-          </div>
-
-          <div className="p-6 rounded-2xl border border-slate-200 bg-white">
-            <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4">
-              <Sparkles className="w-6 h-6" />
-            </div>
-            <h3 className="font-bold text-slate-900 text-lg mb-2">Integrated Workflow Tools</h3>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              Search is just the start. We equip every researcher with free APA/MLA citation generators, paper summarizers, and paraphrasers to accelerate drafting.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Team & Governance */}
-      <section className="mb-20">
-        <h2 className="text-2xl font-bold text-slate-900 text-center mb-10">Our Multidisciplinary Team</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {teamMembers.map((m, i) => (
-            <div key={i} className="p-6 rounded-2xl bg-slate-50 border border-slate-200">
-              <h3 className="font-bold text-slate-900 text-base mb-1">{m.name}</h3>
-              <div className="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-3">{m.role}</div>
-              <p className="text-xs text-slate-600 leading-relaxed">{m.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Contact box */}
-      <div className="p-8 bg-slate-900 text-white rounded-3xl text-center space-y-4">
-        <h3 className="text-2xl font-bold">Have Questions or Want to Partner?</h3>
-        <p className="text-sm text-slate-300 max-w-xl mx-auto leading-relaxed">
-          We collaborate with university libraries, open-access journals, and research foundations worldwide. Reach our team directly:
+        <p className="mt-3 leading-relaxed text-gray-700">
+          OpenAlex includes journal articles, preprints and datasets, not all
+          peer-reviewed.
         </p>
-        <div className="pt-2">
+      </section>
+
+      {/* What it does */}
+      <section className="mt-12">
+        <h2 className="text-2xl font-semibold text-gray-900">What it does</h2>
+        <ul className="mt-4 list-disc space-y-2 pl-5 leading-relaxed text-gray-700">
+          <li>
+            Searches the OpenAlex catalog, which OpenAlex describes as more
+            than 250 million scholarly works.
+          </li>
+          <li>
+            Shows citation counts, DOIs, and links to publisher pages or
+            open-access copies when OpenAlex lists them.
+          </li>
+          <li>
+            Generates APA, MLA, and Chicago citations from paper metadata
+            through the{" "}
+            <Link
+              href="/tools/citation-generator"
+              className="text-blue-600 underline hover:text-blue-700"
+            >
+              citation generator
+            </Link>
+            .
+          </li>
+        </ul>
+      </section>
+
+      {/* Limits */}
+      <section className="mt-12">
+        <h2 className="text-2xl font-semibold text-gray-900">
+          What to keep in mind
+        </h2>
+        <ul className="mt-4 list-disc space-y-2 pl-5 leading-relaxed text-gray-700">
+          <li>
+            Coverage and metadata quality vary by field and publisher, and the
+            catalog updates on OpenAlex&apos;s own schedule.
+          </li>
+          <li>
+            Many papers are behind publisher paywalls. We link to a free copy
+            only when OpenAlex lists one.
+          </li>
+          <li>
+            Generated citations come from metadata and can contain errors.
+            Check them against your style guide before you submit.
+          </li>
+          <li>
+            AI summaries and other writing tools are planned and are not
+            available yet.
+          </li>
+          <li>
+            Noor Scholar is not affiliated with OpenAlex, Google Scholar, or
+            any publisher.
+          </li>
+        </ul>
+      </section>
+
+      {/* Contact */}
+      <section className="mt-12">
+        <h2 className="text-2xl font-semibold text-gray-900">Contact</h2>
+        <p className="mt-3 leading-relaxed text-gray-700">
+          Email{" "}
           <a
-            href={`mailto:${CONTACT_EMAIL}`}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors shadow-md text-sm"
+            href="mailto:abdmazn55@gmail.com"
+            className="text-blue-600 underline hover:text-blue-700"
           >
-            <Mail className="w-4 h-4" />
-            <span>{CONTACT_EMAIL}</span>
+            abdmazn55@gmail.com
           </a>
-        </div>
-      </div>
-    </div>
+          . Replies take 2-3 days. See our{" "}
+          <Link
+            href="/privacy"
+            className="text-blue-600 underline hover:text-blue-700"
+          >
+            Privacy Policy
+          </Link>{" "}
+          for what data is collected.
+        </p>
+      </section>
+    </main>
   );
 }
