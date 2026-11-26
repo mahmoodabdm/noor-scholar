@@ -24,8 +24,8 @@ export const metadata: Metadata = {
     url: '/',
     siteName: 'Noor Scholar',
     locale: 'en_US',
-    title: 'Noor Scholar â€“ Free Academic Search Engine',
-    description: 'Search 250M+ scholarly works for free and generate APA, MLA, and Chicago citations in seconds.',
+    title: 'Noor Scholar – Free Academic Search Engine',
+    description: 'Search 250M+ scholarly works for free and generate APA, MLA, and 【entity-Chicago¦canonical_name=Chicago】 citations in seconds.',
     images: [
       {
         url: 'https://noor-scholar.vercel.app/og-image.jpg',
@@ -37,8 +37,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Noor Scholar â€“ Free Academic Search Engine',
-    description: 'Search 250M+ scholarly works for free and generate APA, MLA, and Chicago citations in seconds.',
+    title: 'Noor Scholar – Free Academic Search Engine',
+    description: 'Search 250M+ scholarly works for free and generate APA, MLA, and 【entity-Chicago¦canonical_name=Chicago】 citations in seconds.',
     images: ['https://noor-scholar.vercel.app/og-image.jpg'],
   },
 };
@@ -67,7 +67,7 @@ const FAQS = [
   },
   {
     q: 'How many research papers are indexed in Noor Scholar?',
-    a: 'Search results come from OpenAlex, which currently lists more than 250 million scholarly works. Coverage and metadata quality vary by field and publisher, and the catalog is updated on OpenAlexâ€™s own schedule.',
+    a: 'Search results come from OpenAlex, which currently lists more than 250 million scholarly works. Coverage and metadata quality vary by field and publisher, and the catalog is updated on OpenAlex’s own schedule.',
   },
   {
     q: 'Can I download full-text PDFs directly?',
@@ -87,7 +87,7 @@ const faqSchema = {
 
 function ComingSoonBadge() {
   return (
-    <span className="ml-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-[10px] font-bold uppercase tracking-wide align-middle">
+    <span className="ml-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text- font-bold uppercase tracking-wide align-middle">
       <Clock className="w-3 h-3" />
       Coming soon
     </span>
@@ -132,7 +132,6 @@ export default function HomePage() {
           </Link>
         </p>
 
-        {/* Trending topics: crawlable links */}
         <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
           <span className="text-xs font-semibold text-slate-400">Trending Topics:</span>
           {POPULAR_SEARCHES.map((topic) => (
@@ -146,7 +145,6 @@ export default function HomePage() {
           ))}
         </div>
 
-        {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-slate-50 rounded-2xl border border-slate-200">
           <div>
             <div className="text-3xl font-black text-blue-600">250M+</div>
@@ -168,7 +166,6 @@ export default function HomePage() {
         <p className="mt-3 text-xs text-slate-400">Figures are approximate and may change over time.</p>
       </section>
 
-      {/* Citation styles strip (true statements only) */}
       <section aria-label="Supported citation styles" className="border-t border-slate-200 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-sm">
           <span className="text-slate-500">Cite in the styles your professors ask for:</span>
@@ -199,16 +196,18 @@ export default function HomePage() {
                 Find papers by topic, title, or author. See citation counts, DOIs, and open-access links.
               </p>
             </li>
-            <li className="p-6 rounded-2xl border border-dashed border-slate-300 bg-slate-50">
+            <li className="p-6 rounded-2xl border border-slate-200 bg-white">
               <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center mb-4">
                 <Sparkles className="w-5 h-5" />
               </div>
               <h3 className="font-bold text-slate-900 mb-1">
-                2. Summarize with AI
-                <ComingSoonBadge />
+                2. Summarize
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Get the research question, method, and key findings at a glance, plus a chat that answers from the paper itself.
+                Get the research question, method, and key findings from the abstract.{' '}
+                <Link href="/tools/summarizer" className="text-blue-600 font-medium hover:underline">
+                  Try the Summarizer →
+                </Link>
               </p>
             </li>
             <li className="p-6 rounded-2xl border border-slate-200 bg-white">
@@ -278,16 +277,18 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="p-8 bg-white rounded-2xl border border-dashed border-slate-300 transition-all">
+            <div className="p-8 bg-white rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md transition-all">
               <div className="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center mb-5">
                 <Zap className="w-6 h-6" />
               </div>
               <h3 className="text-lg font-bold text-slate-900 mb-2">
                 Paper Summarizer
-                <ComingSoonBadge />
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                We are working on AI-assisted summaries and writing tools. They are not available yet.
+                Paste a DOI or an abstract to get the research question, method, and key findings. Extractive summary, not AI-generated.{' '}
+                <Link href="/tools/summarizer" className="text-blue-600 font-medium hover:underline">
+                  Try it →
+                </Link>
               </p>
             </div>
 
@@ -326,7 +327,6 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {/* Free */}
             <div className="p-8 bg-white rounded-2xl border-2 border-blue-600 flex flex-col justify-between shadow-md">
               <div>
                 <div className="text-sm font-bold text-blue-600 uppercase">Scholar Free</div>
@@ -348,7 +348,6 @@ export default function HomePage() {
               </a>
             </div>
 
-            {/* Pro */}
             <div className="p-8 bg-slate-50 rounded-2xl border border-dashed border-slate-300 flex flex-col justify-between">
               <div>
                 <div className="text-sm font-bold text-slate-500 uppercase">Scholar Pro</div>
@@ -369,7 +368,6 @@ export default function HomePage() {
               </span>
             </div>
 
-            {/* Team */}
             <div className="p-8 bg-slate-50 rounded-2xl border border-dashed border-slate-300 flex flex-col justify-between">
               <div>
                 <div className="text-sm font-bold text-slate-500 uppercase">Lab / Institution</div>
@@ -411,7 +409,7 @@ export default function HomePage() {
               {
                 href: '/blog/best-google-scholar-alternatives-2026',
                 title: 'Best Google Scholar alternatives in 2026',
-                blurb: 'How todayâ€™s academic search tools compare, and when to use each.',
+                blurb: 'How today’s academic search tools compare, and when to use each.',
               },
             ].map((post) => (
               <Link
