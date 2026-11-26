@@ -8,9 +8,6 @@ import {
   ChevronDown,
   Quote,
   Sparkles,
-  RefreshCw,
-  ShieldCheck,
-  Languages,
   Menu,
   X,
   Bookmark,
@@ -53,35 +50,12 @@ export default function Navbar() {
       desc: 'Instant APA, MLA, Chicago citations',
       href: '/tools/citation-generator',
       icon: <Quote className="w-4 h-4 text-blue-600" />,
-      badge: null as string | null,
     },
     {
       name: 'Paper Summarizer',
-      desc: 'Extractive summary from abstract, not AI-generated',
+      desc: 'Extractive summary from abstract',
       href: '/tools/summarizer',
       icon: <Sparkles className="w-4 h-4 text-indigo-600" />,
-      badge: null as string | null,
-    },
-    {
-      name: 'Academic Paraphraser',
-      desc: 'Rewrite scientific text with formal clarity',
-      href: '/tools/paraphraser',
-      icon: <RefreshCw className="w-4 h-4 text-emerald-600" />,
-      badge: 'Coming soon',
-    },
-    {
-      name: 'Plagiarism Checker',
-      desc: 'Originality guide & similarity check',
-      href: '/tools/plagiarism-checker',
-      icon: <ShieldCheck className="w-4 h-4 text-rose-600" />,
-      badge: 'Coming soon',
-    },
-    {
-      name: 'Academic Translator',
-      desc: 'Multilingual scientific terminology translation',
-      href: '/tools/translator',
-      icon: <Languages className="w-4 h-4 text-amber-600" />,
-      badge: 'Coming soon',
     },
   ];
 
@@ -97,7 +71,7 @@ export default function Navbar() {
               <span className="text-xl font-bold tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors">
                 Noor Scholar
               </span>
-              <span className="text- text-slate-500 -mt-1 font-medium tracking-wide">
+              <span className="text-[11px] text-slate-500 -mt-1 font-medium tracking-wide">
                 250M+ Academic Papers
               </span>
             </div>
@@ -122,16 +96,15 @@ export default function Navbar() {
               </button>
               {toolsDropdownOpen && (
                 <div className="absolute top-full left-0 mt-2 w-72 rounded-2xl bg-white shadow-xl border border-slate-200 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                  <div className="px-3 py-1.5 text- font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-100 mb-1">
+                  <div className="px-3 py-1.5 text-[11px] font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-100 mb-1">
                     Free Research Tools
                   </div>
                   {tools.map((tool) => (
                     <Link key={tool.href} href={tool.href} onClick={() => setToolsDropdownOpen(false)} className="flex items-start gap-3 px-3 py-2.5 hover:bg-slate-50 rounded-xl transition-colors mx-1">
                       <div className="p-2 bg-slate-100 rounded-lg shrink-0 mt-0.5">{tool.icon}</div>
                       <div>
-                        <div className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+                        <div className="text-sm font-semibold text-slate-900">
                           {tool.name}
-                          {tool.badge && <span className="px-1.5 py-0.5 text- font-bold bg-amber-50 border border-amber-200 text-amber-700 rounded-full uppercase">{tool.badge}</span>}
                         </div>
                         <div className="text-xs text-slate-500 line-clamp-1">{tool.desc}</div>
                       </div>
@@ -144,12 +117,9 @@ export default function Navbar() {
             <Link href="/my-library" className={`flex items-center gap-1.5 text-sm font-medium transition-colors ${pathname === '/my-library' ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-blue-600'}`}>
               <Bookmark className="w-4 h-4" />
               My Library
-              {libraryCount > 0 && <span className="px-1.5 py-0.5 text- font-bold bg-blue-600 text-white rounded-full">{libraryCount}</span>}
+              {libraryCount > 0 && <span className="px-1.5 py-0.5 text-[11px] font-bold bg-blue-600 text-white rounded-full">{libraryCount}</span>}
             </Link>
 
-            <Link href="/pricing" className={`text-sm font-medium transition-colors ${pathname === '/pricing' ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-blue-600'}`}>
-              Pricing
-            </Link>
             <Link href="/blog" className={`text-sm font-medium transition-colors ${pathname.startsWith('/blog') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-blue-600'}`}>
               Blog
             </Link>
@@ -167,7 +137,7 @@ export default function Navbar() {
               My Library {libraryCount > 0 && `(${libraryCount})`}
             </Link>
             <Link href="/#search" className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-xs transition-colors">
-              <span>Start Free</span>
+              <span>Search Papers</span>
             </Link>
           </div>
 
@@ -176,7 +146,7 @@ export default function Navbar() {
               Library {libraryCount > 0 && `(${libraryCount})`}
             </Link>
             <Link href="/#search" className="px-3 py-1.5 text-xs font-semibold text-white bg-blue-600 rounded-lg">
-              Start Free
+              Search
             </Link>
             <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 text-slate-600 hover:text-slate-900 rounded-lg" aria-label="Toggle menu">
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -196,14 +166,12 @@ export default function Navbar() {
               <Link key={t.href} href={t.href} onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 rounded-lg">
                 {t.icon}
                 <span>{t.name}</span>
-                {t.badge && <span className="ml-auto px-1.5 py-0.5 text- font-bold bg-amber-50 border border-amber-200 text-amber-700 rounded-full uppercase">{t.badge}</span>}
               </Link>
             ))}
             <div className="pt-2 border-t border-slate-100"></div>
-            <Link href="/pricing" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg">Pricing Plans</Link>
             <Link href="/blog" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg">Blog & Guides</Link>
             <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg">About Noor Scholar</Link>
-            <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg">Contact Support</Link>
+            <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg">Contact</Link>
           </nav>
         </div>
       )}
