@@ -1,176 +1,135 @@
 "use client";
-import { useState } from 'react';
 
-type Meta = { title: string; authors: string[]; year: string; journal: string; volume: string; issue: string; pages: string; doi: string; publisher: string; };
+import { useState, useEffect, useRef } from "react";
+
 type Faq = { q: string; a: string };
 
-function formatAuthorsAPA(authors: string[]) {
-  if (!authors.length) return '';
-  const formatted = authors.map(a => {
-    const parts = a.trim().split(' ');
-    if (parts.length === 1) return a;
-    const last = parts[parts.length-1];
-    const initials = parts.slice(0,-1).map(p=>p[0]+'.').join(' ');
-    return `${last}, ${initials}`;
-  });
-  if (formatted.length === 1) return formatted[0];
-  if (formatted.length === 2) return formatted.join(' & ');
-  return formatted.slice(0,-1).join(', ') + ', & ' + formatted[formatted.length-1];
-}
-function formatAuthorsMLA(authors: string[]) {
-  if (!authors.length) return '';
-  if (authors.length === 1) {
-    const p = authors[0].split(' '); return `${p[p.length-1]}, ${p.slice(0,-1).join(' ')}`;
-  }
-  if (authors.length === 2) return `${authors[0].split(' ').slice(-1)} , ${authors[0].split(' ').slice(0,-1).join(' ')} and ${authors[1]}`;
-  return `${authors[0].split(' ').slice(-1)}, ${authors[0].split(' ').slice(0,-1).join(' ')}, et al.`;
-}
-
-export default function CitationGeneratorClient({ faqs = [] }: { faqs?: Faq[] }) {
-  const [input, setInput] = useState('');
-  const [style, setStyle] = useState<'APA'|'MLA'|'Chicago'>('APA');
+export default function CitationGeneratorClient({ faqs, initialId }: { faqs?: Faq[]; initialId?: string }) {
+  const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
-  const [meta, setMeta] = useState<Meta | null>(null);
-  const [error, setError] = useState('');
-  const [copied, setCopied] = useState(false);
-  const [manual, setManual] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [meta, setMeta] = useState<any>(null);
+  const [style, setStyle] = useState<"APA" | "MLA" | "【entity-Chicago¦canonical_name=Chicago】">("APA");
+  const autoRan = useRef(false);
 
-  async function fetchMeta() {
-    setError(''); setLoading(true); setMeta(null);
-    const q = input.trim();
-    if (!q) { setError('Paste a DOI, title, or URL first.'); setLoading(false); return; }
+  async function runLookup(raw: string) {
+    const q = raw.trim();
+    if (!q) { setError("Enter a DOI, title, or OpenAlex ID."); return; }
+    setLoading(true); setError(null); setMeta(null);
     try {
-      let url = '';
-      const doiMatch = q.match(/10\.\d{4,9}\/[-._;()/:A-Z0-9]+/i);
-      if (doiMatch) url = `https://api.openalex.org/works/https://doi.org/${doiMatch[0]}`;
-      else if (q.startsWith('http')) {
-        const doi2 = q.match(/10\.\d{4,9}\/[-._;()/:A-Z0-9]+/i);
-        url = doi2 ? `https://api.openalex.org/works/https://doi.org/${doi2[0]}` : `https://api.openalex.org/works?search=${encodeURIComponent(q)}&per-page=1`;
-      } else url = `https://api.openalex.org/works?search=${encodeURIComponent(q)}&per-page=1`;
+      let url = "";
+      if (/^W\d+$/i.test(q)) {
+        url = `https://api.openalex.org/works/${q}?mailto=abdmazn55@gmail.com`;
+      } else if (q.includes("10.")) {
+        const doi = q.match(/10\.\d{4,9}\/\S+/)?.[0]?.replace(/[.,;]+$/, "") || q;
+        url = `https://api.openalex.org/works/https://doi.org/${encodeURIComponent(doi)}?mailto=abdmazn55@gmail.com`;
+      } else {
+        url = `https://api.openalex.org/works?search=${encodeURIComponent(q)}&per_page=1&mailto=abdmazn55@gmail.com`;
+      }
       const res = await fetch(url);
-      if (!res.ok) throw new Error('Not found');
+      if (!res.ok) throw new Error("not found");
       const data = await res.json();
-      const work = data.results ? data.results[0] : data;
-      if (!work || !work.title) throw new Error('Not found');
-      setMeta({
-        title: work.title || '',
-        authors: (work.authorships || []).map((a:any)=>a.author?.display_name).filter(Boolean),
-        year: work.publication_year ? String(work.publication_year) : '',
-        journal: work.primary_location?.source?.display_name || work.host_venue?.display_name || '',
-        volume: work.biblio?.volume || '',
-        issue: work.biblio?.issue || '',
-        pages: work.biblio?.first_page && work.biblio?.last_page ? `${work.biblio.first_page}-${work.biblio.last_page}` : work.biblio?.first_page || '',
-        doi: work.doi?.replace('https://doi.org/','') || '',
-        publisher: work.primary_location?.source?.host_organization_name || '',
-      });
-    } catch(e) {
-      setError('Could not fetch metadata. You can fill the fields manually below.');
-      setManual(true);
-      setMeta({ title: '', authors: [], year: '', journal: '', volume: '', issue: '', pages: '', doi: '', publisher: '' });
+      const w = data.results ? data.results[0] : data;
+      if (!w) throw new Error("not found");
+      setMeta(w);
+    } catch {
+      setError("Paper not found. Try pasting DOI or title.");
     } finally { setLoading(false); }
   }
 
-  function buildCitation() {
-    if (!meta) return '';
-    const { title, authors, year, journal, volume, issue, pages, doi } = meta;
-    const doiUrl = doi ? `https://doi.org/${doi}` : '';
-    if (style === 'APA') {
-      let s = '';
-      if (authors.length) s += formatAuthorsAPA(authors) + ' ';
-      if (year) s += `(${year}). `;
-      if (title) s += `${title}. `;
-      if (journal) s += `${journal}`;
-      if (volume) s += `, ${volume}`;
-      if (issue) s += `(${issue})`;
-      if (pages) s += `, ${pages}`;
-      s += '.';
-      if (doiUrl) s += ` ${doiUrl}`;
-      return s;
+  useEffect(() => {
+    if (initialId && !autoRan.current) {
+      autoRan.current = true;
+      setQuery(initialId);
+      runLookup(initialId);
     }
-    if (style === 'MLA') {
-      let s = '';
-      if (authors.length) s += formatAuthorsMLA(authors) + '. ';
-      if (title) s += `"${title}." `;
-      if (journal) s += `${journal}`;
-      if (volume) s += `, vol. ${volume}`;
-      if (issue) s += `, no. ${issue}`;
-      if (year) s += `, ${year}`;
-      if (pages) s += `, pp. ${pages}`;
-      s += '.';
-      if (doiUrl) s += ` ${doiUrl}`;
-      return s;
-    }
-    let s = '';
-    if (authors.length) s += formatAuthorsAPA(authors) + ' ';
-    if (year) s += `${year}. `;
-    if (title) s += `"${title}." `;
-    if (journal) s += `${journal} ${volume}`;
-    if (issue) s += `, no. ${issue}`;
-    if (year) s += ` (${year})`;
-    if (pages) s += `: ${pages}`;
-    s += '.';
-    if (doiUrl) s += ` ${doiUrl}`;
-    return s;
+  }, [initialId]);
+
+  function getAuthors() {
+    if (!meta?.authorships) return "";
+    return meta.authorships.map((a: any) => a.author?.display_name).filter(Boolean);
   }
 
-  const citation = buildCitation();
+  function formatAPA() {
+    if (!meta) return "";
+    const authors = getAuthors();
+    const year = meta.publication_year || "n.d.";
+    const title = meta.title || meta.display_name || "";
+    const journal = meta.primary_location?.source?.display_name || "";
+    const doi = meta.doi ? meta.doi.replace("https://doi.org/", "") : "";
+    let a = "";
+    if (authors.length === 1) a = `${authors[0].split(" ").slice(-1)} , ${authors[0][0]}.`;
+    else if (authors.length > 1) a = authors.map((n: string) => `${n.split(" ").slice(-1)} , ${n[0]}.`).join(", ");
+    return `${a} (${year}). ${title}. ${journal ? `${journal}. ` : ""}${doi ? `https://doi.org/${doi}` : ""}`.trim();
+  }
+
+  function formatMLA() {
+    if (!meta) return "";
+    const authors = getAuthors();
+    const title = meta.title || meta.display_name || "";
+    const journal = meta.primary_location?.source?.display_name || "";
+    const year = meta.publication_year || "";
+    const doi = meta.doi || "";
+    return `${authors.join(", ")}. "${title}." ${journal}, ${year}${doi ? `, ${doi}.` : "."}`;
+  }
+
+  function formatChicago() {
+    if (!meta) return "";
+    const authors = getAuthors();
+    const title = meta.title || meta.display_name || "";
+    const journal = meta.primary_location?.source?.display_name || "";
+    const year = meta.publication_year || "";
+    const doi = meta.doi || "";
+    return `${authors.join(", ")}. "${title}." ${journal} (${year})${doi ? `: ${doi}.` : "."}`;
+  }
+
+  const citation = style === "APA" ? formatAPA() : style === "MLA" ? formatMLA() : formatChicago();
+
+  async function copy() {
+    try { await navigator.clipboard.writeText(citation); alert("Copied!"); } catch {}
+  }
 
   return (
-    <div className="flex-1 bg-white">
-      <section className="max-w-3xl mx-auto px-4 py-14 text-center">
-        <span className="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-xs font-bold rounded-full border border-blue-200">FREE TOOL - NO ACCOUNT NEEDED</span>
-        <h1 className="text-4xl sm:text-5xl font-black text-slate-900 mt-4 leading-tight">Free APA Citation Generator</h1>
-        <p className="text-slate-600 mt-4 text-lg">Paste a DOI, title, or URL. Get APA 7th, MLA 9th, and Chicago in seconds.</p>
-      </section>
-      <div className="max-w-3xl mx-auto px-4 pb-10">
-        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5">
-          <label className="block text-left text-sm font-bold text-slate-900 mb-2">DOI, Title, or URL</label>
-          <div className="flex flex-col sm:flex-row gap-2">
-            <input value={input} onChange={e=>setInput(e.target.value)} placeholder="e.g. 10.1038/nature12345 or Deep Learning Transformers" className="flex-1 px-4 py-3 rounded-xl border border-slate-300 bg-white text-sm outline-none focus:border-blue-500" />
-            <button onClick={fetchMeta} disabled={loading} className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl disabled:opacity-50">{loading ? 'Searching...' : 'Generate'}</button>
+    <main className="mx-auto max-w-3xl px-4 py-16">
+      <p className="text-sm font-semibold uppercase tracking-wide text-blue-600">Free tool</p>
+      <h1 className="mt-2 text-3xl font-bold text-gray-900">Citation Generator</h1>
+      <p className="mt-4 text-gray-600">Paste a DOI, title, or OpenAlex ID. Get APA 7th, MLA 9th, and 【entity-Chicago¦canonical_name=Chicago】 citations.</p>
+
+      <form onSubmit={(e) => { e.preventDefault(); runLookup(query); }} className="mt-8">
+        <label className="block text-sm font-medium text-gray-700">DOI, title, or OpenAlex ID</label>
+        <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="e.g. 10.1038/nature14539 or W2741809807" className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-600 focus:outline-none" />
+        <button disabled={loading} className="mt-4 rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-60">{loading ? "Looking up..." : "Generate Citation"}</button>
+      </form>
+
+      {error && <div className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{error}</div>}
+
+      {meta && (
+        <section className="mt-8 space-y-4">
+          <div className="rounded-xl border border-gray-200 bg-white p-6">
+            <h2 className="text-xl font-semibold">{meta.title || meta.display_name}</h2>
+            <p className="mt-2 text-sm text-gray-600">{getAuthors().join(", ")} • {meta.publication_year}</p>
           </div>
-          {error && <p className="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2 mt-3 text-left">{error}</p>}
-          <button onClick={()=>{setManual(!manual); if(!meta) setMeta({title:input,authors:[],year:'',journal:'',volume:'',issue:'',pages:'',doi:'',publisher:''});}} className="text-xs text-blue-600 font-semibold mt-3 underline">Or fill manually →</button>
-        </div>
-        {(meta || manual) && (
-          <div className="mt-4 bg-white border border-slate-200 rounded-2xl p-5 text-left space-y-3">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <input placeholder="Title" value={meta?.title||''} onChange={e=>setMeta({...meta!, title:e.target.value})} className="px-3 py-2 border rounded-lg text-sm" />
-              <input placeholder="Authors (comma separated)" value={meta?.authors.join(', ')||''} onChange={e=>setMeta({...meta!, authors:e.target.value.split(',').map(s=>s.trim()).filter(Boolean)})} className="px-3 py-2 border rounded-lg text-sm" />
-              <input placeholder="Year" value={meta?.year||''} onChange={e=>setMeta({...meta!, year:e.target.value})} className="px-3 py-2 border rounded-lg text-sm" />
-              <input placeholder="Journal" value={meta?.journal||''} onChange={e=>setMeta({...meta!, journal:e.target.value})} className="px-3 py-2 border rounded-lg text-sm" />
-              <input placeholder="Volume" value={meta?.volume||''} onChange={e=>setMeta({...meta!, volume:e.target.value})} className="px-3 py-2 border rounded-lg text-sm" />
-              <input placeholder="Issue" value={meta?.issue||''} onChange={e=>setMeta({...meta!, issue:e.target.value})} className="px-3 py-2 border rounded-lg text-sm" />
-              <input placeholder="Pages e.g. 123-135" value={meta?.pages||''} onChange={e=>setMeta({...meta!, pages:e.target.value})} className="px-3 py-2 border rounded-lg text-sm" />
-              <input placeholder="DOI" value={meta?.doi||''} onChange={e=>setMeta({...meta!, doi:e.target.value})} className="px-3 py-2 border rounded-lg text-sm" />
-            </div>
-            <div className="flex gap-2">
-              {(['APA','MLA','Chicago'] as const).map(s=>(
-                <button key={s} onClick={()=>setStyle(s)} className={`px-4 py-2 rounded-full text-sm font-bold ${style===s ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-700'}`}>{s}{s==='APA'?' 7th':s==='MLA'?' 9th':''}</button>
-              ))}
-            </div>
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm leading-relaxed text-slate-800 min-h-[70px]">{citation || 'Fill fields above to see citation.'}</div>
-            <div className="flex gap-2">
-              <button onClick={()=>{navigator.clipboard.writeText(citation); setCopied(true); setTimeout(()=>setCopied(false),2000);}} className="px-5 py-2.5 bg-slate-900 text-white text-sm font-bold rounded-xl">{copied ? 'Copied ✓' : 'Copy Citation'}</button>
-              <span className="text-xs text-slate-500 self-center">Always check against your style guide before submitting.</span>
-            </div>
-          </div>
-        )}
-      </div>
-      {faqs.length > 0 && (
-        <section className="max-w-3xl mx-auto px-4 py-10 text-left">
-          <h2 className="text-2xl font-bold text-slate-900 mb-4">How to use it</h2>
-          <div className="space-y-4">
-            {faqs.map((f, i) => (
-              <div key={i} className="border-b border-slate-100 pb-4">
-                <h3 className="font-bold text-slate-900 text-sm">{f.q}</h3>
-                <p className="text-slate-600 text-sm mt-1">{f.a}</p>
-              </div>
+          <div className="flex gap-2">
+            {(["APA", "MLA", "Chicago"] as const).map((s) => (
+              <button key={s} onClick={() => setStyle(s)} className={`rounded-lg px-4 py-2 text-sm font-semibold ${style === s ? "bg-blue-600 text-white" : "bg-gray-100"}`}>{s}</button>
             ))}
           </div>
-          <p className="text-xs text-slate-400 mt-6">Data source: OpenAlex / CrossRef. Coverage and metadata quality vary by publisher.</p>
+          <div className="rounded-xl border border-blue-100 bg-blue-50 p-6">
+            <p className="leading-relaxed text-gray-900">{citation}</p>
+            <button onClick={copy} className="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white">Copy Citation</button>
+            <p className="mt-3 text-xs text-gray-500">Always check against your style guide before submitting.</p>
+          </div>
         </section>
       )}
-    </div>
+
+      {faqs && faqs.length > 0 && (
+        <section className="mt-12">
+          <h2 className="text-xl font-bold">FAQ</h2>
+          {faqs.map((f, i) => (
+            <details key={i} className="mt-3 rounded-xl border p-4"><summary className="cursor-pointer font-semibold">{f.q}</summary><p className="mt-2 text-gray-700">{f.a}</p></details>
+          ))}
+        </section>
+      )}
+    </main>
   );
 }
