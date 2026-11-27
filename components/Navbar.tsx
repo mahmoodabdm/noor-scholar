@@ -11,6 +11,7 @@ import {
   Menu,
   X,
   Bookmark,
+  TrendingUp,
 } from 'lucide-react';
 import { getLibrary } from '@/lib/library';
 
@@ -71,7 +72,7 @@ export default function Navbar() {
               <span className="text-xl font-bold tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors">
                 Noor Scholar
               </span>
-              <span className="text-[11px] text-slate-500 -mt-1 font-medium tracking-wide">
+              <span className="text- text-slate-500 -mt-1 font-medium tracking-wide">
                 250M+ Academic Papers
               </span>
             </div>
@@ -96,7 +97,7 @@ export default function Navbar() {
               </button>
               {toolsDropdownOpen && (
                 <div className="absolute top-full left-0 mt-2 w-72 rounded-2xl bg-white shadow-xl border border-slate-200 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                  <div className="px-3 py-1.5 text-[11px] font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-100 mb-1">
+                  <div className="px-3 py-1.5 text- font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-100 mb-1">
                     Free Research Tools
                   </div>
                   {tools.map((tool) => (
@@ -114,10 +115,15 @@ export default function Navbar() {
               )}
             </div>
 
+            <Link href="/trending" className={`flex items-center gap-1.5 text-sm font-medium transition-colors ${pathname === '/trending' ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-blue-600'}`}>
+              <TrendingUp className="w-4 h-4" />
+              Trending
+            </Link>
+
             <Link href="/my-library" className={`flex items-center gap-1.5 text-sm font-medium transition-colors ${pathname === '/my-library' ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-blue-600'}`}>
               <Bookmark className="w-4 h-4" />
               My Library
-              {libraryCount > 0 && <span className="px-1.5 py-0.5 text-[11px] font-bold bg-blue-600 text-white rounded-full">{libraryCount}</span>}
+              {libraryCount > 0 && <span className="px-1.5 py-0.5 text- font-bold bg-blue-600 text-white rounded-full">{libraryCount}</span>}
             </Link>
 
             <Link href="/blog" className={`text-sm font-medium transition-colors ${pathname.startsWith('/blog') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-blue-600'}`}>
@@ -160,6 +166,7 @@ export default function Navbar() {
           <nav className="flex flex-col space-y-1">
             <Link href="/" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg">Academic Search</Link>
             <Link href="/features" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg">Features</Link>
+            <Link href="/trending" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg">Trending Research</Link>
             <Link href="/my-library" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg">My Library {libraryCount > 0 && `(${libraryCount})`}</Link>
             <div className="pt-2 pb-1 px-3 text-xs font-bold text-slate-400 uppercase tracking-wider">Free Research Tools</div>
             {tools.map((t) => (
