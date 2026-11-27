@@ -3,7 +3,7 @@ import CitationGeneratorClient from './CitationGeneratorClient';
 
 export const metadata: Metadata = {
   title: 'Free APA Citation Generator - Noor Scholar',
-  description: 'Generate free APA 7th, MLA 9th, and 【entity-Chicago¦canonical_name=Chicago】 citations in seconds. Paste a DOI, title, or URL and copy your citation.',
+  description: 'Generate free APA 7th, MLA 9th, and Chicago citations in seconds. Paste a DOI, title, or URL and copy your citation.',
   alternates: { canonical: '/tools/citation-generator' },
   openGraph: {
     type: 'website',
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     siteName: 'Noor Scholar',
     locale: 'en_US',
     title: 'Free APA Citation Generator - Noor Scholar',
-    description: 'Generate APA 7th, MLA 9th, and 【entity-Chicago¦canonical_name=Chicago】 citations from DOI, title, or URL. Free, no account needed.',
+    description: 'Generate APA 7th, MLA 9th, and Chicago citations from DOI, title, or URL. Free, no account needed.',
   },
 };
 
@@ -21,14 +21,7 @@ const FAQS = [
   { q: 'Where does the metadata come from?', a: 'Metadata is fetched from OpenAlex and CrossRef when available. If metadata is missing, you can edit the fields manually.' },
 ];
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: Promise<{ id?: string }>;
-}) {
-  const params = await searchParams;
-  const initialId = (params.id ?? '').trim();
-
+export default function Page() {
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -37,7 +30,7 @@ export default async function Page({
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, '\\u003c') }} />
-      <CitationGeneratorClient faqs={FAQS} initialId={initialId} />
+      <CitationGeneratorClient faqs={FAQS} />
     </>
   );
 }
