@@ -3,13 +3,14 @@
 import { useState, useEffect, useRef } from "react";
 
 type Faq = { q: string; a: string };
+type Style = "APA" | "MLA" | "Chicago";
 
 export default function CitationGeneratorClient({ faqs, initialId }: { faqs?: Faq[]; initialId?: string }) {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [meta, setMeta] = useState<any>(null);
-  const [style, setStyle] = useState<"APA" | "MLA" | "【entity-Chicago¦canonical_name=Chicago】">("APA");
+  const [style, setStyle] = useState<Style>("APA");
   const autoRan = useRef(false);
 
   async function runLookup(raw: string) {
@@ -46,7 +47,7 @@ export default function CitationGeneratorClient({ faqs, initialId }: { faqs?: Fa
   }, [initialId]);
 
   function getAuthors() {
-    if (!meta?.authorships) return "";
+    if (!meta?.authorships) return [];
     return meta.authorships.map((a: any) => a.author?.display_name).filter(Boolean);
   }
 
