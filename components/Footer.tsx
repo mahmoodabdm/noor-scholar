@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { BookOpen, Mail, Database, Clock } from 'lucide-react';
+import { BookOpen, Mail, Database, Clock, Flame } from 'lucide-react';
 
 export default function Footer() {
   const CONTACT_EMAIL = 'abdmazn55@gmail.com';
@@ -78,6 +78,12 @@ export default function Footer() {
               <li>
                 <Link href="/features" className="hover:text-white transition-colors">
                   Features
+                </Link>
+              </li>
+              <li>
+                <Link href="/trending" className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-sm font-bold bg-orange-500/20 text-orange-300 hover:bg-orange-500/30 hover:text-orange-200 transition-colors">
+                  <Flame className="w-3.5 h-3.5 fill-current" />
+                  Hot Papers
                 </Link>
               </li>
               <li>
