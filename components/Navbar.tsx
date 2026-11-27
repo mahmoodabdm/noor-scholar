@@ -11,7 +11,7 @@ import {
   Menu,
   X,
   Bookmark,
-  TrendingUp,
+  Flame,
 } from 'lucide-react';
 import { getLibrary } from '@/lib/library';
 
@@ -115,9 +115,9 @@ export default function Navbar() {
               )}
             </div>
 
-            <Link href="/trending" className={`flex items-center gap-1.5 text-sm font-medium transition-colors ${pathname === '/trending' ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-blue-600'}`}>
-              <TrendingUp className="w-4 h-4" />
-              Trending
+            <Link href="/trending" className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-bold transition-colors ${pathname === '/trending' ? 'bg-orange-600 text-white shadow-sm' : 'bg-orange-100 text-orange-700 hover:bg-orange-200'}`}>
+              <Flame className="w-4 h-4 fill-current" />
+              Hot Papers
             </Link>
 
             <Link href="/my-library" className={`flex items-center gap-1.5 text-sm font-medium transition-colors ${pathname === '/my-library' ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-blue-600'}`}>
@@ -166,7 +166,7 @@ export default function Navbar() {
           <nav className="flex flex-col space-y-1">
             <Link href="/" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg">Academic Search</Link>
             <Link href="/features" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg">Features</Link>
-            <Link href="/trending" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg">Trending Research</Link>
+            <Link href="/trending" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 text-sm font-bold text-orange-700 bg-orange-50 hover:bg-orange-100 rounded-lg"><Flame className="w-4 h-4 fill-current" /> Hot Papers</Link>
             <Link href="/my-library" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg">My Library {libraryCount > 0 && `(${libraryCount})`}</Link>
             <div className="pt-2 pb-1 px-3 text-xs font-bold text-slate-400 uppercase tracking-wider">Free Research Tools</div>
             {tools.map((t) => (
