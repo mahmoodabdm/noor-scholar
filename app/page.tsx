@@ -17,6 +17,7 @@ import {
   Heart,
 } from 'lucide-react';
 import SearchBox from '@/components/SearchBox';
+import Trending2026 from '@/components/Trending2026';
 
 export const metadata: Metadata = {
   alternates: { canonical: '/' },
@@ -26,13 +27,13 @@ export const metadata: Metadata = {
     siteName: 'Noor Scholar',
     locale: 'en_US',
     title: 'Noor Scholar – Free Academic Search Engine',
-    description: 'Search 250M+ scholarly works for free and generate APA, MLA, and Chicago citations in seconds.',
+    description: 'Search 250M+ scholarly works for free and generate APA, MLA, and 【entity-Chicago¦canonical_name=Chicago】 citations in seconds.',
     images: [{ url: 'https://noor-scholar.vercel.app/og-image.jpg', width: 1200, height: 630, alt: 'Noor Scholar - free academic search engine' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Noor Scholar – Free Academic Search Engine',
-    description: 'Search 250M+ scholarly works for free and generate APA, MLA, and Chicago citations in seconds.',
+    description: 'Search 250M+ scholarly works for free and generate APA, MLA, and 【entity-Chicago¦canonical_name=Chicago】 citations in seconds.',
     images: ['https://noor-scholar.vercel.app/og-image.jpg'],
   },
 };
@@ -158,6 +159,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Most Cited 2026 - Live from OpenAlex */}
+      <Trending2026 />
 
       {/* Blog preview - WITH IMAGES */}
       <section className="py-20 bg-white border-t border-slate-200">
