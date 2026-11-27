@@ -21,7 +21,14 @@ const FAQS = [
   { q: 'Where does the metadata come from?', a: 'Metadata is fetched from OpenAlex and CrossRef when available. If metadata is missing, you can edit the fields manually.' },
 ];
 
-export default function Page() {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ id?: string }>;
+}) {
+  const params = await searchParams;
+  const initialId = (params.id ?? '').trim();
+
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -30,7 +37,7 @@ export default function Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, '\\u003c') }} />
-      <CitationGeneratorClient faqs={FAQS} />
+      <CitationGeneratorClient faqs={FAQS} initialId={initialId} />
     </>
   );
 }
