@@ -27,14 +27,14 @@ export const metadata: Metadata = {
     url: '/',
     siteName: 'Noor Scholar',
     locale: 'en_US',
-    title: 'Noor Scholar – Free Academic Search Engine',
-    description: 'Search 250M+ scholarly works for free and generate APA, MLA, and 【entity-Chicago¦canonical_name=Chicago】 citations in seconds.',
+    title: 'Noor Scholar – Find, Save & Cite Research in One Place',
+    description: 'Search 250M+ papers, understand them in seconds, save to your library, and generate APA, MLA, and 【entity-Chicago¦canonical_name=Chicago】 citations — no account needed.',
     images: [{ url: 'https://noor-scholar.vercel.app/og-image.jpg', width: 1200, height: 630, alt: 'Noor Scholar - free academic search engine' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Noor Scholar – Free Academic Search Engine',
-    description: 'Search 250M+ scholarly works for free and generate APA, MLA, and 【entity-Chicago¦canonical_name=Chicago】 citations in seconds.',
+    title: 'Noor Scholar – Find, Save & Cite Research in One Place',
+    description: 'Search 250M+ papers, understand them in seconds, save to your library, and generate APA, MLA, and 【entity-Chicago¦canonical_name=Chicago】 citations — no account needed.',
     images: ['https://noor-scholar.vercel.app/og-image.jpg'],
   },
 };
@@ -70,14 +70,14 @@ export default function HomePage() {
       <section id="search" className="pt-16 pb-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center scroll-mt-8">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold mb-6">
           <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-          <span>Free to search. No account needed.</span>
+          <span>Your complete research assistant — Free.</span>
         </div>
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 leading-tight mb-4">
-          Free Academic Search Engine
-          <span className="block text-blue-600">250M+ Research Papers</span>
+          Find, Save & Cite Research
+          <span className="block text-blue-600">All in One Place</span>
         </h1>
         <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed">
-          An open alternative to Google Scholar. Search scholarly works, find open-access versions, and generate citations for your research.
+          Search 250M+ papers, understand them in seconds, save to your library, and generate APA, MLA, and Chicago citations — no account needed.
         </p>
         <SearchBox variant="hero" />
         <img src="/hero-library.jpg" alt="Modern university library with students studying" style={{ width: "100%", height: 320, objectFit: "cover", objectPosition: "center", borderRadius: 16, marginTop: 24 }} />
