@@ -26,13 +26,13 @@ export const metadata: Metadata = {
     siteName: 'Noor Scholar',
     locale: 'en_US',
     title: 'Noor Scholar – Free Academic Search Engine',
-    description: 'Search 250M+ scholarly works for free and generate APA, MLA, and 【entity-Chicago¦canonical_name=Chicago】 citations in seconds.',
+    description: 'Search 250M+ scholarly works for free and generate APA, MLA, and Chicago citations in seconds.',
     images: [{ url: 'https://noor-scholar.vercel.app/og-image.jpg', width: 1200, height: 630, alt: 'Noor Scholar - free academic search engine' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Noor Scholar – Free Academic Search Engine',
-    description: 'Search 250M+ scholarly works for free and generate APA, MLA, and 【entity-Chicago¦canonical_name=Chicago】 citations in seconds.',
+    description: 'Search 250M+ scholarly works for free and generate APA, MLA, and Chicago citations in seconds.',
     images: ['https://noor-scholar.vercel.app/og-image.jpg'],
   },
 };
@@ -59,7 +59,7 @@ export default function HomePage() {
         <p className="text-sm text-slate-700">
           <Heart className="inline w-4 h-4 text-red-500 mr-1" />
           <span className="font-semibold">Noor Scholar is free forever.</span> Help us keep research free for everyone.
-          <a href="https://ko-fi.com/noorscholar" target="_blank" className="ml-3 px-4 py-1.5 bg-slate-900 text-white text-xs font-bold rounded-full hover:bg-slate-700">Donate $5 ❤️</a>
+          <a href="https://ko-fi.com/noorscholar" target="_blank" className="ml-3 px-4 py-1.5 bg-slate-900 text-white text-xs font-bold rounded-full hover:bg-slate-700">Donate $5 ❤</a>
           <a href="/trending" className="ml-2 px-4 py-1.5 bg-white border border-slate-300 text-slate-700 text-xs font-bold rounded-full hover:bg-slate-50">Trending Research →</a>
         </p>
       </div>
@@ -78,6 +78,7 @@ export default function HomePage() {
           An open alternative to Google Scholar. Search scholarly works, find open-access versions, and generate citations for your research.
         </p>
         <SearchBox variant="hero" />
+        <img src="https://picsum.photos/seed/noor-hero/1100/320" alt="Research library" style={{ width: "100%", height: 220, objectFit: "cover", borderRadius: 16, marginTop: 20 }} />
         <p className="mt-4 mb-6 text-sm text-slate-500">
           Free to use, no account required.{' '}
           <Link href="/tools/citation-generator" className="text-blue-600 font-medium hover:underline">Or generate a citation</Link>
@@ -97,20 +98,26 @@ export default function HomePage() {
         <p className="mt-3 text-xs text-slate-400">Figures are approximate and may change over time.</p>
       </section>
 
-      {/* Trending + Chat Teaser - NEW */}
+      {/* Trending + Chat Teaser - WITH IMAGES */}
       <section className="py-12 bg-white border-t border-slate-200">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Link href="/trending" className="p-6 rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md transition-all block">
+          <Link href="/trending" className="rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md transition-all block overflow-hidden">
+            <img src="https://picsum.photos/seed/trending-home/600/280" alt="Trending Research" style={{ width: "100%", height: 160, objectFit: "cover" }} />
+            <div className="p-6">
             <TrendingUp className="w-6 h-6 text-blue-600 mb-3" />
             <h3 className="font-bold text-slate-900 mb-1">Trending Research</h3>
             <p className="text-sm text-slate-600">See what researchers are reading today - Trending, Hidden Gems and Breakthrough Discoveries.</p>
             <span className="text-blue-600 text-sm font-semibold">Explore Trending →</span>
+            </div>
           </Link>
-          <Link href="/trending" className="p-6 rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md transition-all block">
+          <Link href="/trending" className="rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md transition-all block overflow-hidden">
+            <img src="https://picsum.photos/seed/chat-paper/600/280" alt="Chat with paper" style={{ width: "100%", height: 160, objectFit: "cover" }} />
+            <div className="p-6">
             <MessageCircle className="w-6 h-6 text-emerald-600 mb-3" />
             <h3 className="font-bold text-slate-900 mb-1">Chat with any paper</h3>
             <p className="text-sm text-slate-600">Paste a DOI or title and ask questions - what did they find? What method did they use?</p>
             <span className="text-blue-600 text-sm font-semibold">Chat with a paper →</span>
+            </div>
           </Link>
         </div>
       </section>
@@ -129,9 +136,9 @@ export default function HomePage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12"><h2 className="text-3xl font-extrabold text-slate-900 mb-3">How it works</h2><p className="text-slate-600">From a search to a finished reference list in three steps.</p></div>
           <ol className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <li className="p-6 rounded-2xl border border-slate-200 bg-white"><div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4"><Search className="w-5 h-5" /></div><h3 className="font-bold text-slate-900 mb-1">1. Search</h3><p className="text-sm text-slate-600 leading-relaxed">Find papers by topic, title, or author. See citation counts, DOIs, and open-access links.</p></li>
-            <li className="p-6 rounded-2xl border border-slate-200 bg-white"><div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center mb-4"><Sparkles className="w-5 h-5" /></div><h3 className="font-bold text-slate-900 mb-1">2. Summarize</h3><p className="text-sm text-slate-600 leading-relaxed">Get the research question, method, and key findings from the abstract.{' '}<Link href="/tools/summarizer" className="text-blue-600 font-medium hover:underline">Try the Summarizer →</Link></p></li>
-            <li className="p-6 rounded-2xl border border-slate-200 bg-white"><div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-4"><Quote className="w-5 h-5" /></div><h3 className="font-bold text-slate-900 mb-1">3. Cite</h3><p className="text-sm text-slate-600 leading-relaxed">Click Cite on any result to generate APA, MLA, or Chicago. Check it against your style guide before you submit.</p></li>
+            <li className="rounded-2xl border border-slate-200 bg-white overflow-hidden"><img src="https://picsum.photos/seed/how-search/600/280" alt="Search" style={{ width: "100%", height: 140, objectFit: "cover" }} /><div className="p-6"><div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4"><Search className="w-5 h-5" /></div><h3 className="font-bold text-slate-900 mb-1">1. Search</h3><p className="text-sm text-slate-600 leading-relaxed">Find papers by topic, title, or author. See citation counts, DOIs, and open-access links.</p></div></li>
+            <li className="rounded-2xl border border-slate-200 bg-white overflow-hidden"><img src="https://picsum.photos/seed/how-summarize/600/280" alt="Summarize" style={{ width: "100%", height: 140, objectFit: "cover" }} /><div className="p-6"><div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center mb-4"><Sparkles className="w-5 h-5" /></div><h3 className="font-bold text-slate-900 mb-1">2. Summarize</h3><p className="text-sm text-slate-600 leading-relaxed">Get the research question, method, and key findings from the abstract.{' '}<Link href="/tools/summarizer" className="text-blue-600 font-medium hover:underline">Try the Summarizer →</Link></p></div></li>
+            <li className="rounded-2xl border border-slate-200 bg-white overflow-hidden"><img src="https://picsum.photos/seed/how-cite/600/280" alt="Cite" style={{ width: "100%", height: 140, objectFit: "cover" }} /><div className="p-6"><div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-4"><Quote className="w-5 h-5" /></div><h3 className="font-bold text-slate-900 mb-1">3. Cite</h3><p className="text-sm text-slate-600 leading-relaxed">Click Cite on any result to generate APA, MLA, or Chicago. Check it against your style guide before you submit.</p></div></li>
           </ol>
         </div>
       </section>
@@ -152,13 +159,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Blog preview */}
+      {/* Blog preview - WITH IMAGES */}
       <section className="py-20 bg-white border-t border-slate-200">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-end justify-between gap-4 mb-8"><h2 className="text-3xl font-extrabold text-slate-900">From the blog</h2><Link href="/blog" className="text-sm font-semibold text-blue-600 hover:underline">All articles</Link></div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[{ href: '/blog/how-to-cite-research-paper-apa', title: 'How to cite a research paper in APA 7th', blurb: 'Formats and examples for journal articles, books, and web sources.' },{ href: '/blog/how-to-avoid-plagiarism', title: 'How to avoid plagiarism in academic writing', blurb: 'Practical paraphrasing, quoting, and source-tracking rules for students.' }].map((post) => (
-              <Link key={post.href} href={post.href} className="p-6 rounded-2xl border border-slate-200 bg-white hover:border-blue-300 hover:shadow-md transition-all"><BookOpen className="w-5 h-5 text-blue-600 mb-3" /><h3 className="font-bold text-slate-900 mb-1">{post.title}</h3><p className="text-sm text-slate-600">{post.blurb}</p></Link>
+              <Link key={post.href} href={post.href} className="rounded-2xl border border-slate-200 bg-white hover:border-blue-300 hover:shadow-md transition-all block overflow-hidden"><img src={`https://picsum.photos/seed/${post.href}/600/280`} alt={post.title} style={{ width: "100%", height: 150, objectFit: "cover" }} /><div className="p-6"><BookOpen className="w-5 h-5 text-blue-600 mb-3" /><h3 className="font-bold text-slate-900 mb-1">{post.title}</h3><p className="text-sm text-slate-600">{post.blurb}</p></div></Link>
             ))}
           </div>
         </div>
