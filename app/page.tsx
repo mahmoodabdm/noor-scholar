@@ -62,7 +62,7 @@ export default function HomePage() {
           <Heart className="inline w-4 h-4 text-red-500 mr-1" />
           <span className="font-semibold">Noor Scholar is free forever.</span> Help us keep research free for everyone.
           <a href="https://ko-fi.com/noorscholar" target="_blank" className="ml-3 px-4 py-1.5 bg-slate-900 text-white text-xs font-bold rounded-full hover:bg-slate-700">Donate $5 ❤</a>
-          <a href="/trending" className="ml-2 px-4 py-1.5 bg-white border border-slate-300 text-slate-700 text-xs font-bold rounded-full hover:bg-slate-50">Trending Research →</a>
+          <a href="/trending" className="ml-2 px-4 py-1.5 bg-white border border-slate-300 text-slate-700 text-xs font-bold rounded-full hover:bg-slate-50">🔥 Hot Papers →</a>
         </p>
       </div>
 
@@ -80,7 +80,7 @@ export default function HomePage() {
           An open alternative to Google Scholar. Search scholarly works, find open-access versions, and generate citations for your research.
         </p>
         <SearchBox variant="hero" />
-        <img src="https://picsum.photos/seed/noor-hero/1100/320" alt="Research library" style={{ width: "100%", height: 220, objectFit: "cover", borderRadius: 16, marginTop: 20 }} />
+        <img src="/hero-library.jpg" alt="Modern university library with students studying" style={{ width: "100%", height: 320, objectFit: "cover", objectPosition: "center", borderRadius: 16, marginTop: 24 }} />
         <p className="mt-4 mb-6 text-sm text-slate-500">
           Free to use, no account required.{' '}
           <Link href="/tools/citation-generator" className="text-blue-600 font-medium hover:underline">Or generate a citation</Link>
@@ -115,16 +115,16 @@ export default function HomePage() {
       <section className="py-12 bg-white border-t border-slate-200">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2 gap-6">
           <Link href="/trending" className="rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md transition-all block overflow-hidden">
-            <img src="https://picsum.photos/seed/trending-home/600/280" alt="Trending Research" style={{ width: "100%", height: 160, objectFit: "cover" }} />
+            <img src="/hero-library.jpg" alt="Hot Papers" style={{ width: "100%", height: 160, objectFit: "cover" }} />
             <div className="p-6">
             <TrendingUp className="w-6 h-6 text-blue-600 mb-3" />
-            <h3 className="font-bold text-slate-900 mb-1">Trending Research</h3>
-            <p className="text-sm text-slate-600">See what researchers are reading today - Trending, Hidden Gems and Breakthrough Discoveries.</p>
-            <span className="text-blue-600 text-sm font-semibold">Explore Trending →</span>
+            <h3 className="font-bold text-slate-900 mb-1">Hot Papers</h3>
+            <p className="text-sm text-slate-600">See what researchers are reading today - Hot Papers, Hidden Gems and Breakthrough Discoveries.</p>
+            <span className="text-blue-600 text-sm font-semibold">Explore Hot Papers →</span>
             </div>
           </Link>
           <Link href="/trending" className="rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md transition-all block overflow-hidden">
-            <img src="https://picsum.photos/seed/chat-paper/600/280" alt="Chat with paper" style={{ width: "100%", height: 160, objectFit: "cover" }} />
+            <img src="/hero-library.jpg" alt="Chat with paper" style={{ width: "100%", height: 160, objectFit: "cover" }} />
             <div className="p-6">
             <MessageCircle className="w-6 h-6 text-emerald-600 mb-3" />
             <h3 className="font-bold text-slate-900 mb-1">Chat with any paper</h3>
