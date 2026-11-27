@@ -63,7 +63,7 @@ export function summarize(paper: Paper): string {
   const m = bestBy(sents, CUES.method, picked);
   if (m >= 0 && picked.size < 3) picked.add(m);
   if (picked.size < 3) picked.add(sents.length - 1);
-  return [...picked].sort((a, b) => a - b).map((i) => sents[i]).join(" ");
+  return Array.from(picked).sort((a, b) => a - b).map((i) => sents[i]).join(" ");
 }
 
 function metaAnswer(paper: Paper, q: string): string | null {
