@@ -59,7 +59,9 @@ async function oaFetch(path: string, params: Record<string, string>) {
   const res = await fetch(`${OPENALEX}${path}?${qs.toString()}`, { headers: { Accept: "application/json" }, cache: "no-store" });
   return res;
 }
-primary_topic.field.id:fields/17  
+function fieldFilter(cat: Category): string {
+  return cat.fieldId ? `,primary_topic.field.id:fields/${cat.fieldId}` : "";
+}
 const BASE_FILTER = "has_abstract:true,type:article";
 export async function getTrending(cat: Category, limit = 12): Promise<Paper[]> {
   try {
