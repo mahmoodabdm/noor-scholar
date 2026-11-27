@@ -1,108 +1,124 @@
-"use client";
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+// lib/openalex.ts
+const OPENALEX = "https://api.openalex.org";
+const MAILTO = process.env.OPENALEX_EMAIL || "abdmazn55@gmail.com";
 
-type Paper = { id: string; title: string; year: number; authors: string[]; citations: number; abstract: string; url: string };
+const SELECT = "id,doi,display_name,publication_year,publication_date,cited_by_count,fwci,abstract_inverted_index,authorships,primary_location,open_access,primary_topic,keywords";
 
-const CATS = [
-  { slug: "all", label: "All", q: "" },
-  { slug: "computer-science", label: "Computer Science", q: "computer science" },
-  { slug: "physics", label: "Physics", q: "physics" },
-  { slug: "chemistry", label: "Chemistry", q: "chemistry" },
-  { slug: "mathematics", label: "Mathematics", q: "mathematics" },
-  { slug: "social-sciences", label: "Social Sciences", q: "social sciences" },
-  { slug: "medicine", label: "Medicine", q: "medicine" },
-  { slug: "engineering", label: "Engineering", q: "engineering" },
+export type Paper = {
+  id: string; title: string; year: number | null; authors: string[]; venue: string | null; citations: number; fwci: number | null; abstract: string; doi: string | null; url: string; oaUrl: string | null; isOA: boolean; field: string | null; subfield: string | null; tags: string[];
+};
+export type Category = { slug: string; label: string; fieldId: number | null };
+export const CATEGORIES: Category[] = [
+  { slug: "computer-science", label: "Computer Science", fieldId: 17 },
+  { slug: "physics", label: "Physics", fieldId: 31 },
+  { slug: "chemistry", label: "Chemistry", fieldId: 16 },
+  { slug: "mathematics", label: "Mathematics", fieldId: 26 },
+  { slug: "social-sciences", label: "Social Sciences", fieldId: 33 },
+  { slug: "medicine", label: "Medicine", fieldId: 27 },
+  { slug: "engineering", label: "Engineering", fieldId: 22 },
+  { slug: "all", label: "All", fieldId: null },
 ];
-
-function getAbstract(inv: any): string {
-  if (!inv) return "No abstract available.";
+function stripTags(s: string): string { return s.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim(); }
+function abstractFromIndex(inv: Record<string, number[]> | null | undefined): string {
+  if (!inv) return "";
   const words: string[] = [];
-  for (const [w, pos] of Object.entries(inv as any)) for (const p of pos as number[]) words[p] = w;
-  return words.filter(Boolean).join(" ") || "No abstract available.";
+  for (const [word, positions] of Object.entries(inv)) { for (const p of positions) words[p] = word; }
+  return stripTags(words.filter(Boolean).join(" "));
 }
-
-async function fetchPapers(search: string, sort: string, perPage: number): Promise<Paper[]> {
-  const url = `https://api.openalex.org/works?filter=has_abstract:true,type:article,from_publication_date:2025-08-01&search=${encodeURIComponent(search)}&sort=${sort}&per-page=${perPage}&select=id,doi,display_name,publication_year,cited_by_count,abstract_inverted_index,authorships,primary_location,open_access&mailto=abdmazn55@gmail.com`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error("OpenAlex failed " + res.status);
+export function toHashtag(name: string): string { return "#" + name.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, ""); }
+export function authorLine(p: Paper, max = 3): string {
+  if (!p.authors.length) return "Unknown authors";
+  const shown = p.authors.slice(0, max).join(", ");
+  return p.authors.length > max ? `${shown} et al.` : shown;
+}
+export function clip(text: string, max: number): string {
+  if (!text) return "No abstract available for this paper.";
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max);
+  const lastStop = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("? "), cut.lastIndexOf("! "));
+  if (lastStop > max * 0.6) return cut.slice(0, lastStop + 1);
+  return cut.slice(0, cut.lastIndexOf(" ")).replace(/[,;:\s]+$/, "") + "…";
+}
+function isoDaysAgo(days: number): string { const d = new Date(Date.now() - days * 86400000); return d.toISOString().slice(0, 10); }
+function daysSinceEpoch(): number { return Math.floor(Date.now() / 86400000); }
+export function normalizeWork(w: any): Paper {
+  const shortId = String(w.id || "").split("/").pop() || "";
+  const authors: string[] = (w.authorships || []).map((a: any) => a?.author?.display_name).filter(Boolean);
+  const topic = w.primary_topic || null;
+  const keywordNames: string[] = (w.keywords || []).map((k: any) => k?.display_name).filter(Boolean);
+  const tagPool = [...keywordNames.slice(0, 2), topic?.subfield?.display_name, topic?.field?.display_name].filter(Boolean) as string[];
+  const seen = new Set<string>();
+  const tags = tagPool.filter((t) => { const key = toHashtag(t); if (key.length < 3 || seen.has(key)) return false; seen.add(key); return true; }).slice(0, 4);
+  const doi: string | null = w.doi || null;
+  const landing: string | null = w.primary_location?.landing_page_url || null;
+  const oaUrl: string | null = w.open_access?.oa_url || null;
+  return { id: shortId, title: stripTags(w.display_name || "Untitled"), year: w.publication_year ?? null, authors, venue: w.primary_location?.source?.display_name || null, citations: w.cited_by_count ?? 0, fwci: typeof w.fwci === "number" ? Math.round(w.fwci * 10) / 10 : null, abstract: abstractFromIndex(w.abstract_inverted_index), doi, url: doi || landing || oaUrl || `https://openalex.org/${shortId}`, oaUrl, isOA: Boolean(w.open_access?.is_oa), field: topic?.field?.display_name || null, subfield: topic?.subfield?.display_name || null, tags };
+}
+async function oaFetch(path: string, params: Record<string, string>) {
+  const qs = new URLSearchParams({ ...params, mailto: MAILTO });
+  const res = await fetch(`${OPENALEX}${path}?${qs.toString()}`, { headers: { Accept: "application/json" }, cache: "no-store" });
+  return res;
+}
+function fieldFilter(cat: Category): string { return cat.fieldId ? `,primary_topic.field.id:${cat.fieldId}` : ""; }
+const BASE_FILTER = "has_abstract:true,type:article";
+export async function getTrending(cat: Category, limit = 12): Promise<Paper[]> {
+  try {
+    const res = await oaFetch("/works", { filter: `${BASE_FILTER},from_publication_date:${isoDaysAgo(120)}${fieldFilter(cat)}`, sort: "cited_by_count:desc", "per-page": String(limit + 10), select: SELECT });
+    if (!res.ok) return [];
+    const data = await res.json();
+    const all = (data.results || []).map(normalizeWork);
+    const withAbstract = all.filter((p: Paper) => p.abstract.length >= 50);
+    return (withAbstract.length ? withAbstract : all).slice(0, limit);
+  } catch { return []; }
+}
+export async function getSpotlight(cat: Category): Promise<Paper | null> {
+  try {
+    const res = await oaFetch("/works", { filter: `${BASE_FILTER},from_publication_date:${isoDaysAgo(365)}${fieldFilter(cat)}`, sort: "cited_by_count:desc", "per-page": "20", select: SELECT });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const pool: Paper[] = (data.results || []).map(normalizeWork).filter((p: Paper) => p.abstract.length >= 50).slice(0, 10);
+    if (!pool.length) { const fallback = (data.results || []).map(normalizeWork); return fallback[0] || null; }
+    return pool[daysSinceEpoch() % pool.length];
+  } catch { return null; }
+}
+export async function getHiddenGems(cat: Category, limit = 6): Promise<Paper[]> {
+  try {
+    const res = await oaFetch("/works", { filter: `${BASE_FILTER},is_oa:true,cited_by_count:<16,from_publication_date:${isoDaysAgo(1095)},to_publication_date:${isoDaysAgo(180)}${fieldFilter(cat)}`, sample: "60", seed: String(daysSinceEpoch()), "per-page": "60", select: SELECT });
+    if (!res.ok) return [];
+    const data = await res.json();
+    const papers: Paper[] = (data.results || []).map(normalizeWork).filter((p: Paper) => p.abstract.length >= 50);
+    papers.sort((a, b) => b.citations - a.citations);
+    return papers.slice(0, limit);
+  } catch { return []; }
+}
+export async function resolvePaper(raw: string): Promise<Paper | null> {
+  const q = raw.trim(); if (!q) return null;
+  const oaMatch = q.match(/^(?:https?:\/\/(?:www\.)?openalex\.org\/(?:works\/)?)?(W\d{4,})$/i);
+  if (oaMatch) return fetchOne(`/works/${oaMatch[1].toUpperCase()}`);
+  const arxivMatch = q.match(/^(?:arxiv:\s*|https?:\/\/(?:www\.)?arxiv\.org\/(?:abs|pdf)\/)?(\d{4}\.\d{4,5}|[a-z-]+(?:\.[a-z]{2})?\/\d{7})(?:v\d+)?(?:\.pdf)?$/i);
+  if (arxivMatch) return fetchOne(`/works/https://doi.org/10.48550/arxiv.${arxivMatch[1].toLowerCase()}`);
+  const doiMatch = q.match(/(10\.\d{4,9}\/[^\s"<>]+)/i);
+  if (doiMatch) { const doi = doiMatch[1].replace(/[.,;)\]]+$/, "").replace(/[?#]/g, (c) => encodeURIComponent(c)); return fetchOne(`/works/https://doi.org/${doi.toLowerCase()}`); }
+  const res = await oaFetch("/works", { search: q, "per-page": "5", select: SELECT });
+  if (!res.ok) throw new Error(`OpenAlex ${res.status}`);
   const data = await res.json();
-  return (data.results || []).map((w: any) => ({
-    id: String(w.id).split("/").pop(),
-    title: w.display_name?.replace(/<[^>]+>/g, "") || "Untitled",
-    year: w.publication_year,
-    authors: (w.authorships || []).map((a: any) => a.author?.display_name).filter(Boolean),
-    citations: w.cited_by_count || 0,
-    abstract: getAbstract(w.abstract_inverted_index),
-    url: w.doi || w.primary_location?.landing_page_url || `https://openalex.org/${String(w.id).split("/").pop()}`,
-  }));
+  const results: Paper[] = (data.results || []).map(normalizeWork);
+  if (!results.length) return null;
+  return results.find((p) => p.abstract.length > 0) || results[0];
 }
-
-export default function TrendingPage() {
-  const sp = useSearchParams();
-  const cat = sp.get("cat") || "all";
-  const current = CATS.find(c => c.slug === cat) || CATS[0];
-  const [trending, setTrending] = useState<Paper[]>([]);
-  const [gems, setGems] = useState<Paper[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    setLoading(true); setError("");
-    Promise.all([
-      fetchPapers(current.q, "cited_by_count:desc", 12),
-      fetchPapers(current.q, "cited_by_count:asc", 6),
-    ]).then(([t, g]) => { setTrending(t); setGems(g); setLoading(false); })
-    .catch(e => { setError(String(e)); setLoading(false); });
-  }, [cat]);
-
-  return (
-    <main style={{ maxWidth: 1100, margin: "0 auto", padding: 20, minHeight: "60vh" }}>
-      <h1 style={{ fontSize: 32, fontWeight: 800 }}>🔥 Trending Research</h1>
-      <p style={{ color: "#666" }}>What researchers are reading today - live from OpenAlex</p>
-      <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 16 }}>
-        {CATS.map(c => (
-          <a key={c.slug} href={`/trending?cat=${c.slug}`} style={{ padding: "8px 14px", borderRadius: 20, background: c.slug === cat ? "#000" : "#eee", color: c.slug === cat ? "#fff" : "#000", textDecoration: "none", fontSize: 14 }}>{c.label}</a>
-        ))}
-      </div>
-
-      {loading && <p style={{ marginTop: 30, padding: 20, background: "#f0f9ff", borderRadius: 8 }}>⏳ Loading from OpenAlex... wait 3 seconds...</p>}
-      {error && <p style={{ marginTop: 30, padding: 20, background: "#fee", borderRadius: 8 }}>Error: {error} - check your internet</p>}
-
-      {!loading && !error && (
-        <>
-          {trending[0] && (
-            <section style={{ marginTop: 30, padding: 20, background: "#fef9e7", borderRadius: 12, border: "1px solid #f5d76e" }}>
-              <span style={{ fontWeight: 700 }}>#1 Spotlight - Breakthrough</span>
-              <h2>{trending[0].title}</h2>
-              <p>{trending[0].authors.slice(0, 3).join(", ")} • {trending[0].year} • {trending[0].citations} citations</p>
-              <p>{trending[0].abstract.slice(0, 400)}</p>
-              <a href={trending[0].url} target="_blank">View Paper →</a>
-            </section>
-          )}
-          <h2 style={{ marginTop: 40 }}>Trending</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(300px,1fr))", gap: 16 }}>
-            {trending.map(p => (
-              <div key={p.id} style={{ border: "1px solid #ddd", padding: 16, borderRadius: 12, background: "#fff" }}>
-                <h3 style={{ fontSize: 16 }}>{p.title}</h3>
-                <p style={{ fontSize: 13, color: "#666" }}>{p.authors.slice(0, 3).join(", ")} • {p.year} • {p.citations} citations</p>
-                <p style={{ fontSize: 14 }}>{p.abstract.slice(0, 220)}...</p>
-                <a href={p.url} target="_blank">View Paper →</a>
-              </div>
-            ))}
-          </div>
-          <h2 style={{ marginTop: 40 }}>Hidden Gems</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(300px,1fr))", gap: 16 }}>
-            {gems.map(p => (
-              <div key={p.id} style={{ border: "1px solid #ddd", padding: 16, borderRadius: 12 }}>
-                <h3 style={{ fontSize: 16 }}>{p.title}</h3>
-                <p style={{ fontSize: 14 }}>{p.abstract.slice(0, 220)}...</p>
-                <a href={p.url} target="_blank">View Paper →</a>
-              </div>
-            ))}
-          </div>
-        </>
-      )}
-    </main>
-  );
+async function fetchOne(path: string): Promise<Paper | null> {
+  const res = await oaFetch(path, { select: SELECT });
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`OpenAlex ${res.status}`);
+  return normalizeWork(await res.json());
+}
+export function stripTagsExport(s: string): string { return s.replace(/<[^>]+>/g, ""); }
+export { stripTags };
+export function shortId(id: string) { return id.replace("https://openalex.org/", ""); }
+export function getAuthorNames(work: any): string[] { return (work.authorships ?? []).map((a: any) => a?.author?.display_name || a?.raw_author_name).filter(Boolean); }
+export async function searchWorks(q: string, page = 1) {
+  const params = new URLSearchParams({ search: q, "per-page": "10", page: String(Math.min(Math.max(page, 1), 1000)), select: "id,display_name,publication_year,authorships,doi,cited_by_count,primary_location,open_access,abstract_inverted_index", mailto: MAILTO });
+  const res = await fetch(`${OPENALEX}/works?${params.toString()}`, { headers: { Accept: "application/json" }, cache: "no-store" });
+  if (!res.ok) throw new Error(`OpenAlex responded ${res.status}`);
+  return res.json();
 }
