@@ -16,6 +16,12 @@ import {
   MessageCircle,
   Heart,
   Flame,
+  Brain,
+  Stethoscope,
+  Leaf,
+  Users,
+  DollarSign,
+  GraduationCap,
 } from 'lucide-react';
 import SearchBox from '@/components/SearchBox';
 import Trending2026 from '@/components/Trending2026';
@@ -40,6 +46,15 @@ export const metadata: Metadata = {
 };
 
 const POPULAR_SEARCHES = ['Deep Learning Transformers','CRISPR Gene Editing','Quantum Computing Algorithms','Renewable Energy Storage','Microplastics in Marine Biology','Alzheimer Disease Biomarkers'];
+
+const BROWSE_TOPICS = [
+  { title: 'Deep Learning', desc: 'AI, neural networks & transformers', query: 'Deep Learning', icon: Brain, color: 'bg-blue-50 text-blue-600' },
+  { title: 'Cancer Research', desc: 'Oncology, treatment & biomarkers', query: 'Cancer Research', icon: Stethoscope, color: 'bg-rose-50 text-rose-600' },
+  { title: 'Climate Change', desc: 'Energy, environment & sustainability', query: 'Climate Change', icon: Leaf, color: 'bg-emerald-50 text-emerald-600' },
+  { title: 'Psychology', desc: 'Behavior, mind & mental health', query: 'Psychology', icon: Users, color: 'bg-violet-50 text-violet-600' },
+  { title: 'Economics', desc: 'Markets, finance & policy', query: 'Economics', icon: DollarSign, color: 'bg-amber-50 text-amber-600' },
+  { title: 'Education', desc: 'Learning, teaching & curriculum', query: 'Education Research', icon: GraduationCap, color: 'bg-sky-50 text-sky-600' },
+];
 
 const FAQS = [
   { q: 'What is Noor Scholar?', a: 'Noor Scholar is a free academic search engine built on OpenAlex, an open catalog of more than 250 million scholarly works including journal articles, conference papers, preprints, and datasets.' },
@@ -98,6 +113,26 @@ export default function HomePage() {
           <div><div className="text-3xl font-black text-emerald-600">Free</div><div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-1">To Search &amp; Cite</div></div>
         </div>
         <p className="mt-3 text-xs text-slate-400">Figures are approximate and may change over time.</p>
+      </section>
+
+      {/* Browse by Topic - Step 2: Fill empty page */}
+      <section className="py-14 bg-slate-50 border-t border-slate-200">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">Browse by Topic</h2>
+            <p className="text-slate-600 mt-2">Not sure what to search? Start here — tap a topic and explore papers instantly.</p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {BROWSE_TOPICS.map((topic) => (
+              <Link key={topic.title} href={`/search?q=${encodeURIComponent(topic.query)}`} className="bg-white rounded-2xl border border-slate-200 p-5 hover:border-blue-300 hover:shadow-md transition-all group">
+                <div className={`w-11 h-11 rounded-xl ${topic.color} flex items-center justify-center mb-3`}><topic.icon className="w-5 h-5" /></div>
+                <h3 className="font-bold text-slate-900 group-hover:text-blue-600">{topic.title}</h3>
+                <p className="text-sm text-slate-500 mt-1">{topic.desc}</p>
+                <span className="text-sm font-semibold text-blue-600 mt-3 inline-block">Explore →</span>
+              </Link>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* ⭐ TOP 2026 - MOVED TO TOP WITH SPECIAL ICON */}
