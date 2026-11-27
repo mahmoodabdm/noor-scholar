@@ -1,7 +1,4 @@
-
 // lib/openalex.ts
-// Shared OpenAlex helpers (works on the server; the Paper type is also imported by client components).
-
 const OPENALEX = "https://api.openalex.org";
 const MAILTO = process.env.OPENALEX_EMAIL || "abdmazn55@gmail.com";
 
@@ -76,6 +73,7 @@ export function authorLine(p: Paper, max = 3): string {
 }
 
 export function clip(text: string, max: number): string {
+  if (!text) return "No abstract available for this paper.";
   if (text.length <= max) return text;
   const cut = text.slice(0, max);
   const lastStop = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("? "), cut.lastIndexOf("! "));
@@ -127,11 +125,11 @@ export function normalizeWork(w: any): Paper {
   };
 }
 
-async function oaFetch(path: string, params: Record<string, string>, revalidate: number) {
+async function oaFetch(path: string, params: Record<string, string>) {
   const qs = new URLSearchParams({ ...params, mailto: MAILTO });
   const res = await fetch(`${OPENALEX}${path}?${qs.toString()}`, {
     headers: { Accept: "application/json" },
-    next: { revalidate },
+    cache: "no-store",
   });
   return res;
 }
@@ -140,34 +138,41 @@ function fieldFilter(cat: Category): string {
   return cat.fieldId ? `,primary_topic.field.id:${cat.fieldId}` : "";
 }
 
-const BASE_FILTER = "has_abstract:true,type:article,language:en,is_retracted:false";
+// خففنا الفلتر - شلنا language و is_retracted لانها كانت تحذف هواي بحوث
+const BASE_FILTER = "has_abstract:true,type:article";
 
 export async function getTrending(cat: Category, limit = 12): Promise<Paper[]> {
   try {
-    const res = await oaFetch("/works", { filter: `${BASE_FILTER},from_publication_date:${isoDaysAgo(120)}${fieldFilter(cat)}`, sort: "cited_by_count:desc", "per-page": String(limit + 10), select: SELECT }, 3600);
+    const res = await oaFetch("/works", { filter: `${BASE_FILTER},from_publication_date:${isoDaysAgo(120)}${fieldFilter(cat)}`, sort: "cited_by_count:desc", "per-page": String(limit + 10), select: SELECT });
     if (!res.ok) return [];
     const data = await res.json();
-    return (data.results || []).map(normalizeWork).filter((p: Paper) => p.abstract.length >= 200).slice(0, limit);
+    const all = (data.results || []).map(normalizeWork);
+    // اول شي جرب ملخص طويل، اذا ماكو ارجع اي شي
+    const withAbstract = all.filter((p: Paper) => p.abstract.length >= 50);
+    return (withAbstract.length ? withAbstract : all).slice(0, limit);
   } catch { return []; }
 }
 
 export async function getSpotlight(cat: Category): Promise<Paper | null> {
   try {
-    const res = await oaFetch("/works", { filter: `${BASE_FILTER},from_publication_date:${isoDaysAgo(365)}${fieldFilter(cat)}`, sort: "cited_by_count:desc", "per-page": "20", select: SELECT }, 3600);
+    const res = await oaFetch("/works", { filter: `${BASE_FILTER},from_publication_date:${isoDaysAgo(365)}${fieldFilter(cat)}`, sort: "cited_by_count:desc", "per-page": "20", select: SELECT });
     if (!res.ok) return null;
     const data = await res.json();
-    const pool: Paper[] = (data.results || []).map(normalizeWork).filter((p: Paper) => p.abstract.length >= 300).slice(0, 10);
-    if (!pool.length) return null;
+    const pool: Paper[] = (data.results || []).map(normalizeWork).filter((p: Paper) => p.abstract.length >= 50).slice(0, 10);
+    if (!pool.length) {
+      const fallback = (data.results || []).map(normalizeWork);
+      return fallback[0] || null;
+    }
     return pool[daysSinceEpoch() % pool.length];
   } catch { return null; }
 }
 
 export async function getHiddenGems(cat: Category, limit = 6): Promise<Paper[]> {
   try {
-    const res = await oaFetch("/works", { filter: `${BASE_FILTER},is_oa:true,cited_by_count:<16,from_publication_date:${isoDaysAgo(1095)},to_publication_date:${isoDaysAgo(180)}${fieldFilter(cat)}`, sample: "60", seed: String(daysSinceEpoch()), "per-page": "60", select: SELECT }, 3600);
+    const res = await oaFetch("/works", { filter: `${BASE_FILTER},is_oa:true,cited_by_count:<16,from_publication_date:${isoDaysAgo(1095)},to_publication_date:${isoDaysAgo(180)}${fieldFilter(cat)}`, sample: "60", seed: String(daysSinceEpoch()), "per-page": "60", select: SELECT });
     if (!res.ok) return [];
     const data = await res.json();
-    const papers: Paper[] = (data.results || []).map(normalizeWork).filter((p: Paper) => p.abstract.length >= 500);
+    const papers: Paper[] = (data.results || []).map(normalizeWork).filter((p: Paper) => p.abstract.length >= 50);
     papers.sort((a, b) => b.citations - a.citations);
     return papers.slice(0, limit);
   } catch { return []; }
@@ -185,7 +190,7 @@ export async function resolvePaper(raw: string): Promise<Paper | null> {
     const doi = doiMatch[1].replace(/[.,;)\]]+$/, "").replace(/[?#]/g, (c) => encodeURIComponent(c));
     return fetchOne(`/works/https://doi.org/${doi.toLowerCase()}`);
   }
-  const res = await oaFetch("/works", { search: q, "per-page": "5", select: SELECT }, 3600);
+  const res = await oaFetch("/works", { search: q, "per-page": "5", select: SELECT });
   if (!res.ok) throw new Error(`OpenAlex ${res.status}`);
   const data = await res.json();
   const results: Paper[] = (data.results || []).map(normalizeWork);
@@ -194,11 +199,13 @@ export async function resolvePaper(raw: string): Promise<Paper | null> {
 }
 
 async function fetchOne(path: string): Promise<Paper | null> {
-  const res = await oaFetch(path, { select: SELECT }, 3600);
+  const res = await oaFetch(path, { select: SELECT });
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(`OpenAlex ${res.status}`);
   return normalizeWork(await res.json());
-}// --- Compatibility for old search page - لا تمسحها ---
+}
+
+// --- Compatibility for old search page - لا تمسحها ---
 export function stripTagsExport(s: string): string {
   return s.replace(/<[^>]+>/g, "");
 }
