@@ -1,22 +1,18 @@
-// lib/openalex.ts
+// lib/openalex.ts - مثل MapleScholar - فلتر واحد بسيط
 const OPENALEX = "https://api.openalex.org";
 const MAILTO = process.env.OPENALEX_EMAIL || "abdmazn55@gmail.com";
-
 const SELECT = "id,display_name,publication_year,authorships,doi,cited_by_count,primary_location,open_access,abstract_inverted_index";
-
-export type Paper = {
-  id: string; title: string; year: number | null; authors: string[]; venue: string | null; citations: number; fwci: number | null; abstract: string; doi: string | null; url: string; oaUrl: string | null; isOA: boolean; field: string | null; subfield: string | null; tags: string[];
-};
-export type Category = { slug: string; label: string; fieldId: number | null };
+export type Paper = { id: string; title: string; year: number | null; authors: string[]; venue: string | null; citations: number; fwci: number | null; abstract: string; doi: string | null; url: string; oaUrl: string | null; isOA: boolean; field: string | null; subfield: string | null; tags: string[]; };
+export type Category = { slug: string; label: string; fieldId: number | null; q: string };
 export const CATEGORIES: Category[] = [
-  { slug: "computer-science", label: "Computer Science", fieldId: 17 },
-  { slug: "physics", label: "Physics", fieldId: 31 },
-  { slug: "chemistry", label: "Chemistry", fieldId: 16 },
-  { slug: "mathematics", label: "Mathematics", fieldId: 26 },
-  { slug: "social-sciences", label: "Social Sciences", fieldId: 33 },
-  { slug: "medicine", label: "Medicine", fieldId: 27 },
-  { slug: "engineering", label: "Engineering", fieldId: 22 },
-  { slug: "all", label: "All", fieldId: null },
+  { slug: "computer-science", label: "Computer Science", fieldId: 17, q: "computer science" },
+  { slug: "physics", label: "Physics", fieldId: 31, q: "physics" },
+  { slug: "chemistry", label: "Chemistry", fieldId: 16, q: "chemistry" },
+  { slug: "mathematics", label: "Mathematics", fieldId: 26, q: "mathematics" },
+  { slug: "social-sciences", label: "Social Sciences", fieldId: 33, q: "social sciences" },
+  { slug: "medicine", label: "Medicine", fieldId: 27, q: "medicine" },
+  { slug: "engineering", label: "Engineering", fieldId: 22, q: "engineering" },
+  { slug: "all", label: "All", fieldId: null, q: "" },
 ];
 function stripTags(s: string): string { return s.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim(); }
 function abstractFromIndex(inv: Record<string, number[]> | null | undefined): string {
@@ -45,52 +41,47 @@ export function normalizeWork(w: any): Paper {
   const shortId = String(w.id || "").split("/").pop() || "";
   const authors: string[] = (w.authorships || []).map((a: any) => a?.author?.display_name).filter(Boolean);
   const topic = w.primary_topic || null;
-  const keywordNames: string[] = (w.keywords || []).map((k: any) => k?.display_name).filter(Boolean);
-  const tagPool = [...keywordNames.slice(0, 2), topic?.subfield?.display_name, topic?.field?.display_name].filter(Boolean) as string[];
-  const seen = new Set<string>();
-  const tags = tagPool.filter((t) => { const key = toHashtag(t); if (key.length < 3 || seen.has(key)) return false; seen.add(key); return true; }).slice(0, 4);
   const doi: string | null = w.doi || null;
   const landing: string | null = w.primary_location?.landing_page_url || null;
   const oaUrl: string | null = w.open_access?.oa_url || null;
-  return { id: shortId, title: stripTags(w.display_name || "Untitled"), year: w.publication_year ?? null, authors, venue: w.primary_location?.source?.display_name || null, citations: w.cited_by_count ?? 0, fwci: typeof w.fwci === "number" ? Math.round(w.fwci * 10) / 10 : null, abstract: abstractFromIndex(w.abstract_inverted_index), doi, url: doi || landing || oaUrl || `https://openalex.org/${shortId}`, oaUrl, isOA: Boolean(w.open_access?.is_oa), field: topic?.field?.display_name || null, subfield: topic?.subfield?.display_name || null, tags };
+  return { id: shortId, title: stripTags(w.display_name || "Untitled"), year: w.publication_year ?? null, authors, venue: w.primary_location?.source?.display_name || null, citations: w.cited_by_count ?? 0, fwci: null, abstract: abstractFromIndex(w.abstract_inverted_index), doi, url: doi || landing || oaUrl || `https://openalex.org/${shortId}`, oaUrl, isOA: Boolean(w.open_access?.is_oa), field: topic?.field?.display_name || null, subfield: topic?.subfield?.display_name || null, tags: [] };
 }
 async function oaFetch(path: string, params: Record<string, string>) {
   const qs = new URLSearchParams({ ...params, mailto: MAILTO });
   const res = await fetch(`${OPENALEX}${path}?${qs.toString()}`, { headers: { Accept: "application/json" }, cache: "no-store" });
   return res;
 }
-function fieldFilter(cat: Category): string {
-  return cat.fieldId ? `,primary_topic.field.id:fields/${cat.fieldId}` : "";
-}
-const BASE_FILTER = "has_abstract:true,type:article";
+// مثل المنافس - بدون فلاتر معقدة، بس بحث بالكلمة + ترتيب
 export async function getTrending(cat: Category, limit = 12): Promise<Paper[]> {
   try {
-    const res = await oaFetch("/works", { filter: `${BASE_FILTER},from_publication_date:${isoDaysAgo(120)}${fieldFilter(cat)}`, sort: "cited_by_count:desc", "per-page": String(limit + 10), select: SELECT });
+    const params: Record<string, string> = { sort: "cited_by_count:desc", "per-page": String(limit), select: SELECT, filter: "type:article" };
+    if (cat.q) params.search = cat.q;
+    const res = await oaFetch("/works", params);
     if (!res.ok) return [];
     const data = await res.json();
-    const all = (data.results || []).map(normalizeWork);
-    const withAbstract = all.filter((p: Paper) => p.abstract.length >= 50);
-    return (withAbstract.length ? withAbstract : all).slice(0, limit);
+    return (data.results || []).map(normalizeWork).slice(0, limit);
   } catch { return []; }
 }
 export async function getSpotlight(cat: Category): Promise<Paper | null> {
   try {
-    const res = await oaFetch("/works", { filter: `${BASE_FILTER},from_publication_date:${isoDaysAgo(365)}${fieldFilter(cat)}`, sort: "cited_by_count:desc", "per-page": "20", select: SELECT });
+    const params: Record<string, string> = { sort: "cited_by_count:desc", "per-page": "10", select: SELECT, filter: "type:article" };
+    if (cat.q) params.search = cat.q;
+    const res = await oaFetch("/works", params);
     if (!res.ok) return null;
     const data = await res.json();
-    const pool: Paper[] = (data.results || []).map(normalizeWork).filter((p: Paper) => p.abstract.length >= 50).slice(0, 10);
-    if (!pool.length) { const fallback = (data.results || []).map(normalizeWork); return fallback[0] || null; }
+    const pool = (data.results || []).map(normalizeWork);
+    if (!pool.length) return null;
     return pool[daysSinceEpoch() % pool.length];
   } catch { return null; }
 }
 export async function getHiddenGems(cat: Category, limit = 6): Promise<Paper[]> {
   try {
-    const res = await oaFetch("/works", { filter: `${BASE_FILTER},is_oa:true,cited_by_count:<16,from_publication_date:${isoDaysAgo(1095)},to_publication_date:${isoDaysAgo(180)}${fieldFilter(cat)}`, sample: "60", seed: String(daysSinceEpoch()), "per-page": "60", select: SELECT });
+    const params: Record<string, string> = { sort: "cited_by_count:asc", "per-page": String(limit), select: SELECT, filter: "type:article,is_oa:true" };
+    if (cat.q) params.search = cat.q;
+    const res = await oaFetch("/works", params);
     if (!res.ok) return [];
     const data = await res.json();
-    const papers: Paper[] = (data.results || []).map(normalizeWork).filter((p: Paper) => p.abstract.length >= 50);
-    papers.sort((a, b) => b.citations - a.citations);
-    return papers.slice(0, limit);
+    return (data.results || []).map(normalizeWork).slice(0, limit);
   } catch { return []; }
 }
 export async function resolvePaper(raw: string): Promise<Paper | null> {
