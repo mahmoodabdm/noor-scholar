@@ -38,6 +38,9 @@ export default async function SearchPage({
   const works: any[] = data?.results ?? [];
   const total: number = data?.meta?.count ?? 0;
 
+  // Top 3 most cited in this result set - Step 3: Smart results, not just list
+  const top3 = [...works].sort((a, b) => (b.cited_by_count || 0) - (a.cited_by_count || 0)).slice(0, 3);
+
   return (
     <main className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-8">
       <SearchBox initial={q} />
@@ -54,6 +57,29 @@ export default async function SearchPage({
         </p>
       )}
 
+      {/* Top 3 Most Cited - helps student pick best papers instantly */}
+      {!failed && page === 1 && top3.length > 0 && (
+        <section className="mt-6 p-5 rounded-2xl bg-amber-50 border border-amber-200">
+          <h2 className="text-sm font-black text-amber-900 uppercase tracking-wider mb-3">⭐ Top 3 Most Cited for “{q}” — Start Here</h2>
+          <div className="space-y-3">
+            {top3.map((w, i) => {
+              const title = stripTags(w.title ?? w.display_name ?? 'Untitled');
+              const link = w.open_access?.oa_url || w.doi || w.primary_location?.landing_page_url;
+              return (
+                <div key={w.id} className="flex gap-3 bg-white rounded-xl border border-amber-100 p-3">
+                  <span className="shrink-0 w-7 h-7 rounded-full bg-amber-400 text-slate-900 text-sm font-black flex items-center justify-center">{i + 1}</span>
+                  <div>
+                    {link ? <a href={link} target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-blue-700 hover:underline leading-snug block">{title}</a> : <span className="text-sm font-bold text-slate-900 leading-snug block">{title}</span>}
+                    <span className="text-xs text-slate-500">{w.publication_year} • {w.cited_by_count?.toLocaleString() ?? 0} citations {w.open_access?.is_oa ? '• Free to read' : ''}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <p className="mt-3 text-xs text-amber-800">These are the most influential papers on this topic. Read these first.</p>
+        </section>
+      )}
+
       <div className="mt-4 space-y-5">
         {works.map((w) => {
           const title = stripTags(w.title ?? w.display_name ?? 'Untitled');
@@ -62,6 +88,7 @@ export default async function SearchPage({
           const extra = names.length > 3 ? ` +${names.length - 3} more` : '';
           const link =
             w.open_access?.oa_url || w.doi || w.primary_location?.landing_page_url;
+          const isOA = w.open_access?.is_oa;
 
           return (
             <article key={w.id} className="p-6 rounded-2xl border border-slate-200 bg-white">
@@ -89,6 +116,11 @@ export default async function SearchPage({
                     Citations: {w.cited_by_count}
                   </span>
                 )}
+                {isOA && (
+                  <span className="px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded-md font-bold">
+                    ✓ Free to Read
+                  </span>
+                )}
                 {w.doi && (
                   <span className="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-md font-mono">
                     DOI: {w.doi.replace('https://doi.org/', '')}
@@ -105,6 +137,12 @@ export default async function SearchPage({
                       url: link,
                     }}
                   />
+                  <Link
+                    href={`/tools/summarizer?id=${encodeURIComponent(shortId(w.id))}`}
+                    className="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-md font-medium"
+                  >
+                    Summarize
+                  </Link>
                   <Link
                     href={`/tools/citation-generator?id=${encodeURIComponent(shortId(w.id))}`}
                     className="px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-md font-medium"
