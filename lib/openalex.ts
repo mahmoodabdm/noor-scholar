@@ -198,4 +198,31 @@ async function fetchOne(path: string): Promise<Paper | null> {
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(`OpenAlex ${res.status}`);
   return normalizeWork(await res.json());
+}// --- Compatibility for old search page - لا تمسحها ---
+export function stripTagsExport(s: string): string {
+  return s.replace(/<[^>]+>/g, "");
+}
+export { stripTags };
+export function shortId(id: string) {
+  return id.replace("https://openalex.org/", "");
+}
+export function getAuthorNames(work: any): string[] {
+  return (work.authorships ?? [])
+    .map((a: any) => a?.author?.display_name || a?.raw_author_name)
+    .filter(Boolean);
+}
+export async function searchWorks(q: string, page = 1) {
+  const params = new URLSearchParams({
+    search: q,
+    "per-page": "10",
+    page: String(Math.min(Math.max(page, 1), 1000)),
+    select: "id,display_name,publication_year,authorships,doi,cited_by_count,primary_location,open_access,abstract_inverted_index",
+    mailto: MAILTO,
+  });
+  const res = await fetch(`${OPENALEX}/works?${params.toString()}`, {
+    headers: { Accept: "application/json" },
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error(`OpenAlex responded ${res.status}`);
+  return res.json();
 }
