@@ -1,6 +1,7 @@
-// lib/openalex.ts - مثل MapleScholar - فلتر واحد بسيط
+// lib/openalex.ts - مثل MapleScholar - فلتر واحد بسيط + API Key
 const OPENALEX = "https://api.openalex.org";
 const MAILTO = process.env.OPENALEX_EMAIL || "abdmazn55@gmail.com";
+const API_KEY = process.env.OPENALEX_API_KEY || "";
 const SELECT = "id,display_name,publication_year,authorships,doi,cited_by_count,primary_location,open_access,abstract_inverted_index";
 export type Paper = { id: string; title: string; year: number | null; authors: string[]; venue: string | null; citations: number; fwci: number | null; abstract: string; doi: string | null; url: string; oaUrl: string | null; isOA: boolean; field: string | null; subfield: string | null; tags: string[]; };
 export type Category = { slug: string; label: string; fieldId: number | null; q: string };
@@ -47,8 +48,10 @@ export function normalizeWork(w: any): Paper {
   return { id: shortId, title: stripTags(w.display_name || "Untitled"), year: w.publication_year ?? null, authors, venue: w.primary_location?.source?.display_name || null, citations: w.cited_by_count ?? 0, fwci: null, abstract: abstractFromIndex(w.abstract_inverted_index), doi, url: doi || landing || oaUrl || `https://openalex.org/${shortId}`, oaUrl, isOA: Boolean(w.open_access?.is_oa), field: topic?.field?.display_name || null, subfield: topic?.subfield?.display_name || null, tags: [] };
 }
 async function oaFetch(path: string, params: Record<string, string>) {
-  const qs = new URLSearchParams({ ...params, mailto: MAILTO });
-  const res = await fetch(`${OPENALEX}${path}?${qs.toString()}`, { headers: { Accept: "application/json" }, cache: "no-store" });
+  const allParams: Record<string, string> = { ...params, mailto: MAILTO };
+  if (API_KEY) allParams.api_key = API_KEY;
+  const qs = new URLSearchParams(allParams);
+  const res = await fetch(`${OPENALEX}${path}?${qs.toString()}`, { headers: { Accept: "application/json" }, next: { revalidate: 3600 } });
   return res;
 }
 // مثل المنافس - بدون فلاتر معقدة، بس بحث بالكلمة + ترتيب
@@ -110,8 +113,10 @@ export { stripTags };
 export function shortId(id: string) { return id.replace("https://openalex.org/", ""); }
 export function getAuthorNames(work: any): string[] { return (work.authorships ?? []).map((a: any) => a?.author?.display_name || a?.raw_author_name).filter(Boolean); }
 export async function searchWorks(q: string, page = 1) {
-  const params = new URLSearchParams({ search: q, "per-page": "10", page: String(Math.min(Math.max(page, 1), 1000)), select: "id,display_name,publication_year,authorships,doi,cited_by_count,primary_location,open_access,abstract_inverted_index", mailto: MAILTO });
-  const res = await fetch(`${OPENALEX}/works?${params.toString()}`, { headers: { Accept: "application/json" }, cache: "no-store" });
+  const params: Record<string, string> = { search: q, "per-page": "10", page: String(Math.min(Math.max(page, 1), 1000)), select: "id,display_name,publication_year,authorships,doi,cited_by_count,primary_location,open_access,abstract_inverted_index", mailto: MAILTO };
+  if (API_KEY) params.api_key = API_KEY;
+  const qs = new URLSearchParams(params);
+  const res = await fetch(`${OPENALEX}/works?${qs.toString()}`, { headers: { Accept: "application/json" }, next: { revalidate: 3600 } });
   if (!res.ok) throw new Error(`OpenAlex responded ${res.status}`);
   return res.json();
 }
