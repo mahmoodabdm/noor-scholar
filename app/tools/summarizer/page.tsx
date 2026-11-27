@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { FormEvent } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 type Mode = "find" | "paste";
 
@@ -384,7 +386,8 @@ function SummarySection({
   );
 }
 
-export default function SummarizerPage() {
+function SummarizerInner() {
+  const searchParams = useSearchParams();
   const [mode, setMode] = useState<Mode>("find");
   const [query, setQuery] = useState("");
   const [pasted, setPasted] = useState("");
@@ -392,6 +395,7 @@ export default function SummarizerPage() {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<ResultState | null>(null);
   const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
+  const autoRan = useRef(false);
 
   function switchMode(next: Mode) {
     if (loading || next === mode) return;
@@ -401,31 +405,11 @@ export default function SummarizerPage() {
     setCopyState("idle");
   }
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (loading) return;
+  async function runLookup(rawQuery: string) {
     setError(null);
     setResult(null);
     setCopyState("idle");
-    if (mode === "paste") {
-      const text = pasted.trim();
-      if (text.length < MIN_PASTE_CHARS) {
-        setError("Paste at least a few sentences (about 100 characters or more). An abstract works best.");
-        return;
-      }
-      if (text.length > MAX_PASTE_CHARS) {
-        setError("That text is too long. Paste only the abstract (up to 20,000 characters).");
-        return;
-      }
-      const summary = summarize(cleanAbstract(text));
-      if (!summary) {
-        setError("Could not split that text into sentences. Paste a plain-text abstract.");
-        return;
-      }
-      setResult({ meta: null, summary });
-      return;
-    }
-    const parsed = parseLookup(query);
+    const parsed = parseLookup(rawQuery);
     if ("error" in parsed) {
       setError(parsed.error);
       return;
@@ -457,6 +441,44 @@ export default function SummarizerPage() {
       clearTimeout(timer);
       setLoading(false);
     }
+  }
+
+  // FIX: auto-load when coming from Search -> Summarize button (?id=W...)
+  useEffect(() => {
+    const id = searchParams.get("id");
+    if (id && !autoRan.current) {
+      autoRan.current = true;
+      setQuery(id);
+      runLookup(id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (loading) return;
+    if (mode === "paste") {
+      setError(null);
+      setResult(null);
+      setCopyState("idle");
+      const text = pasted.trim();
+      if (text.length < MIN_PASTE_CHARS) {
+        setError("Paste at least a few sentences (about 100 characters or more). An abstract works best.");
+        return;
+      }
+      if (text.length > MAX_PASTE_CHARS) {
+        setError("That text is too long. Paste only the abstract (up to 20,000 characters).");
+        return;
+      }
+      const summary = summarize(cleanAbstract(text));
+      if (!summary) {
+        setError("Could not split that text into sentences. Paste a plain-text abstract.");
+        return;
+      }
+      setResult({ meta: null, summary });
+      return;
+    }
+    await runLookup(query);
   }
 
   async function handleCopy() {
@@ -585,5 +607,13 @@ export default function SummarizerPage() {
         </ul>
       </details>
     </main>
+  );
+}
+
+export default function SummarizerPage() {
+  return (
+    <Suspense fallback={<main className="mx-auto max-w-3xl px-4 py-16"><p className="text-sm text-gray-600">Loading summarizer...</p></main>}>
+      <SummarizerInner />
+    </Suspense>
   );
 }
