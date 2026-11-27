@@ -2,7 +2,7 @@
 const OPENALEX = "https://api.openalex.org";
 const MAILTO = process.env.OPENALEX_EMAIL || "abdmazn55@gmail.com";
 
-const SELECT = "id,doi,display_name,publication_year,publication_date,cited_by_count,fwci,abstract_inverted_index,authorships,primary_location,open_access,primary_topic,
+const SELECT = "id,display_name,publication_year,authorships,doi,cited_by_count,primary_location,open_access,abstract_inverted_index";
 
 export type Paper = {
   id: string; title: string; year: number | null; authors: string[]; venue: string | null; citations: number; fwci: number | null; abstract: string; doi: string | null; url: string; oaUrl: string | null; isOA: boolean; field: string | null; subfield: string | null; tags: string[];
