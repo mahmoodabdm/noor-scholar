@@ -15,6 +15,7 @@ import {
   TrendingUp,
   MessageCircle,
   Heart,
+  Flame,
 } from 'lucide-react';
 import SearchBox from '@/components/SearchBox';
 import Trending2026 from '@/components/Trending2026';
@@ -55,7 +56,7 @@ export default function HomePage() {
     <div className="flex-1 flex flex-col bg-white">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, '\\u003c') }} />
 
-      {/* Donation Banner - No Ads, Free Forever */}
+      {/* Donation Banner */}
       <div className="bg-amber-50 border-b border-amber-200 px-4 py-3 text-center">
         <p className="text-sm text-slate-700">
           <Heart className="inline w-4 h-4 text-red-500 mr-1" />
@@ -99,7 +100,18 @@ export default function HomePage() {
         <p className="mt-3 text-xs text-slate-400">Figures are approximate and may change over time.</p>
       </section>
 
-      {/* Trending + Chat Teaser - WITH IMAGES */}
+      {/* ⭐ TOP 2026 - MOVED TO TOP WITH SPECIAL ICON */}
+      <div className="bg-gradient-to-r from-amber-50 via-white to-blue-50 border-y-2 border-amber-200">
+        <div className="max-w-7xl mx-auto px-4 pt-6 flex items-center justify-center gap-2">
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-400 text-slate-900 text-xs font-black uppercase tracking-widest shadow-md">
+            <Flame className="w-4 h-4" />
+            🔥 Hot in 2026 • Most Cited This Year
+          </span>
+        </div>
+        <Trending2026 />
+      </div>
+
+      {/* Trending + Chat Teaser */}
       <section className="py-12 bg-white border-t border-slate-200">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2 gap-6">
           <Link href="/trending" className="rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md transition-all block overflow-hidden">
@@ -160,10 +172,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Most Cited 2026 - Live from OpenAlex */}
-      <Trending2026 />
-
-      {/* Blog preview - WITH IMAGES */}
+      {/* Blog preview */}
       <section className="py-20 bg-white border-t border-slate-200">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-end justify-between gap-4 mb-8"><h2 className="text-3xl font-extrabold text-slate-900">From the blog</h2><Link href="/blog" className="text-sm font-semibold text-blue-600 hover:underline">All articles</Link></div>
