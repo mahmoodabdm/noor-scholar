@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Globe2, Copy, Check, Languages, ArrowLeftRight } from 'lucide-react';
+import { Globe2, Copy, Check, Languages, ArrowLeftRight, X, Trash2 } from 'lucide-react';
 
 type Lang = { code: string; label: string };
 
@@ -27,23 +27,62 @@ export default function TranslatorPage() {
 
   const sample = 'This study examines how students use academic tools to improve their writing and avoid plagiarism.';
 
+  // FIX 3: If input is cleared, output is cleared automatically
+  const handleInputChange = (value: string) => {
+    setInputText(value);
+    if (value.trim() === '') {
+      setOutputText('');
+      setError('');
+    }
+  };
+
+  // FIX 2: Clear buttons
+  const handleClearAll = () => {
+    setInputText('');
+    setOutputText('');
+    setError('');
+  };
+
+  const handleClearOutput = () => {
+    setOutputText('');
+  };
+
+  // FIX 1: Use Google Translate API (more accurate) + MyMemory as fallback
   const handleTranslate = async () => {
     const text = inputText.trim() || sample;
     setLoading(true);
     setError('');
     setOutputText('');
     try {
-      const res = await fetch(
-        `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${fromLang}|${toLang}`
+      // Primary: Google Translate (gtx) - more accurate
+      const gRes = await fetch(
+        `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${fromLang}&tl=${toLang}&dt=t&q=${encodeURIComponent(text)}`
       );
-      const data = await res.json();
-      const translated = data?.responseData?.translatedText;
-      if (!translated) throw new Error('No translation');
-      setOutputText(translated);
+      if (gRes.ok) {
+        const gData = await gRes.json();
+        const translated = gData?.[0]?.map((part: any) => part[0]).join('');
+        if (translated) {
+          setOutputText(translated);
+          setLoading(false);
+          return;
+        }
+      }
+      throw new Error('Google failed');
     } catch {
-      setError('Translation failed. Check your connection and try again.');
-    } finally {
-      setLoading(false);
+      try {
+        // Fallback: MyMemory
+        const mRes = await fetch(
+          `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${fromLang}|${toLang}`
+        );
+        const mData = await mRes.json();
+        const translated = mData?.responseData?.translatedText;
+        if (!translated) throw new Error('No translation');
+        setOutputText(translated);
+      } catch {
+        setError('Translation failed. Check your connection and try again.');
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -74,10 +113,10 @@ export default function TranslatorPage() {
           Academic Research Translator
         </h1>
         <p className="mt-2 text-sm sm:text-base text-slate-600">
-          Translate abstracts and research sentences inside Noor Scholar. Your text is translated here, not sent to an external tool site.
+          Translate abstracts and research sentences inside Noor Scholar. Your text is translated here.
         </p>
         <p className="mt-2 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
-          Free machine translation. Always check technical terms before you cite or submit.
+          Machine translation. Always check technical terms before you cite or submit.
         </p>
       </div>
 
@@ -104,31 +143,68 @@ export default function TranslatorPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-2">
-            <div className="flex justify-between text-xs text-slate-500">
-              <span className="font-semibold">Your Original Text</span>
-              <span>{inputText.length} chars</span>
-            </div>
-            <textarea
-              rows={7}
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              placeholder="Paste your abstract or research sentences here..."
-              className="w-full p-4 text-sm bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:border-violet-500 focus:outline-none resize-none leading-relaxed"
-            />
-          </div>
+          {/* Input - with Clear button inside */}
           <div className="space-y-2">
             <div className="flex justify-between items-center text-xs text-slate-500">
-              <span className="font-semibold text-violet-700">Translated Version</span>
-              {outputText && (
-                <button onClick={handleCopy} className="inline-flex items-center gap-1 text-slate-600 hover:text-violet-700 font-semibold cursor-pointer">
-                  {copied ? <Check className="w-3.5 h-3.5 text-violet-600" /> : <Copy className="w-3.5 h-3.5" />}
-                  <span>{copied ? 'Copied' : 'Copy'}</span>
+              <span className="font-semibold">Your Original Text</span>
+              <div className="flex items-center gap-2">
+                <span>{inputText.length} chars</span>
+                {inputText && (
+                  <button onClick={handleClearAll} className="inline-flex items-center gap-1 px-2 py-1 bg-rose-50 text-rose-600 rounded-full hover:bg-rose-100 font-bold cursor-pointer">
+                    <X className="w-3 h-3" /> Clear
+                  </button>
+                )}
+              </div>
+            </div>
+            <div className="relative">
+              <textarea
+                rows={7}
+                value={inputText}
+                onChange={(e) => handleInputChange(e.target.value)}
+                placeholder="Paste your abstract or research sentences here..."
+                className="w-full p-4 pr-10 text-sm bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:border-violet-500 focus:outline-none resize-none leading-relaxed"
+              />
+              {inputText && (
+                <button
+                  onClick={handleClearAll}
+                  className="absolute top-3 right-3 p-1.5 bg-white border border-slate-200 rounded-full text-slate-400 hover:text-rose-600 hover:border-rose-300 cursor-pointer"
+                  title="Clear all"
+                >
+                  <Trash2 className="w-4 h-4" />
                 </button>
               )}
             </div>
-            <div className="w-full min-h- p-4 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl text-slate-800 leading-relaxed overflow-y-auto">
+          </div>
+
+          {/* Output - with Clear button inside */}
+          <div className="space-y-2">
+            <div className="flex justify-between items-center text-xs text-slate-500">
+              <span className="font-semibold text-violet-700">Translated Version</span>
+              <div className="flex items-center gap-2">
+                {outputText && (
+                  <>
+                    <button onClick={handleClearOutput} className="inline-flex items-center gap-1 px-2 py-1 bg-rose-50 text-rose-600 rounded-full hover:bg-rose-100 font-bold cursor-pointer">
+                      <X className="w-3 h-3" /> Clear
+                    </button>
+                    <button onClick={handleCopy} className="inline-flex items-center gap-1 text-slate-600 hover:text-violet-700 font-semibold cursor-pointer">
+                      {copied ? <Check className="w-3.5 h-3.5 text-violet-600" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{copied ? 'Copied' : 'Copy'}</span>
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+            <div className="relative w-full min-h- p-4 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl text-slate-800 leading-relaxed overflow-y-auto">
               {loading ? <span className="text-slate-400">Translating...</span> : outputText ? <p dir={toLang === 'ar' || toLang === 'fa' || toLang === 'ur' ? 'rtl' : 'ltr'}>{outputText}</p> : error ? <span className="text-rose-600">{error}</span> : <span className="text-slate-400 italic">Your translation will appear here.</span>}
+              {outputText && (
+                <button
+                  onClick={handleClearOutput}
+                  className="absolute top-3 right-3 p-1.5 bg-white border border-slate-200 rounded-full text-slate-400 hover:text-rose-600 hover:border-rose-300 cursor-pointer"
+                  title="Clear translation"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -144,8 +220,6 @@ export default function TranslatorPage() {
       <article className="prose prose-slate max-w-none text-slate-700 leading-relaxed text-sm sm:text-base space-y-6 pt-6 border-t border-slate-200">
         <h2 className="text-2xl font-bold text-slate-900">How to translate research without losing meaning</h2>
         <p>Machine translation is useful for understanding, but scientific terms can shift meaning. Always keep the original abstract beside the translation, and check key terms against the paper before you cite them.</p>
-        <h3 className="text-xl font-bold text-slate-900">Best practice</h3>
-        <p>Translate short passages, not whole papers. Verify names, numbers, units, and methods in the original language.</p>
       </article>
     </div>
   );
