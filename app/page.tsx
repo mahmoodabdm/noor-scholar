@@ -34,13 +34,13 @@ export const metadata: Metadata = {
     siteName: 'Noor Scholar',
     locale: 'en_US',
     title: 'Noor Scholar – Find, Save & Cite Research in One Place',
-    description: 'Search 250M+ papers, understand them in seconds, save to your library, and generate APA, MLA, and 【entity-Chicago¦canonical_name=Chicago】 citations — no account needed.',
+    description: 'Search 250M+ papers, understand them in seconds, save to your library, and generate APA, MLA, and Chicago citations — no account needed.',
     images: [{ url: 'https://noor-scholar.vercel.app/og-image.jpg', width: 1200, height: 630, alt: 'Noor Scholar - free academic search engine' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Noor Scholar – Find, Save & Cite Research in One Place',
-    description: 'Search 250M+ papers, understand them in seconds, save to your library, and generate APA, MLA, and 【entity-Chicago¦canonical_name=Chicago】 citations — no account needed.',
+    description: 'Search 250M+ papers, understand them in seconds, save to your library, and generate APA, MLA, and Chicago citations — no account needed.',
     images: ['https://noor-scholar.vercel.app/og-image.jpg'],
   },
 };
@@ -100,6 +100,18 @@ export default function HomePage() {
           Free to use, no account required.{' '}
           <Link href="/tools/citation-generator" className="text-blue-600 font-medium hover:underline">Or generate a citation</Link>
         </p>
+        {/* NEW: Quick tools row - Plagiarism Checker visible in hero */}
+        <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
+          <Link href="/tools/plagiarism-checker" className="inline-flex items-center gap-1.5 px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold rounded-full transition-colors">
+            <Shield className="w-4 h-4" /> Check Plagiarism →
+          </Link>
+          <Link href="/tools/summarizer" className="inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-slate-300 hover:border-blue-300 text-slate-700 text-sm font-bold rounded-full transition-colors">
+            Try Summarizer →
+          </Link>
+          <Link href="/tools/citation-generator" className="inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-slate-300 hover:border-blue-300 text-slate-700 text-sm font-bold rounded-full transition-colors">
+            Citation Generator →
+          </Link>
+        </div>
         <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
           <span className="text-xs font-semibold text-slate-400">Trending Topics:</span>
           {POPULAR_SEARCHES.map((topic) => (
@@ -188,6 +200,19 @@ export default function HomePage() {
             <li className="rounded-2xl border border-slate-200 bg-white overflow-hidden"><img src="https://picsum.photos/seed/how-summarize/600/280" alt="Summarize" style={{ width: "100%", height: 140, objectFit: "cover" }} /><div className="p-6"><div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center mb-4"><Sparkles className="w-5 h-5" /></div><h3 className="font-bold text-slate-900 mb-1">2. Summarize</h3><p className="text-sm text-slate-600 leading-relaxed">Get the research question, method, and key findings from the abstract.{' '}<Link href="/tools/summarizer" className="text-blue-600 font-medium hover:underline">Try the Summarizer →</Link></p></div></li>
             <li className="rounded-2xl border border-slate-200 bg-white overflow-hidden"><img src="https://picsum.photos/seed/how-cite/600/280" alt="Cite" style={{ width: "100%", height: 140, objectFit: "cover" }} /><div className="p-6"><div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-4"><Quote className="w-5 h-5" /></div><h3 className="font-bold text-slate-900 mb-1">3. Cite</h3><p className="text-sm text-slate-600 leading-relaxed">Click Cite on any result to generate APA, MLA, or Chicago. Check it against your style guide before you submit.</p></div></li>
           </ol>
+          {/* NEW: 4th step - Check originality */}
+          <div className="mt-6">
+            <Link href="/tools/plagiarism-checker" className="flex flex-col sm:flex-row items-center justify-between gap-3 p-5 rounded-2xl border-2 border-dashed border-rose-200 bg-rose-50/50 hover:bg-rose-50 hover:border-rose-300 transition-all">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center shrink-0"><Shield className="w-5 h-5" /></div>
+                <div className="text-left">
+                  <h3 className="font-bold text-slate-900">4. Check Originality — New</h3>
+                  <p className="text-sm text-slate-600">Paste your draft and check for repeated sentences before you submit.</p>
+                </div>
+              </div>
+              <span className="text-sm font-bold text-rose-600 whitespace-nowrap">Check Plagiarism →</span>
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -201,6 +226,12 @@ export default function HomePage() {
             <div className="p-8 bg-white rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md transition-all"><div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-5"><FileText className="w-6 h-6" /></div><h3 className="text-lg font-bold text-slate-900 mb-2">Find Open-Access Versions</h3><p className="text-sm text-slate-600 leading-relaxed">Follow links to publisher DOIs and to open-access copies in repositories and preprint servers, where OpenAlex lists them.</p></div>
             <div className="p-8 bg-white rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md transition-all"><div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-5"><Layers className="w-6 h-6" /></div><h3 className="text-lg font-bold text-slate-900 mb-2">Citation Counts</h3><p className="text-sm text-slate-600 leading-relaxed">See how often a work has been cited, based on OpenAlex data, to help you gauge its reach. Counts differ between databases.</p></div>
             <div className="p-8 bg-white rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md transition-all"><div className="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center mb-5"><Zap className="w-6 h-6" /></div><h3 className="text-lg font-bold text-slate-900 mb-2">Paper Summarizer</h3><p className="text-sm text-slate-600 leading-relaxed">Paste a DOI or an abstract to get the research question, method, and key findings. Extractive summary, not AI-generated.{' '}<Link href="/tools/summarizer" className="text-blue-600 font-medium hover:underline">Try it →</Link></p></div>
+            {/* NEW: Plagiarism Checker Feature Card */}
+            <Link href="/tools/plagiarism-checker" className="block p-8 bg-white rounded-2xl border-2 border-rose-200 hover:border-rose-400 hover:shadow-md transition-all">
+              <div className="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center mb-5"><Shield className="w-6 h-6" /></div>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">Plagiarism Checker <span className="ml-1 text-xs font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 align-middle">New</span></h3>
+              <p className="text-sm text-slate-600 leading-relaxed">Paste your draft and check for repeated sentences and repeated phrases inside your browser. Internal check, not Turnitin.{' '}<span className="text-rose-600 font-medium">Try it →</span></p>
+            </Link>
             <div className="p-8 bg-white rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md transition-all"><div className="w-12 h-12 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center mb-5"><Shield className="w-6 h-6" /></div><h3 className="text-lg font-bold text-slate-900 mb-2">Privacy</h3><p className="text-sm text-slate-600 leading-relaxed">We respect your privacy. See our{' '}<Link href="/privacy" className="text-blue-600 underline hover:text-blue-800">Privacy Policy</Link>{' '}for what data is collected and how it is used.</p></div>
             <div className="p-8 bg-white rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md transition-all"><div className="w-12 h-12 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center mb-5"><BookOpen className="w-6 h-6" /></div><h3 className="text-lg font-bold text-slate-900 mb-2">My Library</h3><p className="text-sm text-slate-600 leading-relaxed">Save papers you find and come back to them later. No account needed, saved in your browser.{' '}<Link href="/my-library" className="text-blue-600 font-medium hover:underline">View my library →</Link></p></div>
           </div>
