@@ -100,22 +100,20 @@ export default function HomePage() {
           Free to use, no account required.{' '}
           <Link href="/tools/citation-generator" className="text-blue-600 font-medium hover:underline">Or generate a citation</Link>
         </p>
-        {/* Quick tools row - Plagiarism + Paraphraser + Translator visible in hero */}
+        {/* Quick tools row - colors fixed */}
         <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
           <Link href="/tools/plagiarism-checker" className="inline-flex items-center gap-1.5 px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold rounded-full transition-colors">
             <Shield className="w-4 h-4" /> Check Plagiarism →
           </Link>
-          <Link href="/tools/summarizer" className="inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-slate-300 hover:border-blue-300 text-slate-700 text-sm font-bold rounded-full transition-colors">
+          <Link href="/tools/summarizer" className="inline-flex items-center gap-1.5 px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-slate-900 text-sm font-bold rounded-full transition-colors shadow-sm">
             Try Summarizer →
           </Link>
-          <Link href="/tools/citation-generator" className="inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-slate-300 hover:border-blue-300 text-slate-700 text-sm font-bold rounded-full transition-colors">
+          <Link href="/tools/citation-generator" className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-800 hover:bg-amber-900 text-white text-sm font-bold rounded-full transition-colors shadow-sm">
             Citation Generator →
           </Link>
-          {/* NEW: Paraphraser button */}
           <Link href="/tools/paraphraser" className="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-full transition-colors">
             <FileText className="w-4 h-4" /> Paraphrase Text →
           </Link>
-          {/* NEW: Translator button - page will be fixed next, button ready now */}
           <Link href="/tools/translator" className="inline-flex items-center gap-1.5 px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-bold rounded-full transition-colors">
             <Globe2 className="w-4 h-4" /> Translate Research →
           </Link>
@@ -238,13 +236,11 @@ export default function HomePage() {
               <h3 className="text-lg font-bold text-slate-900 mb-2">Plagiarism Checker <span className="ml-1 text-xs font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 align-middle">New</span></h3>
               <p className="text-sm text-slate-600 leading-relaxed">Paste your draft and check for repeated sentences and repeated phrases inside your browser. Internal check, not Turnitin.{' '}<span className="text-rose-600 font-medium">Try it →</span></p>
             </Link>
-            {/* NEW: Paraphraser Feature Card */}
             <Link href="/tools/paraphraser" className="block p-8 bg-white rounded-2xl border-2 border-emerald-200 hover:border-emerald-400 hover:shadow-md transition-all">
               <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-5"><FileText className="w-6 h-6" /></div>
               <h3 className="text-lg font-bold text-slate-900 mb-2">Academic Paraphraser <span className="ml-1 text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 align-middle">New</span></h3>
               <p className="text-sm text-slate-600 leading-relaxed">Paste your own sentences and rewrite them in formal academic English. Your text is rewritten, not a canned example.{' '}<span className="text-emerald-600 font-medium">Try it →</span></p>
             </Link>
-            {/* NEW: Translator Feature Card - page will be fixed next */}
             <Link href="/tools/translator" className="block p-8 bg-white rounded-2xl border-2 border-violet-200 hover:border-violet-400 hover:shadow-md transition-all">
               <div className="w-12 h-12 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center mb-5"><Globe2 className="w-6 h-6" /></div>
               <h3 className="text-lg font-bold text-slate-900 mb-2">Research Translator <span className="ml-1 text-xs font-bold px-2 py-0.5 rounded-full bg-violet-100 text-violet-700 align-middle">New</span></h3>
